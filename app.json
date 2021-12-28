@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "AriyaReactTwo",
+    "slug": "AriyaReactTwo",
+    "version": "1.0.0",
+    "scheme": "ariyareact",
+    "assetBundlePatterns": ["**/*"]
+  },
+  "name": "AriyaReactTwo"
+}
