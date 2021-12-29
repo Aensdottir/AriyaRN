@@ -36,10 +36,14 @@ function App() {
     <NativeBaseProvider>
       <Flex bg={useColorModeValue("#fff", "802020")} flex={1}>
         <ScrollView>
-          <Text position={"absolute"}>AAA</Text>
           <TopComponent />
-          <Text position={"absolute"} alignSelf={"center"} fontSize="md">
-            AAA
+          <Text
+            position={"absolute"}
+            alignSelf={"center"}
+            fontSize="2xl"
+            top={100}
+          >
+            {connectionText}
           </Text>
           <ScrollView>
             <Button m={5} onPress={() => TcpConnect("connect")}>

@@ -18,7 +18,6 @@ function TopComponent() {
       borderBottomRadius={15}
       justifyContent={"center"}
       alignItems={"center"}
-      shadow="9"
     >
       <Box
         bg={"#caf3ff"}
