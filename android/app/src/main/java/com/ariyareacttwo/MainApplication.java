@@ -22,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.airbnb.android.react.lottie.LottiePackage;
-import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
@@ -37,9 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      //packages.add(new ModuleRegistryAdapter(ModuleRegistryProvider));
       packages.add(new LottiePackage());
-      packages.add(new SafeAreaContextPackage());
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
       return packages;

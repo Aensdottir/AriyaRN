@@ -2,7 +2,9 @@
   "compilerOptions": {
     "jsx": "react",
     "allowJs": true,
-    "lib": ["es2015"],
+    "lib": [
+      "es2015"
+    ],
     "checkJs": true,
     "noEmit": true,
     "strict": true,
@@ -11,6 +13,9 @@
     "baseUrl": ".",
     "typeRoots": []
   },
-  "include": ["declaration.d.ts", "App.js"],
+  "include": [
+    "declaration.d.ts",
+    "App.js"
+  ],
   "extends": "expo/tsconfig.base"
 }
