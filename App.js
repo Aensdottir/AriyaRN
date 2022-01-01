@@ -1,8 +1,8 @@
 // @ts-nocheck
-import React, { useState, Component } from "react";
-//import { Pressable, StyleSheet, Text, View } from "react-native";
-import MainScreen from "./app/MainScreen";
+import React, { useState, Component, useEffect } from "react";
+import SplashScreen from "react-native-splash-screen";
 
+import MainScreen from "./app/MainScreen";
 import { NativeBaseProvider } from "native-base";
 
 class App extends Component {

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "AriyaReact",
-    "slug": "AriyaReact",
+    "name": "Ariya",
+    "slug": "Ariya",
     "version": "1.0.0",
     "scheme": "ariyareact",
     "assetBundlePatterns": ["**/*"]
   },
-  "name": "AriyaReact"
+  "name": "Ariya"
 }

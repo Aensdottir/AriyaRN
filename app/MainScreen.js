@@ -30,13 +30,14 @@ import {
 } from "native-base";
 import { TopComponent, FadeInComponent } from "./TopComponent";
 import ariyaTheme from "./Styles";
-import { transform } from "framer-motion";
+import AnimatedLottieView from "lottie-react-native";
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 
 const Box = (props) => {
   return <NBBox borderRadius="md" bg="primary.600" {...props} />;
 };
 
-const HEADER_MAX_HEIGHT = 240;
+const HEADER_MAX_HEIGHT = 300;
 function App() {
   const { toggleColorMode } = useColorMode();
   const [latencyText, setLatencyText] = useState("Latency");
@@ -54,33 +55,14 @@ function App() {
     outputRange: [0, -HEADER_SCROLL_DISTANCE],
     extrapolate: "clamp",
   });
-  const textTranslateY = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE],
-    outputRange: [0, 300],
-    extrapolate: "clamp",
-  });
-
-  // change header title size from 1 to 0.9
-  const titleScale = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
-    outputRange: [1, 1, 0.9],
-    extrapolate: "clamp",
-  });
-  // change header title y-axis
-  const titleTranslateY = scrollY.interpolate({
-    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
-    outputRange: [0, 0, -8],
-    extrapolate: "clamp",
-  });
-
   return (
     <NativeBaseProvider theme={ariyaTheme}>
       <StatusBar
-        backgroundColor={useColorModeValue("#adecff", "#040810")}
+        backgroundColor={useColorModeValue("#fff", "#040810")}
         animated={true}
         barStyle={useColorModeValue("dark-content", "light-content")}
       ></StatusBar>
-      <Flex bg={useColorModeValue("ariya.mintWhite", "amber.400")} flex={1}>
+      <Flex bg={useColorModeValue("#c7ebff", "#040810")} flex={1}>
         <PresenceTransition
           visible={true}
           initial={{
@@ -103,43 +85,11 @@ function App() {
               { useNativeDriver: true } // use native driver for animation
             )}
           >
-            <LottieView
-              top={50}
-              position={"absolute"}
-              source={require("../spinAnim.json")}
-              opacity={1}
-              autoPlay
-              loop
-            />
-            <LottieView
-              top={50}
-              position={"absolute"}
-              source={require("../spinAnimRed.json")}
-              opacity={fadeAnim}
-              autoPlay
-              loop
-            />
-            <LottieView
-              source={require("../loopAnim.json")}
-              opacity={0}
-              colorFilters={[
-                {
-                  keypath: "Layer 1",
-                  color: "#802020",
-                },
-                {
-                  keypath: "Sending Loader",
-                  color: "#F00000",
-                },
-              ]}
-              autoPlay
-              loop
-            />
             <ScrollView>
               <Button m={5} onPress={() => TcpConnect("connect")}>
                 Connect
               </Button>
-              <Button size={"md"} m={5} onPress={(toggleColorMode, fadeIn)}>
+              <Button size={"md"} m={5} onPress={toggleColorMode}>
                 Toggle
               </Button>
               <ScrollView
@@ -174,18 +124,34 @@ function App() {
         <Animated.View
           style={[
             styles.header,
-            { transform: [{ translateY: headerTranslateY }] },
+            {
+              transform: [{ translateY: headerTranslateY }],
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              backgroundColor: "#fff",
+              overflow: "hidden",
+            },
           ]}
         >
           <LottieView
-            top={50}
+            top={100}
+            imageAssetsFolder={"lottie/TopBarAnim"}
             position={"absolute"}
-            source={require("../spinAnim.json")}
+            source={require("../android/app/src/main/assets/TopBarAnimDisconnected.json")}
             opacity={1}
             autoPlay
             loop
           />
-          <Text top={100} alignSelf={"center"} fontSize="2xl">
+          <LottieView
+            top={100}
+            imageAssetsFolder={"lottie/TopBarAnim"}
+            position={"absolute"}
+            source={require("../android/app/src/main/assets/TopBarAnim.json")}
+            opacity={fadeAnim}
+            autoPlay
+            loop
+          />
+          <Text top={200} alignSelf={"center"} fontSize="2xl">
             {connectionText}
           </Text>
         </Animated.View>
@@ -195,7 +161,6 @@ function App() {
 
   function TcpConnect(command) {
     setConnectionText("Connecting");
-    fadeIn();
     const options = {
       port: 10144,
       //host: "192.168.1.30",
@@ -210,6 +175,11 @@ function App() {
       const latencyOutput = Latency(bin2String(data));
       setConnectionText("Connected");
       setLatencyText(latencyOutput + "ms");
+      fadeIn();
+      if (command == "connect") {
+        //Reconnect for latency check
+        Sleep(20000).then(() => TcpConnect("connect"));
+      }
     });
 
     client.on("error", function (error) {
@@ -245,7 +215,7 @@ function App() {
     const minutes = dateString.substring(0, 2) * 60000;
     const secondsMs = dateString.substring(3).replace(".", "") * 1;
     const clientTime = minutes + secondsMs;
-    const latency = (clientTime - serverTime).toString().substring(1);
+    const latency = (clientTime - serverTime).toString().substring(0);
     console.log(
       "Servertime: " + serverTime + "\n" + "Clienttime: " + clientTime
     );
@@ -258,13 +228,8 @@ function App() {
 const styles = StyleSheet.create({
   header: {
     position: "absolute",
-    top: 0,
     left: 0,
     right: 0,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    backgroundColor: "#62d1bc",
-    overflow: "hidden",
     height: HEADER_MAX_HEIGHT,
   },
 

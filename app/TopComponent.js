@@ -28,7 +28,7 @@ export function TopComponent() {
     >
       <LottieView
         position={"absolute"}
-        source={require("../spinAnim.json")}
+        source={require("../assets/spinAnim.json")}
         opacity={1}
         autoPlay
         loop
@@ -36,7 +36,7 @@ export function TopComponent() {
       <LottieView
         resizeMode="contain"
         position={"absolute"}
-        source={require("../spinAnim.json")}
+        source={require("../assets/spinAnim.json")}
         opacity={fadeAnim2}
         autoPlay
         loop
