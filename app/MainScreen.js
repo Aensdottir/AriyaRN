@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   Text as RNText,
+  Image as RNImage,
 } from "react-native";
 import TcpSocket from "react-native-tcp-socket";
 import LottieView from "lottie-react-native";
@@ -26,6 +27,7 @@ import {
   useTheme,
   extendTheme,
   Fade,
+  Image,
   PresenceTransition,
 } from "native-base";
 import { TopComponent, FadeInComponent } from "./TopComponent";
@@ -36,25 +38,29 @@ import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 const Box = (props) => {
   return <NBBox borderRadius="md" bg="primary.600" {...props} />;
 };
-
 const HEADER_MAX_HEIGHT = 300;
 function App() {
   const { toggleColorMode } = useColorMode();
   const [latencyText, setLatencyText] = useState("Latency");
   const [connectionText, setConnectionText] = useState("Disconnected");
+  const [latencyStatus, setLatencyStatus] = useState(
+    require("../assets/StatusDefault.png")
+  );
 
   const HEADER_MIN_HEIGHT = 85;
   const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
   const scrollY = useRef(new Animated.Value(0)).current; // our animated value
-
-  let fadeAnim = useRef(new Animated.Value(0)).current;
-
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
     outputRange: [0, -HEADER_SCROLL_DISTANCE],
     extrapolate: "clamp",
   });
+
+  let fadeAnim = useRef(new Animated.Value(0)).current;
+  let goodOpacity = 1;
+  let midOpacity = 0;
+  let badOpacity = 0;
   return (
     <NativeBaseProvider theme={ariyaTheme}>
       <StatusBar
@@ -151,16 +157,33 @@ function App() {
             autoPlay
             loop
           />
-          <Text top={200} alignSelf={"center"} fontSize="2xl">
+          <Text
+            top={200}
+            alignSelf={"center"}
+            fontSize="2xl"
+            position={"absolute"}
+          >
             {connectionText}
           </Text>
+          <Text top={250} left={135} fontSize="2xl" position={"absolute"}>
+            Status:
+          </Text>
+          <RNImage
+            style={{ width: 50 }}
+            resizeMode="contain"
+            left={219}
+            top={241}
+            source={latencyStatus}
+          ></RNImage>
         </Animated.View>
       </Flex>
     </NativeBaseProvider>
   );
 
   function TcpConnect(command) {
-    setConnectionText("Connecting");
+    if (command == "connect") {
+      setConnectionText("Connecting");
+    }
     const options = {
       port: 10144,
       //host: "192.168.1.30",
@@ -176,17 +199,15 @@ function App() {
       setConnectionText("Connected");
       setLatencyText(latencyOutput + "ms");
       fadeIn();
-      if (command == "connect") {
+      if (command == "connect" || command == "latencyRefresh") {
         //Reconnect for latency check
-        Sleep(20000).then(() => TcpConnect("connect"));
+        Sleep(30000).then(() => TcpConnect("latencyRefresh"));
       }
     });
-
     client.on("error", function (error) {
       console.log(error);
       setConnectionText("Disconnected");
     });
-
     client.on("close", function () {
       console.log("Connection closed!");
       client.destroy();
@@ -216,6 +237,13 @@ function App() {
     const secondsMs = dateString.substring(3).replace(".", "") * 1;
     const clientTime = minutes + secondsMs;
     const latency = (clientTime - serverTime).toString().substring(0);
+    if (latency <= 250) {
+      setLatencyStatus(require("../assets/StatusGood.png"));
+    } else if (latency <= 450) {
+      setLatencyStatus(require("../assets/StatusMid.png"));
+    } else if (latency > 450) {
+      setLatencyStatus(require("../assets/StatusBad.png"));
+    }
     console.log(
       "Servertime: " + serverTime + "\n" + "Clienttime: " + clientTime
     );
