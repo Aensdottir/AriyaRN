@@ -14,8 +14,17 @@ const ariyaTheme = extendTheme({
       darkgray: "#424B54",
     },
   },
+  config: {
+    initialColorMode: "dark",
+  },
 });
-export default ariyaTheme;
+const mainConfig = {
+  dependencies: {
+    "linear-gradient": require("expo-linear-gradient").LinearGradient,
+  },
+};
+
+export { ariyaTheme, mainConfig };
 // Mint Cream: F7FFF7
 // Blue Green: 3C98B9
 // Little Boy Blue: 86A8D3
