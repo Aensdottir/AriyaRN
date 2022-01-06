@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Box as NBBox } from "native-base";
+import { Box as NBBox, Image } from "native-base";
 
 export const Card = (props) => {
   return (
@@ -15,6 +15,33 @@ export const Card = (props) => {
       ml={5}
       overflow={"hidden"}
       {...props}
+    >
+      <NBBox
+        height={35}
+        opacity={1}
+        bg={{
+          linearGradient: {
+            colors: ["#2b3a54", "#582828"],
+            start: [0, 0],
+            end: [1, 0],
+          },
+        }}
+        {...props}
+      ></NBBox>
+    </NBBox>
+  );
+};
+export const Placeholder = (props) => {
+  return (
+    <Image
+      position={"absolute"}
+      source={require("../../assets/images/CardTextPlaceholder.png")}
+      top={-35}
+      opacity={0.7}
+      left={2}
+      w={260}
+      height={170}
+      alt="image"
     />
   );
 };

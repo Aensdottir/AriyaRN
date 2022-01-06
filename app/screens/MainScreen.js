@@ -2,36 +2,36 @@
 import React, { useState, Component, useEffect, useRef } from "react";
 import { Animated, StyleSheet, Image as RNImage } from "react-native";
 import TcpSocket from "react-native-tcp-socket";
-import LottieView from "lottie-react-native";
 
 import {
   Box as NBBox,
   NativeBaseProvider,
-  useColorModeValue,
-  Button,
   Text,
   Flex,
   ScrollView,
   StatusBar,
-  Image,
   PresenceTransition,
+  Fade,
 } from "native-base";
 import { ariyaTheme, mainConfig } from "../Styles";
 import { useFonts } from "expo-font";
-import { Card, Box } from "../components";
+import {
+  Card,
+  Placeholder,
+  Box,
+  ConnectButton,
+  HeaderAnim,
+  FadeInTransition,
+} from "../components";
+import { Latency, HEADER_MAX_HEIGHT, HEADER_SCROLL_DISTANCE } from "../utils";
 
-const HEADER_MAX_HEIGHT = 300;
 function MainScreen() {
+  /*const [latencyStatus, setLatencyStatus] = useState(
+    require("../assets/images/StatusDefault.png")
+  );*/
   const [connectionText, setConnectionText] = useState("NOT CONNECTED");
-  const [latencyStatus, setLatencyStatus] = useState(
-    require("../assets/StatusDefault.png")
-  );
   const [loadData, setLoadData] = useState(false);
-
   const [buttonDisabled, setButtonDisabled] = useState(false);
-
-  const [uptime, setUptime] = useState("00:00:00");
-  const [uptimeToggle, setUptimeToggle] = useState(false);
 
   const [toggle, setToggle] = useState(true);
   const toggleTcp = () => {
@@ -39,24 +39,24 @@ function MainScreen() {
     if (toggle) {
       setToggle(!toggle);
       TcpConnect("connect");
-    } else if (toggle == false) {
+    } else {
       setToggle(!toggle);
       TcpConnect("disconnect");
     }
   };
 
-  const HEADER_MIN_HEIGHT = 85;
-  const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
-
-  const scrollY = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim2 = useRef(new Animated.Value(1)).current;
+
+  const scrollY = useRef(new Animated.Value(0)).current;
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, HEADER_SCROLL_DISTANCE],
     outputRange: [0, -HEADER_SCROLL_DISTANCE],
     extrapolate: "clamp",
   });
 
+  const [uptime, setUptime] = useState("00:00:00");
+  const [uptimeToggle, setUptimeToggle] = useState(false);
   function Uptime(uptime) {
     let hours = uptime.substring(0, 2);
     let minutes = uptime.substring(3, 5);
@@ -97,28 +97,16 @@ function MainScreen() {
   let [fontsLoaded] = useFonts({
     "Agency-FB": require("../assets/fonts/agency-fb.ttf"),
   });
+
   return (
     <NativeBaseProvider theme={ariyaTheme} config={mainConfig}>
       <StatusBar
-        backgroundColor={useColorModeValue("#151921", "#040810")}
+        backgroundColor={"#151921"}
         animated={true}
         barStyle={"light-content"}
-      ></StatusBar>
+      />
       <Flex bg={"#21252e"} flex={1}>
-        <PresenceTransition
-          visible={true}
-          initial={{
-            opacity: 0,
-            scale: 1,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            transition: {
-              duration: 2000,
-            },
-          }}
-        >
+        <FadeInTransition>
           <Animated.ScrollView
             contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
             scrollEventThrottle={16}
@@ -127,127 +115,64 @@ function MainScreen() {
               { useNativeDriver: true } // use native driver for animation
             )}
           >
-            <ScrollView>
-              <Button
-                style={{
-                  fontFamily: "Agency-FB",
-                }}
-                m={5}
-                w={170}
-                h={50}
-                bg={"transparent"}
-                isDisabled={buttonDisabled}
-                _disabled={{ opacity: 0.5, backgroundColor: "#292e39" }}
-                borderColor={"#fff"}
-                borderWidth={2}
-                borderRadius={100}
-                alignSelf={"center"}
-                onPress={() => toggleTcp()}
-              >
-                {toggle ? "CONNECT" : "DISCONNECT"}
-              </Button>
-              <ScrollView
-                horizontal={true}
-                bg={"#232834"}
-                showsHorizontalScrollIndicator={false}
-                h={200}
-              >
-                <Card>
-                  <NBBox
-                    height={35}
-                    opacity={1}
-                    bg={{
-                      linearGradient: {
-                        colors: ["#2b3a54", "#582828"],
-                        start: [0, 0],
-                        end: [1, 0],
-                      },
-                    }}
-                  >
-                    <Text mt={1.5} mx={3}>
-                      Computer Information
-                    </Text>
-                  </NBBox>
-                  <PresenceTransition
-                    visible={!loadData}
-                    initial={{
-                      opacity: 0,
-                      scale: 1,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      transition: {
-                        duration: 2000,
-                      },
-                    }}
-                  >
-                    <Image
-                      position={"absolute"}
-                      source={require("../assets/CardTextPlaceholder.png")}
-                      top={-35}
-                      opacity={0.7}
-                      left={2}
-                      w={260}
-                      height={170}
-                      alt="image"
-                    />
-                  </PresenceTransition>
-                  <PresenceTransition
-                    visible={loadData}
-                    initial={{
-                      opacity: 0,
-                      scale: 1,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      transition: {
-                        duration: 2000,
-                      },
-                    }}
-                  >
-                    <Text
-                      position={"absolute"}
-                      top={35}
-                      left={5}
-                      fontSize={"3xl"}
-                    >
-                      {!uptimeToggle ? "00:00:00" : uptime}
-                    </Text>
-                  </PresenceTransition>
-                </Card>
-                <Card />
-                <Flex>
-                  <Box bg={"#21252e"} flex={1} w={200} my={4} mx={5}></Box>
-                  <Box bg={"#21252e"} flex={1} w={200} my={4} mx={5}></Box>
-                </Flex>
-              </ScrollView>
-              <NBBox bg={"#1b202a"} h={50} mb={10}>
-                <Text
-                  alignSelf={"center"}
-                  fontFamily={"Agency-FB"}
-                  fontSize={"3xl"}
-                >
-                  CONTROLS
+            <ConnectButton
+              isDisabled={buttonDisabled}
+              onPress={() => toggleTcp()}
+            >
+              {toggle ? "CONNECT" : "DISCONNECT"}
+            </ConnectButton>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              bg={"#232834"}
+              h={200}
+            >
+              <Card>
+                <Text mt={1.5} mx={3}>
+                  Computer Information
                 </Text>
-              </NBBox>
+                <FadeInTransition visible={!loadData}>
+                  <Placeholder />
+                </FadeInTransition>
+                <FadeInTransition visible={loadData}>
+                  <Text
+                    position={"absolute"}
+                    top={35}
+                    left={5}
+                    fontSize={"3xl"}
+                  >
+                    {!uptimeToggle ? "00:00:00" : uptime}
+                  </Text>
+                </FadeInTransition>
+              </Card>
 
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
-              <Box px="20" py="5" my={2} mx={5}></Box>
+              <Card />
             </ScrollView>
+
+            <NBBox bg={"#1b202a"} h={50} mb={10}>
+              <Text
+                alignSelf={"center"}
+                fontFamily={"Agency-FB"}
+                fontSize={"3xl"}
+              >
+                CONTROLS
+              </Text>
+            </NBBox>
+
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
+            <Box px="20" py="5" my={2} mx={5}></Box>
           </Animated.ScrollView>
-        </PresenceTransition>
+        </FadeInTransition>
 
         <Animated.View
           style={{
@@ -256,24 +181,10 @@ function MainScreen() {
             backgroundColor: "#1b202a",
           }}
         >
-          <LottieView
-            top={100}
-            imageAssetsFolder={"lottie/TopBarAnim"}
-            position={"absolute"}
-            source={require("../assets/animations/headerAnim/TopBarAnimDisconnected.json")}
-            opacity={fadeAnim2}
-            autoPlay
-            loop
-          />
-          <LottieView
-            top={100}
-            imageAssetsFolder={"lottie/TopBarAnim"}
-            position={"absolute"}
+          <HeaderAnim opacity={fadeAnim2} />
+          <HeaderAnim
             source={require("../assets/animations/headerAnim/TopBarAnim.json")}
             opacity={fadeAnim}
-            speed={0.7}
-            autoPlay
-            loop
           />
           <Text
             top={220}
@@ -301,7 +212,6 @@ function MainScreen() {
             resizeMode="contain"
             left={213}
             top={251}
-            source={latencyStatus}
           ></RNImage>
         </Animated.View>
       </Flex>
@@ -345,7 +255,7 @@ function MainScreen() {
         Sleep(500).then(() => fadeOut(fadeAnim2));
       } else if (command.includes("disconnect")) {
         Sleep(300).then(() => setUptimeToggle(false));
-        setLatencyStatus(require("../assets/StatusDefault.png"));
+        setLatencyStatus(require("../assets/images/StatusDefault.png"));
         fadeIn(fadeAnim2);
         setLoadData(false);
       }
@@ -405,27 +315,6 @@ function MainScreen() {
   }
   function bin2String(array) {
     return String.fromCharCode.apply(String, array);
-  }
-  function Latency(serverTime) {
-    const date = new Date();
-    const dateString = date.toISOString().substring(14, 23); // "2020-01-06T19:57:12.14
-    const minutes = dateString.substring(0, 2) * 60000;
-    const secondsMs = dateString.substring(3).replace(".", "") * 1;
-    const clientTime = minutes + secondsMs;
-    const latency = (clientTime - serverTime).toString().substring(0);
-    if (latency <= 250) {
-      setLatencyStatus(require("../assets/StatusGood.png"));
-    } else if (latency <= 450) {
-      setLatencyStatus(require("../assets/StatusMid.png"));
-    } else if (latency > 450) {
-      setLatencyStatus(require("../assets/StatusBad.png"));
-    }
-    console.log(
-      "Servertime: " + serverTime + "\n" + "Clienttime: " + clientTime
-    );
-    console.log(minutes + " / " + secondsMs);
-    console.log(latency);
-    return latency;
   }
 }
 
