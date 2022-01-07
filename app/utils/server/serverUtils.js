@@ -1,5 +1,5 @@
 // @ts-nocheck
-import GLOBAL from "../state/globalState";
+import GLOBAL from "../state/globalState.js";
 import TcpSocket from "react-native-tcp-socket";
 import { fadeIn, fadeOut } from "../transitions";
 
