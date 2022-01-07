@@ -1,18 +1,9 @@
 // @ts-nocheck
-import React, { useState, Component, useEffect } from "react";
-import SplashScreen from "react-native-splash-screen";
+import React, { Component, useState } from "react";
+import MainScreen from "./app/screens/MainScreen";
 
-import MainScreen from "./app/MainScreen";
-import { NativeBaseProvider } from "native-base";
-
-class App extends Component {
-  render() {
-    return (
-      <NativeBaseProvider>
-        <MainScreen />
-      </NativeBaseProvider>
-    );
-  }
-}
+const App = () => {
+  return <MainScreen />;
+};
 
 export default App;
