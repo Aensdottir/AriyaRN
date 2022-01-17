@@ -21,6 +21,7 @@
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "framer-motion": "^5.5.5",
+    "lodash.remove": "^4.7.0",
     "lodash.set": "^4.3.2",
     "lottie-ios": "^3.2.3",
     "lottie-react-native": "^5.0.1",
@@ -33,6 +34,10 @@
     "react-native-svg": "12.1.1",
     "react-native-tcp-socket": "^5.5.0",
     "react-native-web": "0.17.1",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.1",
     "use-global-hook": "^0.3.0"
   },
   "devDependencies": {

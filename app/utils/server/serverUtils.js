@@ -1,9 +1,12 @@
 // @ts-nocheck
-import GLOBAL from "../state/globalState.js";
 import TcpSocket from "react-native-tcp-socket";
-import { fadeIn, fadeOut } from "../transitions";
+import GLOBAL from "../state/globalState.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { View, Text } from "native-base";
 
-function TcpConnect(command) {
+function TcpConnect2(command) {
+  const dispatch = useDispatch();
   console.log(command);
   if (command == "connect") {
     GLOBAL.connectionText = "CONNECTING";
@@ -74,54 +77,6 @@ function TcpConnect(command) {
   });
 }
 
-const ToggleTcp = () => {
-  GLOBAL.buttonDisabled = true;
-  if (GLOBAL.toggle) {
-    GLOBAL.toggle = !GLOBAL.toggle;
-    TcpConnect("connect");
-  } else {
-    GLOBAL.toggle = !GLOBAL.toggle;
-    TcpConnect("disconnect");
-  }
-};
-
-function Uptime(uptime) {
-  let hours = uptime.substring(0, 2);
-  let minutes = uptime.substring(3, 5);
-  let seconds = uptime.substring(6, 8);
-  var startDateTime = new Date(2022, 0, 3, hours, minutes, seconds, 0); // YYYY (M-1) D H m s ms (start time and date from DB)
-  var startStamp = startDateTime.getTime();
-  var newDate = new Date();
-  var newStamp = newDate.getTime();
-
-  var timer;
-  function updateClock() {
-    newDate = new Date();
-    newStamp = newDate.getTime();
-    var diff = Math.round((newStamp - startStamp) / 1000);
-    //console.log(diff);
-    var d = Math.floor(diff / (24 * 60 * 60));
-    diff = diff - d * 24 * 60 * 60;
-    var h = Math.floor(diff / (60 * 60));
-    diff = diff - h * 60 * 60;
-    var m = Math.floor(diff / 60);
-    diff = diff - m * 60;
-    var s = diff;
-    h = format(h);
-    m = format(m);
-    s = format(s);
-    function format(object) {
-      if (object < 10) {
-        object = "0" + object;
-      }
-      return object;
-    }
-
-    GLOBAL.uptime = h + ":" + m + ":" + s;
-  }
-  timer = setInterval(updateClock, 1000);
-}
-
 function Latency(serverTime) {
   const date = new Date();
   const dateString = date.toISOString().substring(14, 23); // "2020-01-06T19:57:12.14
@@ -129,18 +84,40 @@ function Latency(serverTime) {
   const secondsMs = dateString.substring(3).replace(".", "") * 1;
   const clientTime = minutes + secondsMs;
   const latency = (clientTime - serverTime).toString().substring(0);
-  if (latency <= 250) {
-    GLOBAL.statusImage = require("../../assets/images/StatusGood.png");
-  } else if (latency <= 450) {
-    GLOBAL.statusImage = require("../../assets/images/StatusMid.png");
-  } else if (latency > 450) {
-    GLOBAL.statusImage = require("../../assets/images/StatusBad.png");
-  }
-
   console.log("Servertime: " + serverTime + "\n" + "Clienttime: " + clientTime);
   console.log(minutes + " / " + secondsMs);
   console.log(latency);
-  return latency;
+  if (latency <= 250) {
+    return require("../../assets/images/StatusGood.png");
+  } else if (latency <= 450) {
+    return require("../../assets/images/StatusMid.png");
+  } else if (latency > 450) {
+    return require("../../assets/images/StatusBad.png");
+  }
+}
+
+function ForegroundAppTitle(title) {
+  let titleArray = title.split("-");
+
+  let mainTitle = titleArray[1];
+  let subTitle = titleArray[0];
+  if (title.includes("Visual Studio Code")) {
+    mainTitle = titleArray[2];
+    subTitle = titleArray[0] + " - " + titleArray[1];
+  } else if (title.includes("Discord")) {
+    mainTitle = "Discord";
+    subTitle = title.replace("- Discord", "");
+  } else if (title.includes("Firefox")) {
+    title.includes("Firefox Developer Edition")
+      ? (mainTitle = "Firefox Developer Edition")
+      : (mainTitle = "Firefox");
+    title.includes("Firefox Developer Edition")
+      ? (subTitle = title.replace("- Firefox Developer Edition", ""))
+      : ((subTitle = title.replace("- Firefox")), "");
+  } else if (title.includes("Google Chrome")) {
+    mainTitle = "Google Chrome";
+  }
+  return [mainTitle, subTitle];
 }
 
 function Sleep(ms) {
@@ -149,5 +126,4 @@ function Sleep(ms) {
 function bin2String(array) {
   return String.fromCharCode.apply(String, array);
 }
-
-export { Latency, Sleep, bin2String, TcpConnect, ToggleTcp };
+export { Latency, Sleep, bin2String, TcpConnect2, ForegroundAppTitle };

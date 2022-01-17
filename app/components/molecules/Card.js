@@ -1,18 +1,18 @@
 // @ts-nocheck
-import { Box as NBBox, Image } from "native-base";
+import { Box as NBBox, Image, Text } from "native-base";
 
 export const Card = (props) => {
   return (
     <NBBox
-      bg={"#21252e"}
+      bg={"#1f232c"}
       shadow={5}
-      borderTopLeftRadius={0}
       borderRadius={20}
       borderColor={"#1b202a"}
-      w={280}
+      w={390}
       flex={1}
       my={4}
-      ml={5}
+      ml={3}
+      mr={2}
       overflow={"hidden"}
       {...props}
     >
@@ -21,13 +21,21 @@ export const Card = (props) => {
         opacity={1}
         bg={{
           linearGradient: {
-            colors: ["#2b3a54", "#582828"],
+            colors: ["#2b3a54", "#383045"],
             start: [0, 0],
             end: [1, 0],
           },
         }}
         {...props}
       ></NBBox>
+
+      <Text position={"relative"} mt={1} textAlign={"center"} mt={3}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam mollis
+        odio massa, a condimentum ante tincidunt eu. Phasellus ac ligula libero.
+        In ligula justo, tempus non elit vel, malesuada dapibus massa.
+        Vestibulum sed libero aliquet, aliquam velit a, pretium tortor. Fusce
+        est ante, sodales vel vulputate vitae.
+      </Text>
     </NBBox>
   );
 };

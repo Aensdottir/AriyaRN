@@ -38,6 +38,24 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     overflow: "hidden",
   },
+  main: { alignItems: "center" },
+  mainInput: {
+    borderWidth: 1,
+    height: 55,
+    width: 40,
+    padding: 10,
+    margin: 10,
+    alignItems: "center",
+    borderRadius: 9,
+  },
+  todoList: {
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 30,
+    height: 40,
+  },
+  todoView: { flex: 1, flexDirection: "row", margin: 10, padding: 5 },
+  removeTodo: { backgroundColor: "cyan", borderRadius: 4, margin: 4 },
 });
 
 export { ariyaTheme, mainConfig, styles };
