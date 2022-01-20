@@ -11,35 +11,27 @@ export const ComputerInfo = (props) => {
     <View top={95} mb={95}>
       <NBBox // Header
         justifyContent={"center"}
-        bg={"#1b202a"}
-        h={39}
-        borderTopRadius={20}
+        bg={"main.dark"}
+        h={60}
+        borderTopRadius={30}
       >
-        <Text textAlign={"center"}>DESKTOP-KU8SL2G</Text>
+        <Text top={-13} textAlign={"center"}>
+          DESKTOP-KU8SL2G
+        </Text>
       </NBBox>
 
       <NBBox // Info Box
+        top={-25}
         borderTopRadius={25}
         bg={{
           linearGradient: {
-            colors: ["#1b202a", "#303145"],
+            colors: ["main.bg", "gradient.lightPurple"],
             start: [0, -0.1],
             end: [0, 1],
           },
         }}
-        h={170}
+        h={155}
       >
-        <NBBox
-          bg={{
-            linearGradient: {
-              colors: ["#40374e", "#30405d", "#40374e"],
-              start: [0, 0],
-              end: [1, 0],
-            },
-          }}
-          h={0.5}
-        />
-
         <UptimeText />
 
         <View>

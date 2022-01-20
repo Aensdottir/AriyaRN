@@ -1,9 +1,6 @@
 // @ts-nocheck
 import TcpSocket from "react-native-tcp-socket";
-import GLOBAL from "../state/globalState.js";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { View, Text } from "native-base";
+import { useDispatch } from "react-redux";
 
 function TcpConnect2(command) {
   const dispatch = useDispatch();

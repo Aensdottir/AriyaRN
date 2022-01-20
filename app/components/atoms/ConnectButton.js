@@ -8,12 +8,15 @@ export const ConnectButton = (props) => {
       w={170}
       h={50}
       bg={"transparent"}
-      _disabled={{ opacity: 0.5, backgroundColor: "#292e39" }}
+      _disabled={{ bg: "#000:alpha.20" }}
       borderColor={"#fff"}
       borderWidth={2}
       borderRadius={100}
       alignSelf={"center"}
       isDisabled={false}
+      _pressed={{
+        bg: "#000:alpha.20",
+      }}
       {...props}
     ></Button>
   );

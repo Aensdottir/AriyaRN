@@ -7,7 +7,7 @@ export const Card = (props) => {
       bg={"#1f232c"}
       shadow={5}
       borderRadius={20}
-      borderColor={"#1b202a"}
+      borderColor={"main.dark"}
       w={390}
       flex={1}
       my={4}
@@ -21,7 +21,7 @@ export const Card = (props) => {
         opacity={1}
         bg={{
           linearGradient: {
-            colors: ["#2b3a54", "#383045"],
+            colors: ["gradient.blue", "gradient.purple"],
             start: [0, 0],
             end: [1, 0],
           },

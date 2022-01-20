@@ -1,22 +1,23 @@
 "use strict";
 import { extendTheme } from "native-base";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+const windowWidth = Dimensions.get("window").width;
 const ariyaTheme = extendTheme({
   colors: {
-    ariya: {
-      mintWhite: "#F7FFF7",
-      blueGreen: "#3C98B9",
-      blue: "#86A8D3",
-      brown: "#A37871",
-      red: "#F25C54",
-      darkgray: "#424B54",
+    main: {
+      bg: "#202531",
+      dark: "#1b202a",
+      lighterBg: "#232834",
+      lightPurple: "303145",
+      statusBar: "#151921",
     },
-    // Mint Cream: F7FFF7
-    // Blue Green: 3C98B9
-    // Little Boy Blue: 86A8D3
-    // Burnished Brown: A37871
-    // Fire Opal: F25C54
-    // Charcoal: 424B54
+    gradient: {
+      blue: "#2b3a54",
+      purple: "#383045",
+      lightPurple: "#40374e",
+      lighterPurple: "#303145",
+      red: "#3e222d",
+    },
   },
   config: {
     initialColorMode: "dark",
@@ -37,25 +38,23 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     overflow: "hidden",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 6.27,
+    elevation: 15,
   },
-  main: { alignItems: "center" },
-  mainInput: {
-    borderWidth: 1,
-    height: 55,
-    width: 40,
-    padding: 10,
-    margin: 10,
-    alignItems: "center",
-    borderRadius: 9,
+  connectFlex: {
+    height: 130,
+    width: windowWidth,
+    position: "absolute",
+    justifyContent: "center",
+    top: 280,
   },
-  todoList: {
-    borderWidth: 1,
-    borderRadius: 10,
-    width: 30,
-    height: 40,
-  },
-  todoView: { flex: 1, flexDirection: "row", margin: 10, padding: 5 },
-  removeTodo: { backgroundColor: "cyan", borderRadius: 4, margin: 4 },
 });
 
 export { ariyaTheme, mainConfig, styles };

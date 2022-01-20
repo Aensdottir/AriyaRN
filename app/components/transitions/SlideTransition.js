@@ -6,10 +6,10 @@ export const SlideTransition = (props) => {
   return (
     <PresenceTransition
       initial={{
-        translateY: 227,
+        translateY: 2,
       }}
       animate={{
-        translateY: 215,
+        translateY: 2,
         transition: {
           duration: 1000,
         },
