@@ -1,38 +1,23 @@
 // @ts-nocheck
 //React Imports
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Animated } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box as NBBox,
-  NativeBaseProvider,
-  Text,
-  Flex,
-  ScrollView,
-  StatusBar,
-} from "native-base";
+import { NativeBaseProvider, Flex, StatusBar, Image } from "native-base";
 //Package Imports
 import TcpSocket from "react-native-tcp-socket";
 import { useFonts } from "expo-font";
+import { SafeAreaView } from "react-native-safe-area-context";
 //Custom Imports
-import { ariyaTheme, mainConfig } from "../Styles";
+import { styles } from "../Styles";
 import {
-  Card,
-  Placeholder,
   Box,
-  ComputerInfo,
   FadeInTransition,
-  ConnectFlex,
-  ConnectionHeader,
-  ControlsComponent,
+  Topbar,
+  ConnectionComponent,
+  SlideUpComponent,
 } from "../components";
-import {
-  scrollY,
-  HEADER_MAX_HEIGHT,
-  options,
-  fadeInValue,
-  fadeOutValue,
-} from "../constants";
+import { options, fadeInValue, fadeOutValue } from "../constants";
 import {
   Sleep,
   Latency,
@@ -49,8 +34,8 @@ import {
   SetButtonEnabled,
   SetToggle2,
   SetConnectionText,
-  SetTransitionColor,
 } from "../utils/redux/actions";
+import LottieView from "lottie-react-native";
 
 const MainScreen = () => {
   const [loadData, setLoadData] = useState(true);
@@ -59,77 +44,42 @@ const MainScreen = () => {
   const data = useSelector((state) => state);
   const toggle = data.server.toggle;
 
-  const TestTcp = () => {
-    TcpConnect2("connect");
-  };
-
   useFonts({
     "Agency-FB": require("../assets/fonts/agency-fb.ttf"),
+    "Agency-FB-Bold": require("../assets/fonts/agency-fb-bold.ttf"),
     Inconsolata: require("../assets/fonts/Inconsolata.ttf"),
     "Kanit-Regular": require("../assets/fonts/Kanit-Regular.ttf"),
+    TwCenMT_Bold: require("../assets/fonts/TwCenMT_Bold.ttf"),
   });
+  const offsetY = useRef(new Animated.Value(0)).current;
 
-  const [animation, setAnimation] = useState(new Animated.Value(1));
-  let boxInterpolation = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["rgb(90,210,244)", "rgb(224,82,99)"],
-  });
-  const animatedStyle = {
-    backgroundColor: boxInterpolation,
-  };
-  const [color, setColor] = useState("rgb(74, 45, 62)");
+  function animateY() {
+    Animated.timing(offsetY, { toValue: -100 }).start();
+  }
   return (
-    <NativeBaseProvider theme={ariyaTheme} config={mainConfig}>
+    <SafeAreaView style={[styles.container]}>
       <StatusBar
-        backgroundColor={"#151921"}
+        backgroundColor={"transparent"}
+        translucent={true}
         animated={true}
         barStyle={"light-content"}
       />
-      <Flex bg={"main.bg"} flex={1}>
-        <FadeInTransition>
-          <Animated.ScrollView
-            contentContainerStyle={{ paddingTop: HEADER_MAX_HEIGHT }}
-            scrollEventThrottle={16}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
-            )}
-          >
-            <ConnectFlex onPressFunc={() => ToggleTcp()} />
-            <ComputerInfo />
+      <Flex bg={"#0d0d17"} flex={1}>
+        <Image
+          opacity={1}
+          source={require("../assets/images/bgImage.png")}
+          alt="Alternate Text"
+          size="full"
+          position={"absolute"}
+          resizeMethod="resize"
+        />
+        <Topbar />
 
-            <ControlsComponent />
+        <ConnectionComponent onPressFunc={() => ToggleTcp()} />
 
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              bg={"main.lighterBg"}
-              h={230}
-            >
-              <Card>
-                <Text mt={1.5} mx={3}>
-                  Ariya - Notification Panel
-                </Text>
-                <FadeInTransition visible={!loadData}>
-                  <Placeholder />
-                </FadeInTransition>
-                <FadeInTransition visible={loadData}></FadeInTransition>
-              </Card>
-
-              <Card />
-            </ScrollView>
-
-            <Box px="20" py="5" my={2} mx={5}></Box>
-            <Box px="20" py="5" my={2} mx={5}></Box>
-            <Box px="20" py="5" my={2} mx={5}></Box>
-            <Box px="20" py="5" my={2} mx={5}></Box>
-            <Box px="20" py="5" my={2} mx={5}></Box>
-          </Animated.ScrollView>
-        </FadeInTransition>
-
-        <ConnectionHeader />
+        <SlideUpComponent />
       </Flex>
-    </NativeBaseProvider>
+    </SafeAreaView>
   );
   function ToggleTcp() {
     if (toggle) {

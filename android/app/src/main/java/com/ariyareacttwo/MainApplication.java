@@ -23,6 +23,8 @@ import java.util.List;
 
 import com.airbnb.android.react.lottie.LottiePackage;
 
+import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
+
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,
@@ -35,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
+      
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new LottiePackage());
       // Packages that cannot be autolinked yet can be added manually here, for example:

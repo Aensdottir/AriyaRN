@@ -35,25 +35,45 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
 
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
     overflow: "hidden",
 
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 5,
     },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.34,
     shadowRadius: 6.27,
-    elevation: 15,
+    elevation: 10,
+  },
+  infoBar: {
+    position: "absolute",
+    top: -100,
+    left: 0,
+    right: 0,
+
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
   },
   connectFlex: {
-    height: 130,
-    width: windowWidth,
     position: "absolute",
-    justifyContent: "center",
-    top: 280,
+    top: 270,
+    left: 0,
+    right: 0,
+
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: "#0d0d17",
+  },
+  loginContainer: {
+    flex: 1,
+    backgroundColor: "#1b202a",
   },
 });
 

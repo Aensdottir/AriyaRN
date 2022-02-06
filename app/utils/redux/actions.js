@@ -27,3 +27,12 @@ export const SetTransitionColor = (payload) => ({
   type: "SET_TRANSITION_COLOR",
   payload,
 });
+
+export const SetEmailValue = (payload) => ({
+  type: "SET_EMAIL_VALUE",
+  payload,
+});
+export const SetPasswordValue = (payload) => ({
+  type: "SET_PASSWORD_VALUE",
+  payload,
+});

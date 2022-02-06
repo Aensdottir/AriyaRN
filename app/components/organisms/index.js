@@ -1,2 +1,2 @@
-export * from "./ConnectionHeader";
-export * from "./ControlsComponent";
+export * from "./ConnectionComponent";
+export * from "./SlideUpComponent";
