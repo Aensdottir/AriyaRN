@@ -37,7 +37,7 @@ import {
 } from "../utils/redux/actions";
 import LottieView from "lottie-react-native";
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
   const [loadData, setLoadData] = useState(true);
 
   const dispatch = useDispatch();

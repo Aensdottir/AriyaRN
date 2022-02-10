@@ -25,6 +25,7 @@ import com.airbnb.android.react.lottie.LottiePackage;
 
 import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
 
+
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,

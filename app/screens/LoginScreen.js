@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   NativeBaseProvider,
@@ -11,17 +11,67 @@ import {
   ScrollView,
   Box,
   Flex,
+  Image,
+  Button,
+  Pressable,
+  AlertDialog,
 } from "native-base";
 import { styles } from "../Styles";
 import { SetEmailValue, SetPasswordValue } from "../utils/redux/actions";
 
 import { LoginInput } from "../components";
 
-const LoginScreen = () => {
+import { firebase } from "../firebase/config";
+
+const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state);
+
+  const [show, setShow] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const cancelRef = React.useRef(null);
+
+  const onClose = () => setIsOpen(false);
+
+  const handleClick = () => setShow(!show);
+
+  const [fullName, setFullName] = useState("Adam");
+  const [email, setEmail] = useState("krzakadam74@gmail.com");
+  const [password, setPassword] = useState("aaaaaa");
+  const [confirmPassword, setConfirmPassword] = useState("aaaaaa");
+  const onRegisterPress = () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match.");
+      return;
+    }
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((response) => {
+        const uid = response.user.uid;
+        const data = {
+          id: uid,
+          email,
+          fullName,
+        };
+        const usersRef = firebase.firestore().collection("users");
+        usersRef
+          .doc(uid)
+          .set(data)
+          .then(() => {
+            navigation.navigate("Home", { user: data });
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
-    <SafeAreaView style={[styles.loginContainer]} justifyItems={"center"}>
+    <SafeAreaView style={[styles.loginContainer]}>
       <StatusBar
         backgroundColor={"transparent"}
         translucent={true}
@@ -31,29 +81,117 @@ const LoginScreen = () => {
       <ScrollView
         bg={"main.bg"}
         contentContainerStyle={{
-          flexGrow: 1,
           justifyContent: "center",
-          alignItems: "center",
+          flexGrow: 1,
         }}
       >
-        <Box
-          shadow={4}
-          borderRadius={15}
-          bg={"main.lighterBg"}
-          size={100}
-          mb={5}
-        ></Box>
-        <LoginInput
-          keyboardType={"email-address"}
-          textContentType={"emailAddress"}
-          onChangeText={(text) => dispatch(SetEmailValue(text))}
-        />
-        <LoginInput
-          placeholder="Password"
-          onChangeText={(text) => dispatch(SetPasswordValue(text))}
-        />
-        <Text>{data.login.email}</Text>
+        <View alignItems={"center"}>
+          <Box
+            shadow={4}
+            borderRadius={15}
+            bg={"main.lighterBg"}
+            size={100}
+            mb={5}
+            justifyContent={"center"}
+          >
+            <Image
+              source={require("../assets/images/AriyaLogo.png")}
+              alt="Alternate Text"
+              height={79}
+              resizeMode={"contain"}
+            />
+          </Box>
+          <LoginInput
+            keyboardType={"email-address"}
+            textContentType={"emailAddress"}
+            onChangeText={(text) => setEmail(text)}
+          />
+          <LoginInput
+            type={show ? "text" : "password"}
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            InputRightElement={
+              <Button
+                bg={"#323744"}
+                size="xs"
+                rounded="none"
+                w="1/6"
+                h="full"
+                onPress={handleClick}
+              >
+                {show ? "Hide" : "Show"}
+              </Button>
+            }
+          />
+          <Pressable p="2" onPress={() => setIsOpen(!isOpen)}>
+            {({ isHovered, isFocused, isPressed }) => {
+              return (
+                <Text color={isPressed ? "#555a69" : "#656a7a"}>
+                  Forgot Password?
+                </Text>
+              );
+            }}
+          </Pressable>
+        </View>
+
+        <View alignItems={"center"}>
+          <Button
+            m={2}
+            bg={"red.400"}
+            borderRadius={"full"}
+            h={50}
+            w={300}
+            onPress={() => {
+              navigation.navigate("Main");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Main" }],
+              });
+            }}
+          >
+            <Text color={"#fff"}>Login</Text>
+          </Button>
+          <Button
+            m={2}
+            bg={"white"}
+            borderRadius={"full"}
+            h={50}
+            w={300}
+            onPress={() => {
+              navigation.navigate("Register");
+            }}
+          >
+            <Text color={"red.500"}>Register</Text>
+          </Button>
+        </View>
       </ScrollView>
+      <AlertDialog
+        leastDestructiveRef={cancelRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <AlertDialog.Content bg={"#313544"}>
+          <AlertDialog.Header alignSelf={"center"}>
+            Unavailable
+          </AlertDialog.Header>
+          <AlertDialog.Body alignSelf={"center"}>
+            This function is currently unavailable.
+            <View mt={5} flexDirection={"row"}>
+              <Button
+                flex={1}
+                borderWidth={2}
+                bg={"transparent"}
+                borderColor={"#656a7a"}
+                _pressed={{ bg: "#555a69" }}
+                onPress={onClose}
+                ref={cancelRef}
+              >
+                Close
+              </Button>
+            </View>
+          </AlertDialog.Body>
+        </AlertDialog.Content>
+      </AlertDialog>
     </SafeAreaView>
   );
 };

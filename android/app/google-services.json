@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "446250678274",
+    "project_id": "ariya-99d61",
+    "storage_bucket": "ariya-99d61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446250678274:android:608fe4a15ffbfd2532cf1b",
+        "android_client_info": {
+          "package_name": "com.ariyareacttwo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446250678274-63kicges9r36jtu3kuek2udmidsbn6go.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBponHEv8hV1IctaJarDMzusNRIpPiQMu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446250678274-63kicges9r36jtu3kuek2udmidsbn6go.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
