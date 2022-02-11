@@ -21,7 +21,8 @@ import { SetEmailValue, SetPasswordValue } from "../utils/redux/actions";
 
 import { LoginInput } from "../components";
 
-import { firebase } from "../firebase/config";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -39,34 +40,18 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("krzakadam74@gmail.com");
   const [password, setPassword] = useState("aaaaaa");
   const [confirmPassword, setConfirmPassword] = useState("aaaaaa");
-  const onRegisterPress = () => {
-    if (password !== confirmPassword) {
-      alert("Passwords don't match.");
-      return;
-    }
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+  const onLoginPress = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        const uid = response.user.uid;
-        const data = {
-          id: uid,
-          email,
-          fullName,
-        };
-        const usersRef = firebase.firestore().collection("users");
-        usersRef
-          .doc(uid)
-          .set(data)
-          .then(() => {
-            navigation.navigate("Home", { user: data });
-          })
-          .catch((error) => {
-            alert(error);
-          });
+        console.log("Signed in!");
+        navigation.navigate("Main");
       })
       .catch((error) => {
-        alert(error);
+        if (error.code === "auth/invalid-email") {
+          console.log("That email address is invalid!");
+        }
+        console.error(error);
       });
   };
 
@@ -141,13 +126,7 @@ const LoginScreen = ({ navigation }) => {
             borderRadius={"full"}
             h={50}
             w={300}
-            onPress={() => {
-              navigation.navigate("Main");
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Main" }],
-              });
-            }}
+            onPress={() => onLoginPress()}
           >
             <Text color={"#fff"}>Login</Text>
           </Button>

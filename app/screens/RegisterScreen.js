@@ -17,9 +17,10 @@ import { LoginInput } from "../components";
 import { styles } from "../Styles";
 import { useFonts } from "expo-font";
 
-import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { firebase } from "../firebase/config";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -33,35 +34,42 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleClick = () => setShow(!show);
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const onRegisterPress = () => {
-    firebase
-      .auth()
+  const [fullName, setFullName] = useState("Adam");
+  const [email, setEmail] = useState("krzakadam74@gmail.com");
+  const [password, setPassword] = useState("iiiiiiiiiiii");
+
+  const usersCollection = firestore().collection("Users");
+
+  function onRegisterPress() {
+    auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
+        console.log("User account created & signed in!");
         const uid = response.user.uid;
-        const data = {
-          id: uid,
-          email,
-          fullName,
-        };
-        firebase
-          .firestore()
-          .collection("users")
-          .add(data)
-          .then(() => {
-            navigation.navigate("Main");
+
+        firestore()
+          .collection("Users")
+          .add({
+            id: uid,
+            name: fullName,
+            email: email,
           })
-          .catch((error) => {
-            alert(error);
+          .then(() => {
+            console.log("User data added!");
           });
       })
       .catch((error) => {
-        alert(error);
+        if (error.code === "auth/email-already-in-use") {
+          console.log("That email address is already in use!");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          console.log("That email address is invalid!");
+        }
+        console.error(error);
       });
-  };
+  }
+
   useFonts({
     "Agency-FB": require("../assets/fonts/agency-fb.ttf"),
     "Agency-FB-Bold": require("../assets/fonts/agency-fb-bold.ttf"),
@@ -91,7 +99,7 @@ const RegisterScreen = ({ navigation }) => {
         </View>
         <View alignItems={"center"}>
           <LoginInput
-            keyboardType={"name"}
+            type={"name"}
             placeholder="Name"
             textContentType={"name"}
             onChangeText={(text) => setFullName(text)}
@@ -137,7 +145,7 @@ const RegisterScreen = ({ navigation }) => {
             borderRadius={"full"}
             h={50}
             w={300}
-            onPress={() => navigation.navigate("Main")}
+            onPress={() => test()}
           >
             <Text color={"red.500"}>Test</Text>
           </Button>
