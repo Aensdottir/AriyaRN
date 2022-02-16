@@ -34,9 +34,9 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleClick = () => setShow(!show);
 
-  const [fullName, setFullName] = useState("Adam");
-  const [email, setEmail] = useState("krzakadam74@gmail.com");
-  const [password, setPassword] = useState("iiiiiiiiiiii");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const usersCollection = firestore().collection("Users");
 
@@ -44,12 +44,13 @@ const RegisterScreen = ({ navigation }) => {
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        console.log("User account created & signed in!");
+        console.log("User account created");
         const uid = response.user.uid;
 
         firestore()
           .collection("Users")
-          .add({
+          .doc(uid)
+          .set({
             id: uid,
             name: fullName,
             email: email,
@@ -69,14 +70,6 @@ const RegisterScreen = ({ navigation }) => {
         console.error(error);
       });
   }
-
-  useFonts({
-    "Agency-FB": require("../assets/fonts/agency-fb.ttf"),
-    "Agency-FB-Bold": require("../assets/fonts/agency-fb-bold.ttf"),
-    Inconsolata: require("../assets/fonts/Inconsolata.ttf"),
-    "Kanit-Regular": require("../assets/fonts/Kanit-Regular.ttf"),
-    TwCenMT_Bold: require("../assets/fonts/TwCenMT_Bold.ttf"),
-  });
   return (
     <SafeAreaView style={[styles.loginContainer]}>
       <StatusBar
@@ -107,6 +100,7 @@ const RegisterScreen = ({ navigation }) => {
           <LoginInput
             keyboardType={"email-address"}
             textContentType={"emailAddress"}
+            placeholder="Email"
             onChangeText={(text) => setEmail(text)}
           />
           <LoginInput

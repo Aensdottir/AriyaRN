@@ -2,11 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { ReactReduxContext, useDispatch, useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 import {
   NativeBaseProvider,
   View,
   StatusBar,
-  Input,
   Text,
   ScrollView,
   Box,
@@ -20,9 +20,13 @@ import { styles } from "../Styles";
 import { SetEmailValue, SetPasswordValue } from "../utils/redux/actions";
 
 import { LoginInput } from "../components";
+import { validateEmail } from "../utils";
+import { errors } from "../constants";
 
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -30,29 +34,55 @@ const LoginScreen = ({ navigation }) => {
 
   const [show, setShow] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [errorIndex, setErrorIndex] = React.useState(0);
   const cancelRef = React.useRef(null);
 
   const onClose = () => setIsOpen(false);
 
   const handleClick = () => setShow(!show);
 
-  const [fullName, setFullName] = useState("Adam");
-  const [email, setEmail] = useState("krzakadam74@gmail.com");
-  const [password, setPassword] = useState("aaaaaa");
-  const [confirmPassword, setConfirmPassword] = useState("aaaaaa");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {}, []);
+
   const onLoginPress = () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        console.log("Signed in!");
-        navigation.navigate("Main");
-      })
-      .catch((error) => {
-        if (error.code === "auth/invalid-email") {
-          console.log("That email address is invalid!");
-        }
-        console.error(error);
-      });
+    if (validateEmail(email) != null) {
+      console.log("Email VALID");
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((response) => {
+          console.log("Signed in!");
+
+          const user = { userId: email };
+          setLoginLocal(user); // storing in local storage for next launch
+
+          navigation.navigate("Main");
+        })
+        .catch((error) => {
+          if (
+            error.code === "auth/invalid-email" ||
+            error.code === "auth/wrong-password" ||
+            error.code === "auth/user-not-found"
+          ) {
+            console.log("Email address or password is invalid");
+            setErrorIndex(1);
+          }
+          console.error(error);
+        });
+    } else {
+      console.log("Email INVALID");
+      setErrorIndex(2);
+    }
+  };
+  const setLoginLocal = async (loginData) => {
+    try {
+      await AsyncStorage.setItem("loginData", JSON.stringify(loginData));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -86,9 +116,13 @@ const LoginScreen = ({ navigation }) => {
               resizeMode={"contain"}
             />
           </Box>
+          <Text fontWeight={"bold"} color={"danger.500"}>
+            {errors[errorIndex]}
+          </Text>
           <LoginInput
-            keyboardType={"email-address"}
+            keyboardType="email-address"
             textContentType={"emailAddress"}
+            placeholder="Email"
             onChangeText={(text) => setEmail(text)}
           />
           <LoginInput

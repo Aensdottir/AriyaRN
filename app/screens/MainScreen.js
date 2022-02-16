@@ -3,7 +3,13 @@
 import React, { useState, useRef } from "react";
 import { Animated } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { NativeBaseProvider, Flex, StatusBar, Image } from "native-base";
+import {
+  NativeBaseProvider,
+  Flex,
+  StatusBar,
+  Image,
+  Button,
+} from "native-base";
 //Package Imports
 import TcpSocket from "react-native-tcp-socket";
 import { useFonts } from "expo-font";
@@ -37,6 +43,9 @@ import {
 } from "../utils/redux/actions";
 import LottieView from "lottie-react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from "@react-native-firebase/auth";
+
 const MainScreen = ({ navigation }) => {
   const [loadData, setLoadData] = useState(true);
 
@@ -44,18 +53,18 @@ const MainScreen = ({ navigation }) => {
   const data = useSelector((state) => state);
   const toggle = data.server.toggle;
 
-  useFonts({
-    "Agency-FB": require("../assets/fonts/agency-fb.ttf"),
-    "Agency-FB-Bold": require("../assets/fonts/agency-fb-bold.ttf"),
-    Inconsolata: require("../assets/fonts/Inconsolata.ttf"),
-    "Kanit-Regular": require("../assets/fonts/Kanit-Regular.ttf"),
-    TwCenMT_Bold: require("../assets/fonts/TwCenMT_Bold.ttf"),
-  });
   const offsetY = useRef(new Animated.Value(0)).current;
 
   function animateY() {
     Animated.timing(offsetY, { toValue: -100 }).start();
   }
+
+  async function Logout() {
+    await AsyncStorage.removeItem("loginData");
+    auth().signOut();
+    navigation.navigate("Login");
+  }
+
   return (
     <SafeAreaView style={[styles.container]}>
       <StatusBar
@@ -76,6 +85,10 @@ const MainScreen = ({ navigation }) => {
         <Topbar />
 
         <ConnectionComponent onPressFunc={() => ToggleTcp()} />
+
+        <Button alignSelf={"center"} top={180} w={300} onPress={() => Logout()}>
+          Logout
+        </Button>
 
         <SlideUpComponent />
       </Flex>

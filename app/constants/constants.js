@@ -56,3 +56,10 @@ export const options = {
   port: 10144,
   host: "78.98.19.180",
 };
+
+//Authentication Errors
+export const errors = [
+  "", // No Error
+  "Invalid e-mail address or password.",
+  "Invalid e-mail address format.",
+];
