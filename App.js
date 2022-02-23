@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import MainScreen from "./app/screens/MainScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
+import { navigationRef } from "./app/utils/navigation/RootNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Redux
@@ -24,9 +25,11 @@ import { ariyaTheme, mainConfig } from "./app/Styles";
 import fonts from "./app/assets/fonts/fonts";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SplashScreen from "expo-splash-screen";
 
 const store = createStore(rootReducer /*applyMiddleware(logger)*/);
 const Stack = createNativeStackNavigator();
+
 const App = () => {
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
@@ -52,7 +55,7 @@ const App = () => {
     <SafeAreaProvider>
       <NativeBaseProvider theme={ariyaTheme} config={mainConfig}>
         <Provider store={store}>
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,

@@ -62,4 +62,5 @@ export const errors = [
   "", // No Error
   "Invalid e-mail address or password.",
   "Invalid e-mail address format.",
+  "Login attempt failed, please try again later.",
 ];

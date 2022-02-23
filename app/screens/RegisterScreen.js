@@ -13,7 +13,7 @@ import {
   Flex,
 } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { LoginInput } from "../components";
+import { NameInput, EmailInput, PasswordInput } from "../components";
 import { styles } from "../Styles";
 import { useFonts } from "expo-font";
 
@@ -91,35 +91,9 @@ const RegisterScreen = ({ navigation }) => {
           </Text>
         </View>
         <View alignItems={"center"}>
-          <LoginInput
-            type={"name"}
-            placeholder="Name"
-            textContentType={"name"}
-            onChangeText={(text) => setFullName(text)}
-          />
-          <LoginInput
-            keyboardType={"email-address"}
-            textContentType={"emailAddress"}
-            placeholder="Email"
-            onChangeText={(text) => setEmail(text)}
-          />
-          <LoginInput
-            type={show ? "text" : "password"}
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            InputRightElement={
-              <Button
-                bg={"#323744"}
-                size="xs"
-                rounded="none"
-                w="1/6"
-                h="full"
-                onPress={handleClick}
-              >
-                {show ? "Hide" : "Show"}
-              </Button>
-            }
-          />
+          <NameInput onChangeText={(text) => setFullName(text)} />
+          <EmailInput onChangeText={(text) => setEmail(text)} />
+          <PasswordInput onChangeText={(text) => setPassword(text)} />
         </View>
 
         <View alignItems={"center"}>

@@ -4,7 +4,12 @@
     "slug": "Ariya",
     "version": "1.0.0",
     "scheme": "ariyareact",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "androidStatusBarColor": "#00796a",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#00796a"
+    }
   },
   "name": "Ariya"
 }

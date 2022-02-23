@@ -36,3 +36,8 @@ export const SetPasswordValue = (payload) => ({
   type: "SET_PASSWORD_VALUE",
   payload,
 });
+
+export const SetAlertOpen = (payload) => ({
+  type: "SET_ALERT_OPEN",
+  payload,
+});
