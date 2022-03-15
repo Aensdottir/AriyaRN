@@ -41,7 +41,7 @@ export const ConnectionComponent = ({ onPressFunc }) => {
           />
         </View>
         <Pressable
-          onPress={animateY}
+          onPress={onPressFunc}
           alignItems={"center"}
           justifyContent={"center"}
           overflow={"visible"}

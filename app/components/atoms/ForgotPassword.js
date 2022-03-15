@@ -6,7 +6,7 @@ export const ForgotPassword = (props) => {
     <Pressable p="2" {...props}>
       {({ isPressed }) => {
         return (
-          <Text color={isPressed ? "#555a69" : "#656a7a"}>
+          <Text margin={-1} color={isPressed ? "#555a69" : "#656a7a"}>
             Forgot Password?
           </Text>
         );

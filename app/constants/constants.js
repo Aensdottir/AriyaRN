@@ -1,7 +1,8 @@
 // @ts-nocheck
-import { Animated, Dimensions } from "react-native";
+import { Animated, Dimensions, StatusBar } from "react-native";
 
 export const fadeInValue = new Animated.Value(0);
+export const fadeInValue1 = new Animated.Value(0);
 export const fadeOutValue = new Animated.Value(1);
 
 // SlideUpPanel
@@ -9,12 +10,12 @@ export const { height } = Dimensions.get("window");
 export const panelHeight = 100;
 
 export const draggableRange = {
-  top: height + panelHeight - 64,
-  bottom: panelHeight,
+  top: height + StatusBar.currentHeight,
+  bottom: panelHeight - 30,
 };
 const { top, bottom } = draggableRange;
 
-export const draggedValue = new Animated.Value(panelHeight);
+export const draggedValue = new Animated.Value(panelHeight - 30);
 
 export const backgroundOpacity = draggedValue.interpolate({
   inputRange: [height - 48, height],
@@ -23,8 +24,8 @@ export const backgroundOpacity = draggedValue.interpolate({
 });
 
 export const iconTranslateY = draggedValue.interpolate({
-  inputRange: [height - 56, height, top],
-  outputRange: [0, 56, 180 - 32],
+  inputRange: [bottom, top],
+  outputRange: [0, 30],
   extrapolate: "clamp",
 });
 

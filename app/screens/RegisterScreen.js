@@ -13,7 +13,12 @@ import {
   Flex,
 } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NameInput, EmailInput, PasswordInput } from "../components";
+import {
+  NameInput,
+  EmailInput,
+  PasswordInput,
+  RegisterButton,
+} from "../components";
 import { styles } from "../Styles";
 import { useFonts } from "expo-font";
 
@@ -78,47 +83,69 @@ const RegisterScreen = ({ navigation }) => {
         animated={true}
         barStyle={"light-content"}
       />
-      <ScrollView
-        bg={"main.bg"}
-        contentContainerStyle={{
-          justifyContent: "center",
-          flexGrow: 1,
-        }}
-      >
-        <View justifyContent={"center"} alignItems={"center"}>
-          <Text fontFamily={"Kanit-Regular"} fontSize={40}>
-            Register
+      <View flex={1} bg={"main.bg"}>
+        <Flex
+          position={"absolute"}
+          bottom={0}
+          w={"100%"}
+          h={300}
+          bg={{
+            linearGradient: {
+              colors: ["main.bg", "#303145"],
+              start: [0, 0],
+              end: [0, 1],
+            },
+          }}
+        />
+        <ScrollView
+          contentContainerStyle={{
+            justifyContent: "center",
+            flexGrow: 1,
+          }}
+        >
+          <View justifyContent={"center"} alignItems={"center"}>
+            <Text fontFamily={"Kanit-Regular"} fontSize={40}>
+              Register
+            </Text>
+          </View>
+          <View alignItems={"center"}>
+            <NameInput onChangeText={(text) => setFullName(text)} />
+            <EmailInput onChangeText={(text) => setEmail(text)} />
+            <PasswordInput onChangeText={(text) => setPassword(text)} />
+            <RegisterButton onPress={() => onRegisterPress()} />
+          </View>
+        </ScrollView>
+        <View
+          position={"absolute"}
+          bottom={8}
+          flexDirection={"row"}
+          alignSelf={"center"}
+        >
+          <Text fontFamily={"Kanit-Regular"} color={"muted.300"}>
+            Already have an account?
           </Text>
-        </View>
-        <View alignItems={"center"}>
-          <NameInput onChangeText={(text) => setFullName(text)} />
-          <EmailInput onChangeText={(text) => setEmail(text)} />
-          <PasswordInput onChangeText={(text) => setPassword(text)} />
-        </View>
-
-        <View alignItems={"center"}>
-          <Button
-            m={2}
-            bg={"white"}
-            borderRadius={"full"}
-            h={50}
-            w={300}
-            onPress={() => onRegisterPress()}
+          <Pressable
+            px={25}
+            alignItems={"center"}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
           >
-            <Text color={"red.500"}>Register</Text>
-          </Button>
-          <Button
-            m={2}
-            bg={"white"}
-            borderRadius={"full"}
-            h={50}
-            w={300}
-            onPress={() => test()}
-          >
-            <Text color={"red.500"}>Test</Text>
-          </Button>
+            {({ isPressed }) => {
+              return (
+                <Text
+                  underline={true}
+                  position={"absolute"}
+                  fontFamily={"Kanit-Regular"}
+                  color={isPressed ? "muted.400" : "#fff"}
+                >
+                  Login
+                </Text>
+              );
+            }}
+          </Pressable>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

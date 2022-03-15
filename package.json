@@ -39,6 +39,7 @@
     "react-native-navigation-bar-color": "^2.0.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-sliding-panels": "^1.0.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.1.1",
     "react-native-tcp-socket": "^5.5.0",

@@ -1,7 +1,7 @@
 // @ts-nocheck
 //React Imports
 import React, { useState, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   NativeBaseProvider,
@@ -22,6 +22,8 @@ import {
   Topbar,
   ConnectionComponent,
   SlideUpComponent,
+  SlideUpPanel,
+  SlidePanel,
 } from "../components";
 import { options, fadeInValue, fadeOutValue } from "../constants";
 import {
@@ -55,10 +57,6 @@ const MainScreen = ({ navigation }) => {
 
   const offsetY = useRef(new Animated.Value(0)).current;
 
-  function animateY() {
-    Animated.timing(offsetY, { toValue: -100 }).start();
-  }
-
   async function Logout() {
     await AsyncStorage.removeItem("loginData");
     auth().signOut();
@@ -84,9 +82,15 @@ const MainScreen = ({ navigation }) => {
         />
         <Topbar />
 
-        <ConnectionComponent onPressFunc={() => ToggleTcp()} />
+        <ConnectionComponent onPressFunc={() => SlideUpComponent.show()} />
 
-        <Button alignSelf={"center"} top={180} w={300} onPress={() => Logout()}>
+        <Button
+          bg={"#1c1e39"}
+          alignSelf={"center"}
+          top={180}
+          w={300}
+          onPress={() => Logout()}
+        >
           Logout
         </Button>
 

@@ -30,7 +30,7 @@ import {
   LoginButton,
   LoginLogoBox,
   PasswordInput,
-  RegisterButton,
+  RegisterNavButton,
 } from "../components";
 
 const LoginScreen = ({ navigation }) => {
@@ -86,19 +86,44 @@ const LoginScreen = ({ navigation }) => {
             </Text>
 
             <EmailInput onChangeText={(text) => setEmail(text)} />
-            <PasswordInput onChangeText={(text) => setPassword(text)} />
+            <PasswordInput mb={1} onChangeText={(text) => setPassword(text)} />
 
             <ForgotPassword
               onPress={() => dispatch(SetAlertOpen(!data.login.alertOpen))}
             />
             <LoginButton onPress={() => login()} />
-            <RegisterButton
-              onPress={() => {
-                navigation.navigate("Register");
-              }}
-            />
           </View>
         </ScrollView>
+        <View
+          position={"absolute"}
+          bottom={8}
+          flexDirection={"row"}
+          alignSelf={"center"}
+        >
+          <Text fontFamily={"Kanit-Regular"} color={"muted.300"}>
+            Don't have an account?
+          </Text>
+          <Pressable
+            px={30}
+            alignItems={"center"}
+            onPress={() => {
+              navigation.navigate("Register");
+            }}
+          >
+            {({ isPressed }) => {
+              return (
+                <Text
+                  underline={true}
+                  position={"absolute"}
+                  fontFamily={"Kanit-Regular"}
+                  color={isPressed ? "muted.400" : "#fff"}
+                >
+                  Sign Up
+                </Text>
+              );
+            }}
+          </Pressable>
+        </View>
       </View>
 
       <AlertDialogUnavailable />
