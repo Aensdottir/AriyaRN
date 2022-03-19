@@ -3,5 +3,7 @@ export * from "./HeaderAnim";
 export * from "./ConnectButton";
 export * from "./LoginInput";
 export * from "./Buttons";
+export * from "./ControlButton";
 export * from "./ForgotPassword";
 export * from "./AlertDialog";
+export * from "./ActiveAppTicker";

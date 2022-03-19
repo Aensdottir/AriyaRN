@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Text, View } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 
-export const UptimeText = () => {
+export const UptimeText = (props) => {
   const data = useSelector((state) => state);
   const time = data.server.serverTime;
   const [uptime, setUptime] = useState("00:00:00");
@@ -48,16 +48,8 @@ export const UptimeText = () => {
   }
   return (
     <View>
-      <Text textAlign={"center"} fontSize={35}>
+      <Text textAlign={"center"} fontSize={30} {...props}>
         {uptime}
-      </Text>
-      <Text
-        fontFamily={"Kanit-Regular"}
-        textAlign={"center"}
-        top={-13}
-        fontSize={15}
-      >
-        UPTIME
       </Text>
     </View>
   );

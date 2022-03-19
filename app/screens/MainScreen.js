@@ -82,7 +82,7 @@ const MainScreen = ({ navigation }) => {
         />
         <Topbar />
 
-        <ConnectionComponent onPressFunc={() => SlideUpComponent.show()} />
+        <ConnectionComponent onPressFunc={() => ToggleTcp()} />
 
         <Button
           bg={"#1c1e39"}

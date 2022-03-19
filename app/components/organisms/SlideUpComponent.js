@@ -15,17 +15,12 @@ import {
   height as height2,
   draggedValue,
   draggableRange,
-  backgroundOpacity,
-  iconTranslateY,
-  headerTranslateY,
-  textTranslateX,
-  textScale,
+  chevronTranslateY,
   panelHeight,
-  fadeInValue1,
-  borderRadius2,
+  chevronRotate,
+  chevronOpacity,
 } from "../../constants";
 import { ControlsView } from "../molecules";
-import SlidingPanel from "react-native-sliding-panels";
 
 export class SlideUpComponent extends React.Component {
   constructor(props) {
@@ -40,7 +35,7 @@ export class SlideUpComponent extends React.Component {
         ref={(c) => (this._panel = c)}
         draggableRange={draggableRange}
         animatedValue={draggedValue}
-        snappingPoints={[0]}
+        snappingPoints={[0, draggableRange.top]}
         height={height2 + panelHeight}
         friction={0.5}
       >
@@ -51,10 +46,14 @@ export class SlideUpComponent extends React.Component {
           overflow={"hidden"}
           borderTopRadius={20}
         >
-          <View height={panelHeight} bg={"#1c1e39"} justifyContent={"flex-end"}>
+          <View
+            height={panelHeight}
+            bg={"main.dark"}
+            justifyContent={"flex-end"}
+          >
             <Animated.View
               style={{
-                transform: [{ translateY: iconTranslateY }],
+                transform: [{ translateY: chevronTranslateY }],
                 alignItems: "flex-end",
               }}
             >
@@ -73,29 +72,22 @@ export class SlideUpComponent extends React.Component {
                   size={50}
                   bottom={8}
                   right={5}
+                  isDisabled={true}
                 >
                   {({ isHovered, isFocused, isPressed }) => {
                     return (
                       <View>
-                        <PresenceTransition
-                          visible={!this.state.doOpen}
-                          initial={{
-                            rotate: "0deg",
-                            opacity: 1,
+                        <Animated.Image
+                          style={{
+                            width: 50,
+                            height: 50,
+                            transform: [
+                              {
+                                rotate: chevronRotate,
+                              },
+                            ],
                           }}
-                          animate={{
-                            rotate: "180deg",
-                          }}
-                        >
-                          <Image
-                            size={40}
-                            alt="Nav"
-                            source={require("../../assets/images/chevron-up.png")}
-                          />
-                        </PresenceTransition>
-                        <Image
-                          opacity={this.state.doOpen | 0}
-                          size={40}
+                          opacity={1}
                           alt="Nav"
                           source={require("../../assets/images/chevron-up.png")}
                         />
@@ -107,12 +99,7 @@ export class SlideUpComponent extends React.Component {
             </Animated.View>
           </View>
 
-          <View
-            flex={1}
-            bg={"#0d0d17"}
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
+          <View flex={1} bg={"main.bg"}>
             <ControlsView />
           </View>
         </View>

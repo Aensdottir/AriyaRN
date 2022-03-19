@@ -23,9 +23,20 @@ export const backgroundOpacity = draggedValue.interpolate({
   extrapolate: "clamp",
 });
 
-export const iconTranslateY = draggedValue.interpolate({
+export const chevronTranslateY = draggedValue.interpolate({
   inputRange: [bottom, top],
-  outputRange: [0, 30],
+  outputRange: [0, 25],
+  extrapolate: "clamp",
+});
+
+export const chevronRotate = draggedValue.interpolate({
+  inputRange: [bottom, top / 2],
+  outputRange: ["0deg", "180deg"],
+  extrapolate: "clamp",
+});
+export const chevronOpacity = draggedValue.interpolate({
+  inputRange: [bottom, 300, 700, top],
+  outputRange: [1, 0, 0, 1],
   extrapolate: "clamp",
 });
 
@@ -55,7 +66,7 @@ export const borderRadius2 = draggedValue.interpolate({
 //Server
 export const options = {
   port: 10144,
-  host: "78.98.19.180",
+  host: "78.98.60.187",
 };
 
 //Authentication Errors
