@@ -18,6 +18,9 @@ const ariyaTheme = extendTheme({
       lighterPurple: "#303145",
       red: "#3e222d",
     },
+    control: {
+      red: "#303145",
+    },
   },
   sizes: {
     ...{
