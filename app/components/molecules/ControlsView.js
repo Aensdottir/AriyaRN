@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { Box, Image, View, Flex, Text, Spacer } from "native-base";
 import { ActiveAppTicker, ControlButton } from "../atoms";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,12 @@ import { UptimeText } from "./UptimeText";
 import TcpSocket from "react-native-tcp-socket";
 import TextTicker from "react-native-text-ticker";
 import { options } from "../../constants";
-import { bin2String, ForegroundAppTitle } from "../../utils";
+import {
+  Base64,
+  Base64Encode,
+  bin2String,
+  ForegroundAppTitle,
+} from "../../utils";
 import {
   SetForegroundApp,
   SetToggle,
@@ -64,19 +70,55 @@ export const ControlsView = (props) => {
           onPress={() => TcpConnect("lock")}
         />
       </Box>
+      <ControlButton
+        color={"#30453f"}
+        size={"wide"}
+        type={"lock"}
+        onPress={() => TcpConnect("testin' & @ + - # * á í")}
+      />
+      <ControlButton
+        color={"#30453f"}
+        size={"small"}
+        type={""}
+        onPress={() => SendImage()}
+      />
 
       <ActiveAppTicker />
     </Flex>
   );
-  function TcpConnect(command) {
+  function SendImage() {
+    const imgOptions = {
+      mediaType: "photo",
+      includeBase64: true,
+    };
+    var image = "";
+    function callback(props) {
+      image = props.assets[0].base64;
+
+      TcpConnect(image);
+    }
+    launchImageLibrary(imgOptions, callback);
+  }
+  function TcpConnect(command = "") {
     console.log("Connecting with:", command);
     // Connect
     const client = TcpSocket.createConnection(options, () => {
-      client.write(command);
+      client.write;
+
+      //client.write(command + "$");
+      //command = Base64Encode(command);
+      //client.write(command);
     });
-    client.setTimeout(5000);
+    client.setTimeout(20000);
+
+    for (let i = 10000; i < 10000; i++) {
+      console.log(client.bytesSent());
+    }
     // On data received
     client.on("data", function (data) {
+      //TESTING
+      console.log(bin2String(data));
+
       client.destroy();
       const response = bin2String(data).split(",");
       const serverTime = response[0];
@@ -91,11 +133,12 @@ export const ControlsView = (props) => {
       dispatch(SetButtonEnabled(true));
     });
     client.on("error", function (error) {
-      console.log(error);
+      console.log("error:", error);
       dispatch(SetConnectionText("NOT CONNECTED"));
     });
-    client.on("timeout", () => {
+    client.on("timeout", function (error) {
       console.log("socket timeout");
+      console.log(error);
       dispatch(SetConnectionText("CONNECTION FAILED"));
       dispatch(SetButtonEnabled(true));
       dispatch(SetToggle(true));

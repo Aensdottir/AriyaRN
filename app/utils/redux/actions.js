@@ -1,4 +1,5 @@
 // @ts-nocheck
+export const SetConnected = (payload) => ({ type: "SET_CONNECTED", payload });
 export const SetToggle = (payload) => ({ type: "SET_TOGGLE", payload });
 export const SetToggle2 = (payload) => ({ type: "SET_TOGGLE_2", payload });
 export const SetButtonEnabled = (payload) => ({
