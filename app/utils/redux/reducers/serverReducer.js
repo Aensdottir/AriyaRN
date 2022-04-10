@@ -1,5 +1,7 @@
 // @ts-nocheck
 const INITIAL_STATE = {
+  current: [],
+  connected: false,
   toggle: true,
   toggle2: true,
   buttonEnabled: true,
@@ -12,6 +14,8 @@ const INITIAL_STATE = {
 };
 const serverReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case "SET_CONNECTED":
+      return { ...state, connected: action.payload };
     case "SET_TOGGLE":
       return { ...state, toggle: action.payload };
     case "SET_TOGGLE_2":

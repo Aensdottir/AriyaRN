@@ -11,7 +11,7 @@ import {
   Button,
 } from "native-base";
 //Package Imports
-import TcpSocket from "react-native-tcp-socket";
+//import TcpSocket from "react-native-tcp-socket";
 import { useFonts } from "expo-font";
 import { SafeAreaView } from "react-native-safe-area-context";
 //Custom Imports

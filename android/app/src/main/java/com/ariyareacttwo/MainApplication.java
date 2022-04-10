@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -24,6 +25,7 @@ import java.util.List;
 import com.airbnb.android.react.lottie.LottiePackage;
 
 import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
+
 
 
 public class MainApplication extends Application implements ReactApplication {

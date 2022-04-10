@@ -15,6 +15,8 @@ export const ActiveAppTicker = (props) => {
       borderRadius={"20"}
       w={"full"}
       h={60}
+      mt={8}
+      mb={4}
       shadow={9}
       p={2}
       bg={"#232834"}
@@ -23,7 +25,7 @@ export const ActiveAppTicker = (props) => {
     >
       <Box
         position={"absolute"}
-        zIndex={5}
+        zIndex={2}
         w={60}
         h={"full"}
         bg={{
@@ -36,7 +38,7 @@ export const ActiveAppTicker = (props) => {
       />
       <Box
         position={"absolute"}
-        zIndex={5}
+        zIndex={2}
         right={0}
         w={60}
         h={"full"}
@@ -49,7 +51,7 @@ export const ActiveAppTicker = (props) => {
         }}
       />
       <TextTicker
-        zIndex={4}
+        zIndex={1}
         scroll={false}
         style={{ fontFamily: "Kanit-Regular", fontSize: 20 }}
         duration={8000}

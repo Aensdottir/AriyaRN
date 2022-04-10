@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { useState, Component } from "react";
 import { Animated, Dimensions, StyleSheet } from "react-native";
+import { connect } from "react-redux";
 import {
   Box as NBBox,
   View,
@@ -33,6 +34,7 @@ export class SlideUpComponent extends React.Component {
     return (
       <SlidingUpPanel
         ref={(c) => (this._panel = c)}
+        allowDragging={false}
         draggableRange={draggableRange}
         animatedValue={draggedValue}
         snappingPoints={[0, draggableRange.top]}
@@ -107,3 +109,10 @@ export class SlideUpComponent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const { server } = state;
+  return { server };
+};
+
+export default connect(mapStateToProps)(SlideUpComponent);

@@ -23,6 +23,10 @@ target 'AriyaReactTwo' do
   pod "GCanvas", :path => "../node_modules/@flyskywhy/react-native-gcanvas/GCanvas.podspec"
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'TcpSockets', :path => '../node_modules/react-native-tcp'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   post_install do |installer|
     react_native_post_install(installer)
 

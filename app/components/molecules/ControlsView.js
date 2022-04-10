@@ -1,12 +1,19 @@
 // @ts-nocheck
-import { Box, Image, View, Flex, Text, Spacer } from "native-base";
-import { ActiveAppTicker, ControlButton } from "../atoms";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { Box, Image, View, Flex, Text, Spacer, ScrollView } from "native-base";
+import { ActiveAppTicker, ControlButton, SendImageCard } from "../atoms";
 import { useDispatch, useSelector } from "react-redux";
 import { UptimeText } from "./UptimeText";
 import TcpSocket from "react-native-tcp-socket";
 import TextTicker from "react-native-text-ticker";
 import { options } from "../../constants";
-import { bin2String, ForegroundAppTitle } from "../../utils";
+import {
+  Base64,
+  Base64Encode,
+  bin2String,
+  ForegroundAppTitle,
+  Sleep,
+} from "../../utils";
 import {
   SetForegroundApp,
   SetToggle,
@@ -24,59 +31,97 @@ export const ControlsView = (props) => {
     appSubTitle == null ? "" : `- ${data.server.appSubTitle}`
   }`;
   return (
-    <Flex flexDirection={"row"} justify={"center"} flexWrap={"wrap"} m={9}>
-      <Box
-        borderRadius={"20"}
-        size={150}
-        shadow={9}
-        bg={"#232834"}
-        mr={4}
-        p={4}
-        justifyContent={"space-between"}
-      >
-        <UptimeText />
-        <Box width={"full"} bg={"#fff"} h={1} />
-        <Text fontFamily={"Kanit-Regular"} textAlign={"center"} fontSize={30}>
-          Idle
-        </Text>
-      </Box>
-      <Box
-        borderRadius={"20"}
-        size={150}
-        ml={4}
-        mb={8}
-        flexDir={"row"}
-        flexWrap={"wrap"}
-        justifyContent={"space-between"}
-        alignContent={"space-between"}
-      >
-        <ControlButton
-          color={"#45303b"}
-          size={"small"}
-          type={"shutdown"}
-          onPress={() => TcpConnect("shutdown")}
-        />
-        <ControlButton color={"#303845"} size={"small"} type={"restart"} />
-        <ControlButton
-          color={"#30453f"}
-          size={"wide"}
-          type={"lock"}
-          onPress={() => TcpConnect("lock")}
-        />
-      </Box>
+    <Flex>
+      <Flex justify={"center"} m={4}>
+        <Flex flexDirection={"row"} justify={"space-between"}>
+          <Box
+            borderRadius={"20"}
+            h={150}
+            w={195}
+            shadow={9}
+            bg={"#232834"}
+            mr={4}
+            p={4}
+            justifyContent={"space-between"}
+          >
+            <UptimeText />
+            <Box width={"full"} bg={"#fff"} h={1} />
+            <Text
+              fontFamily={"Kanit-Regular"}
+              textAlign={"center"}
+              fontSize={30}
+            >
+              Idle
+            </Text>
+          </Box>
+          <Box
+            borderRadius={"20"}
+            size={150}
+            ml={4}
+            flexDir={"row"}
+            flexWrap={"wrap"}
+            justifyContent={"space-between"}
+            alignContent={"space-between"}
+          >
+            <ControlButton
+              color={"#45303b"}
+              type={"shutdown"}
+              onPress={() => TcpConnect("shutdown")}
+            />
+            <ControlButton
+              color={"#303845"}
+              type={"restart"}
+              onPress={() => TcpConnect("restart")}
+            />
+            <ControlButton
+              color={"#30453f"}
+              type={"lock"}
+              onPress={() => TcpConnect("lock")}
+            />
+          </Box>
+        </Flex>
 
-      <ActiveAppTicker />
+        <ActiveAppTicker />
+      </Flex>
+
+      <ScrollView
+        horizontal={true}
+        p={4}
+        h={200}
+        bg={"#1b202a"}
+        _contentContainerStyle={{
+          alignItems: "center",
+        }}
+      >
+        <SendImageCard onPress={() => SendImage()} />
+      </ScrollView>
     </Flex>
   );
+  function SendImage() {
+    const imgOptions = {
+      mediaType: "photo",
+      includeBase64: true,
+    };
+    launchImageLibrary(imgOptions, callback);
+
+    var image = "";
+    function callback(props) {
+      image = props.assets[0].base64; // Base64 String
+      Sleep(1000);
+      TcpConnect(image);
+    }
+  }
   function TcpConnect(command) {
-    console.log("Connecting with:", command);
     // Connect
     const client = TcpSocket.createConnection(options, () => {
       client.write(command);
     });
-    client.setTimeout(5000);
+
     // On data received
     client.on("data", function (data) {
+      //TESTING
+      console.log(bin2String(data));
+
       client.destroy();
       const response = bin2String(data).split(",");
       const serverTime = response[0];
@@ -91,11 +136,12 @@ export const ControlsView = (props) => {
       dispatch(SetButtonEnabled(true));
     });
     client.on("error", function (error) {
-      console.log(error);
+      console.log("error:", error);
       dispatch(SetConnectionText("NOT CONNECTED"));
     });
-    client.on("timeout", () => {
+    client.on("timeout", function (error) {
       console.log("socket timeout");
+      console.log(error);
       dispatch(SetConnectionText("CONNECTION FAILED"));
       dispatch(SetButtonEnabled(true));
       dispatch(SetToggle(true));

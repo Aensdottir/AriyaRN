@@ -1,6 +1,7 @@
 // @ts-nocheck
-import TcpSocket from "react-native-tcp-socket";
+//import TcpSocket from "react-native-tcp-socket";
 import { useDispatch } from "react-redux";
+import { Buffer } from "buffer";
 
 function TcpConnect2(command) {
   const dispatch = useDispatch();
@@ -121,6 +122,23 @@ function Sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 function bin2String(array) {
-  return String.fromCharCode.apply(String, array);
+  const base64encoded = String.fromCharCode.apply(String, array);
+  const response = Buffer.from(base64encoded, "base64").toString();
+  return response;
 }
-export { Latency, Sleep, bin2String, TcpConnect2, ForegroundAppTitle };
+function Base64Encode(input) {
+  return Buffer.from(input, "binary").toString("base64");
+}
+function Base64Decode(input) {
+  return Buffer.from(input, "base64").toString();
+}
+
+export {
+  Latency,
+  Sleep,
+  bin2String,
+  TcpConnect2,
+  ForegroundAppTitle,
+  Base64Encode,
+  Base64Decode,
+};

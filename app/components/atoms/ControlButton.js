@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Box, Image, View, Text, Pressable } from "native-base";
+import { Box, Image, View, Text, Pressable, Flex } from "native-base";
 
 const buttonTypes = {
   small: {
@@ -13,6 +13,7 @@ const buttonTypes = {
   wide: {
     w: 150,
     h: 67,
+    shadow: 9,
     borderRadius: "15",
     justifyContent: "center",
     alignItems: "center",
@@ -20,7 +21,7 @@ const buttonTypes = {
   },
 };
 
-export const ControlButton = ({ props, color, size, type, onPress }) => {
+export const ControlButton = ({ props, color, type, onPress }) => {
   const bg = {
     linearGradient: {
       colors: ["#232834", color == null ? "#232834" : color],
@@ -36,70 +37,80 @@ export const ControlButton = ({ props, color, size, type, onPress }) => {
     },
   };
 
-  let icon = null;
-  let text = null;
   switch (type) {
     case "shutdown":
-      icon = require("../../assets/images/power.png");
-      break;
-    case "restart":
-      icon = require("../../assets/images/restart.png");
-      break;
-    case "lock":
-      icon = require("../../assets/images/lock.png");
-      text = "Lock";
-      break;
-  }
-
-  if (size == "small") {
-    return (
-      <Pressable onPress={onPress}>
-        {({ isHovered, isFocused, isPressed }) => {
-          return (
-            <Box
-              bg={isPressed ? bg.pressed : bg}
-              {...buttonTypes.small}
-              {...props}
-            >
-              <Image
-                opacity={isPressed ? 0.7 : 1}
-                size={35}
-                alt="Nav"
-                source={icon}
-              />
-            </Box>
-          );
-        }}
-      </Pressable>
-    );
-  } else if (size == "wide")
-    return (
-      <Pressable onPress={onPress}>
-        {({ isHovered, isFocused, isPressed }) => {
-          return (
-            <Box
-              bg={isPressed ? bg.pressed : bg}
-              {...buttonTypes.wide}
-              {...props}
-            >
-              <Image
-                m={1}
-                size={25}
-                alt="Nav"
-                source={icon}
-                opacity={isPressed ? 0.7 : 1}
-              />
-              <Text
-                fontFamily={"Kanit-Regular"}
-                fontSize={20}
-                m={1}
-                opacity={isPressed ? 0.7 : 1}
+      return (
+        <Pressable onPress={onPress}>
+          {({ isHovered, isFocused, isPressed }) => {
+            return (
+              <Box
+                bg={isPressed ? bg.pressed : bg}
+                {...buttonTypes.small}
+                {...props}
               >
-                {text}
-              </Text>
-            </Box>
-          );
-        }}
-      </Pressable>
-    );
+                <Image
+                  opacity={isPressed ? 0.7 : 1}
+                  size={35}
+                  alt="Nav"
+                  source={require("../../assets/images/power.png")}
+                />
+              </Box>
+            );
+          }}
+        </Pressable>
+      );
+
+    case "restart":
+      return (
+        <Pressable onPress={onPress}>
+          {({ isHovered, isFocused, isPressed }) => {
+            return (
+              <Box
+                bg={isPressed ? bg.pressed : bg}
+                {...buttonTypes.small}
+                {...props}
+              >
+                <Image
+                  opacity={isPressed ? 0.7 : 1}
+                  size={35}
+                  alt="Nav"
+                  source={require("../../assets/images/restart.png")}
+                />
+              </Box>
+            );
+          }}
+        </Pressable>
+      );
+
+    case "lock":
+      return (
+        <Pressable onPress={onPress}>
+          {({ isHovered, isFocused, isPressed }) => {
+            return (
+              <Box
+                bg={isPressed ? bg.pressed : bg}
+                {...buttonTypes.wide}
+                {...props}
+              >
+                <Image
+                  m={1}
+                  size={25}
+                  alt="Nav"
+                  source={require("../../assets/images/lock.png")}
+                  opacity={isPressed ? 0.7 : 1}
+                />
+                <Text
+                  fontFamily={"Kanit-Regular"}
+                  fontSize={20}
+                  m={1}
+                  opacity={isPressed ? 0.7 : 1}
+                >
+                  {"Lock"}
+                </Text>
+              </Box>
+            );
+          }}
+        </Pressable>
+      );
+  }
 };

@@ -7,3 +7,4 @@ export * from "./ControlButton";
 export * from "./ForgotPassword";
 export * from "./AlertDialog";
 export * from "./ActiveAppTicker";
+export * from "./SendImageCard";
