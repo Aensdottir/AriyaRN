@@ -114,9 +114,12 @@ export const ControlsView = (props) => {
   function TcpConnect(command) {
     // Connect
     const client = TcpSocket.createConnection(options, () => {
-      client.write(command);
-    });
+      client.write;
 
+      //client.write(command + "$");
+      //command = Base64Encode(command);
+      //client.write(command);
+    });
     // On data received
     client.on("data", function (data) {
       //TESTING
