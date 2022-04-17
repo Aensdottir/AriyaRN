@@ -50,13 +50,11 @@ import LottieView from "lottie-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "@react-native-firebase/auth";
 import { Text } from "react-native-svg";
+import { useServer } from "../utils/providers/ServerProvider";
 
 const MainScreen = ({ navigation }) => {
+  const { TcpConnect, toggle, setToggle } = useServer();
   const [loadData, setLoadData] = useState(true);
-
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state);
-  const toggle = data.server.toggle;
 
   const offsetY = useRef(new Animated.Value(0)).current;
 
@@ -107,82 +105,7 @@ const MainScreen = ({ navigation }) => {
     } else {
       TcpConnect("disconnect");
     }
-    dispatch(SetButtonEnabled(false));
-    dispatch(SetToggle(!toggle));
-  }
-  function TcpConnect(command) {
-    if (command == "connect") {
-      dispatch(SetConnectionText("CONNECTING"));
-    } else if (command == "disconnect") {
-      dispatch(SetConnectionText("DISCONNECTING"));
-    }
-    // Connect
-    const client = TcpSocket.createConnection(options, () => {
-      command = Base64Encode(command);
-      client.write(command + "$");
-    });
-    client.setTimeout(5000);
-    // On data received
-    client.on("data", function (data) {
-      client.destroy();
-      const response = bin2String(data).split(",");
-      const serverTime = response[0];
-      const compUptime = response[1];
-      const foregroundApp = ForegroundAppTitle(response[2]);
-
-      console.log("message was received", response);
-      console.log("compUptime", compUptime);
-      dispatch(SetServerTime(serverTime));
-      dispatch(SetForegroundApp(foregroundApp));
-      dispatch(SetToggle(!toggle));
-      dispatch(SetToggle2(false));
-      dispatch(SetButtonEnabled(true));
-
-      // CONNECT
-      if (!command.includes("disconnect")) {
-        if (command.includes("connect")) {
-          dispatch(SetConnected(true));
-          dispatch(SetConnectionText("CONNECTED"));
-          dispatch(SetServerTime(compUptime));
-        }
-        fadeIn(fadeInValue);
-        Sleep(500).then(() => fadeOut(fadeOutValue));
-      }
-      // DISCONNECT
-      else if (command.includes("disconnect")) {
-        dispatch(SetConnected(false));
-        dispatch(SetConnectionText("NOT CONNECTED"));
-        dispatch(SetServerTime("00:00:00"));
-        setLoadData(false);
-        dispatch(SetToggle2(true));
-        fadeOut(fadeInValue);
-        fadeIn(fadeOutValue);
-      }
-      // LATENCY
-      if (command == "connect" || command == "latencyRefresh") {
-        Sleep(20000).then(() => TcpConnect("latencyRefresh"));
-      }
-    });
-    client.on("error", function (error) {
-      console.log(error);
-      dispatch(SetConnectionText("NOT CONNECTED"));
-      dispatch(SetConnected(false));
-    });
-    client.on("timeout", () => {
-      console.log("socket timeout");
-      if (command == "latencyRefresh") {
-        dispatch(SetConnectionText("NOT CONNECTED"));
-      } else {
-        dispatch(SetConnectionText("CONNECTION FAILED"));
-        dispatch(SetConnected(false));
-        dispatch(SetButtonEnabled(true));
-      }
-      dispatch(SetToggle(true));
-    });
-    client.on("close", function () {
-      console.log("Connection closed!");
-      client.destroy();
-    });
+    setToggle(!toggle);
   }
 };
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UptimeText } from "./UptimeText";
 import TcpSocket from "react-native-tcp-socket";
 import TextTicker from "react-native-text-ticker";
-import { useCounter } from "../../utils/providers/ServerProvider";
+import { useServer } from "../../utils/providers/ServerProvider";
 import { options } from "../../constants";
 import {
   Base64,
@@ -24,7 +24,7 @@ import {
 } from "../../utils/redux/actions";
 
 export const ControlsView = (props) => {
-  const { counter, incrementCounter } = useCounter();
+  const { TcpConnect } = useServer();
   const data = useSelector((state) => state);
   const dispatch = useDispatch();
   const appMainTitle = data.server.appMainTitle;
@@ -80,7 +80,6 @@ export const ControlsView = (props) => {
               type={"lock"}
               onPress={() => TcpConnect("lock")}
             />
-            <Text fontSize={30}>{counter}</Text>
           </Box>
         </Flex>
 
@@ -110,50 +109,7 @@ export const ControlsView = (props) => {
     var image = "";
     function callback(props) {
       image = props.assets[0].base64; // Base64 String
-      Sleep(1000);
       TcpConnect(image);
     }
-  }
-  function TcpConnect(command) {
-    // Connect
-    const client = TcpSocket.createConnection(options, () => {
-      command = Base64Encode(command);
-      client.write(command + "$");
-      //command = Base64Encode(command);
-      //client.write(command);
-    });
-    // On data received
-    client.on("data", function (data) {
-      //TESTING
-      console.log(bin2String(data));
-
-      client.destroy();
-      const response = bin2String(data).split(",");
-      const serverTime = response[0];
-      const compUptime = response[1];
-      const foregroundApp = ForegroundAppTitle(response[2]);
-
-      console.log("message was received", response);
-      console.log("compUptime", compUptime);
-      dispatch(SetForegroundApp(foregroundApp));
-      dispatch(SetToggle(!toggle));
-      dispatch(SetToggle2(false));
-      dispatch(SetButtonEnabled(true));
-    });
-    client.on("error", function (error) {
-      console.log("error:", error);
-      dispatch(SetConnectionText("NOT CONNECTED"));
-    });
-    client.on("timeout", function (error) {
-      console.log("socket timeout");
-      console.log(error);
-      dispatch(SetConnectionText("CONNECTION FAILED"));
-      dispatch(SetButtonEnabled(true));
-      dispatch(SetToggle(true));
-    });
-    client.on("close", function () {
-      console.log("Connection closed!");
-      client.destroy();
-    });
   }
 };

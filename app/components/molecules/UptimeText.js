@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { Text, View } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
+import { useServer } from "../../utils/providers/ServerProvider";
 
 export const UptimeText = (props) => {
-  const data = useSelector((state) => state);
-  const time = data.server.serverTime;
+  const { serverTime, connected } = useServer();
+  const time = serverTime;
   const [uptime, setUptime] = useState("00:00:00");
   if (time > "00:00:00") {
     let hours = time.substring(0, 2);
@@ -49,7 +50,7 @@ export const UptimeText = (props) => {
   return (
     <View>
       <Text textAlign={"center"} fontSize={30} {...props}>
-        {data.server.connected ? uptime : "00:00:00"}
+        {connected ? uptime : "00:00:00"}
       </Text>
     </View>
   );

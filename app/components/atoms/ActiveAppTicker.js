@@ -1,14 +1,12 @@
 // @ts-nocheck
 import { Box, Image, View, Flex, Text, Spacer } from "native-base";
-import { useDispatch, useSelector } from "react-redux";
 import TextTicker from "react-native-text-ticker";
+import { useServer } from "../../utils/providers/ServerProvider";
 
 export const ActiveAppTicker = (props) => {
-  const data = useSelector((state) => state);
-  const appMainTitle = data.server.appMainTitle;
-  const appSubTitle = data.server.appSubTitle;
+  const { appMainTitle, appSubTitle } = useServer();
   const activeApp = `   ${appMainTitle} ${
-    appSubTitle == "" ? "" : `- ${data.server.appSubTitle}`
+    appSubTitle == "" ? "" : `- ${appSubTitle}`
   }`;
   return (
     <Box

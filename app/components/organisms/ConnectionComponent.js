@@ -75,32 +75,3 @@ export const ConnectionComponent = ({ onPressFunc }) => {
     </Animated.View>
   );
 };
-/*<Image
-              position={"absolute"}
-              size={280}
-              alignSelf={"center"}
-              alt="Nav"
-              source={require("../../assets/images/NotConnectedElipse.png")}
-            />
-            <View top={4}>
-              <Image
-                top={20}
-                w={79}
-                h={44}
-                position={"absolute"}
-                alignSelf={"center"}
-                source={require("../../assets/images/PCiconBlue.png")}
-                alt="Alternate Text"
-              />
-              <Text
-                position={"absolute"}
-                fontFamily={"Agency-FB-Bold"}
-                fontSize={25}
-                top={120}
-                textAlign={"center"}
-                alignSelf={"center"}
-              >
-                CONNECT
-              </Text>
-            </View>
-            */
