@@ -11,7 +11,7 @@ import {
   Button,
 } from "native-base";
 //Package Imports
-//import TcpSocket from "react-native-tcp-socket";
+import TcpSocket from "react-native-tcp-socket";
 import { useFonts } from "expo-font";
 import { SafeAreaView } from "react-native-safe-area-context";
 //Custom Imports
@@ -34,6 +34,7 @@ import {
   ForegroundAppTitle,
   fadeIn,
   fadeOut,
+  Base64Encode,
 } from "../utils";
 import {
   SetForegroundApp,
@@ -42,11 +43,13 @@ import {
   SetButtonEnabled,
   SetToggle2,
   SetConnectionText,
+  SetConnected,
 } from "../utils/redux/actions";
 import LottieView from "lottie-react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "@react-native-firebase/auth";
+import { Text } from "react-native-svg";
 
 const MainScreen = ({ navigation }) => {
   const [loadData, setLoadData] = useState(true);
@@ -115,7 +118,8 @@ const MainScreen = ({ navigation }) => {
     }
     // Connect
     const client = TcpSocket.createConnection(options, () => {
-      client.write(command);
+      command = Base64Encode(command);
+      client.write(command + "$");
     });
     client.setTimeout(5000);
     // On data received
@@ -128,6 +132,7 @@ const MainScreen = ({ navigation }) => {
 
       console.log("message was received", response);
       console.log("compUptime", compUptime);
+      dispatch(SetServerTime(serverTime));
       dispatch(SetForegroundApp(foregroundApp));
       dispatch(SetToggle(!toggle));
       dispatch(SetToggle2(false));
@@ -136,6 +141,7 @@ const MainScreen = ({ navigation }) => {
       // CONNECT
       if (!command.includes("disconnect")) {
         if (command.includes("connect")) {
+          dispatch(SetConnected(true));
           dispatch(SetConnectionText("CONNECTED"));
           dispatch(SetServerTime(compUptime));
         }
@@ -144,6 +150,7 @@ const MainScreen = ({ navigation }) => {
       }
       // DISCONNECT
       else if (command.includes("disconnect")) {
+        dispatch(SetConnected(false));
         dispatch(SetConnectionText("NOT CONNECTED"));
         dispatch(SetServerTime("00:00:00"));
         setLoadData(false);
@@ -159,6 +166,7 @@ const MainScreen = ({ navigation }) => {
     client.on("error", function (error) {
       console.log(error);
       dispatch(SetConnectionText("NOT CONNECTED"));
+      dispatch(SetConnected(false));
     });
     client.on("timeout", () => {
       console.log("socket timeout");
@@ -166,6 +174,7 @@ const MainScreen = ({ navigation }) => {
         dispatch(SetConnectionText("NOT CONNECTED"));
       } else {
         dispatch(SetConnectionText("CONNECTION FAILED"));
+        dispatch(SetConnected(false));
         dispatch(SetButtonEnabled(true));
       }
       dispatch(SetToggle(true));

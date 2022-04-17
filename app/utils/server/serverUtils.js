@@ -95,7 +95,8 @@ function Latency(serverTime) {
 }
 
 function ForegroundAppTitle(title) {
-  let titleArray = title.split("-");
+  let titleArray = null;
+  if (title.includes("-")) titleArray = title.split("-");
 
   let mainTitle = titleArray[1];
   let subTitle = titleArray[0];

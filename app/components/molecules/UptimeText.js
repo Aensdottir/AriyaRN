@@ -49,7 +49,7 @@ export const UptimeText = (props) => {
   return (
     <View>
       <Text textAlign={"center"} fontSize={30} {...props}>
-        {uptime}
+        {data.server.connected ? uptime : "00:00:00"}
       </Text>
     </View>
   );

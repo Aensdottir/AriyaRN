@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UptimeText } from "./UptimeText";
 import TcpSocket from "react-native-tcp-socket";
 import TextTicker from "react-native-text-ticker";
+import { useCounter } from "../../utils/providers/ServerProvider";
 import { options } from "../../constants";
 import {
   Base64,
@@ -23,6 +24,7 @@ import {
 } from "../../utils/redux/actions";
 
 export const ControlsView = (props) => {
+  const { counter, incrementCounter } = useCounter();
   const data = useSelector((state) => state);
   const dispatch = useDispatch();
   const appMainTitle = data.server.appMainTitle;
@@ -78,6 +80,7 @@ export const ControlsView = (props) => {
               type={"lock"}
               onPress={() => TcpConnect("lock")}
             />
+            <Text fontSize={30}>{counter}</Text>
           </Box>
         </Flex>
 
@@ -114,9 +117,8 @@ export const ControlsView = (props) => {
   function TcpConnect(command) {
     // Connect
     const client = TcpSocket.createConnection(options, () => {
-      client.write;
-
-      //client.write(command + "$");
+      command = Base64Encode(command);
+      client.write(command + "$");
       //command = Base64Encode(command);
       //client.write(command);
     });

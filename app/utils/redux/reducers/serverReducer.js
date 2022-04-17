@@ -1,6 +1,5 @@
 // @ts-nocheck
 const INITIAL_STATE = {
-  current: [],
   connected: false,
   toggle: true,
   toggle2: true,
