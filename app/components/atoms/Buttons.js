@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Button, Text } from "native-base";
+import { Pressable, Flex, Image, Button, Text } from "native-base";
 
 const styles = {
   loginScreen: {
@@ -12,7 +12,7 @@ const styles = {
 
 const LoginButton = (props) => {
   return (
-    <Button bg={"red.400"} {...styles.loginScreen} {...props}>
+    <Button bg={"main.red"} {...styles.loginScreen} {...props}>
       <Text color={"white"}>Login</Text>
     </Button>
   );
@@ -26,10 +26,49 @@ const RegisterNavButton = (props) => {
 };
 const RegisterButton = (props) => {
   return (
-    <Button bg={"red.400"} {...styles.loginScreen} {...props}>
+    <Button bg={"main.red"} {...styles.loginScreen} {...props}>
       <Text color={"white"}>Register</Text>
     </Button>
   );
 };
 
-export { LoginButton, RegisterNavButton, RegisterButton };
+const QuickAccessButton = ({ type, onPressFunc, icon }) => {
+  if (type == "TopBar") {
+    return (
+      <Pressable onPress={onPressFunc}>
+        {({ isPressed }) => {
+          return (
+            <Flex
+              size={60}
+              bg={isPressed ? "main.bg.400" : "main.bg.300"}
+              justifyContent={"center"}
+              borderRadius={20}
+            >
+              <Image resizeMode="contain" alt="Nav" source={icon} />
+            </Flex>
+          );
+        }}
+      </Pressable>
+    );
+  }
+  if (type == "ControlsBottom") {
+    return (
+      <Pressable onPress={onPressFunc}>
+        {({ isPressed }) => {
+          return (
+            <Flex
+              size={70}
+              bg={isPressed ? "main.bg.100" : "main.bg.50"}
+              justifyContent={"center"}
+              borderRadius={20}
+            >
+              <Image resizeMode="contain" alt="Nav" source={icon} />
+            </Flex>
+          );
+        }}
+      </Pressable>
+    );
+  }
+};
+
+export { LoginButton, RegisterNavButton, RegisterButton, QuickAccessButton };

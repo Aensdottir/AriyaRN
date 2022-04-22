@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useServer } from "../../utils/providers/ServerProvider";
 
 export const UptimeText = (props) => {
-  const { serverTime, connected } = useServer();
-  const time = serverTime;
+  const { serverUptime, connected } = useServer();
+  const time = serverUptime;
   const [uptime, setUptime] = useState("00:00:00");
   if (time > "00:00:00") {
     let hours = time.substring(0, 2);

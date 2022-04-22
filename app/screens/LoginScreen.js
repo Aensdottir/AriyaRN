@@ -58,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
         animated={true}
         barStyle={"light-content"}
       />
-      <View flex={1} bg={"main.bg"}>
+      <View flex={1} bg={"main.bg.100"}>
         <Flex
           position={"absolute"}
           bottom={0}
@@ -66,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
           h={300}
           bg={{
             linearGradient: {
-              colors: ["main.bg", "#303145"],
+              colors: ["main.bg.100", "#303145"],
               start: [0, 0],
               end: [0, 1],
             },

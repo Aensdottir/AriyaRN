@@ -5,12 +5,16 @@ const windowWidth = Dimensions.get("window").width;
 const ariyaTheme = extendTheme({
   colors: {
     main: {
-      bg: "#202531",
-      dark: "#1b202a",
-      lighterBg: "#232834",
-      lightPurple: "303145",
-      statusBar: "#151921",
+      bg: {
+        50: "#232834",
+        100: "#202531",
+        200: "#1f2530",
+        300: "#1a1f29",
+        400: "#151921",
+      },
+      red: "#f87171", // red.400
     },
+
     gradient: {
       blue: "#2b3a54",
       purple: "#383045",
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "#0d0d17",
+    backgroundColor: "#1a1f29",
   },
   loginContainer: {
     flex: 1,

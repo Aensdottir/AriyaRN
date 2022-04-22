@@ -1,79 +1,6 @@
 // @ts-nocheck
 //import TcpSocket from "react-native-tcp-socket";
-import { useDispatch } from "react-redux";
 import { Buffer } from "buffer";
-
-function TcpConnect2(command) {
-  const dispatch = useDispatch();
-  console.log(command);
-  if (command == "connect") {
-    GLOBAL.connectionText = "CONNECTING";
-  }
-  if (command == "disconnect") {
-    GLOBAL.connectionText = "NOT CONNECTED";
-    fadeOut(GLOBAL.fadeInValue);
-  }
-  const options = {
-    port: 10144,
-    //host: "192.168.1.30",
-    host: "78.98.61.153",
-  };
-  const client = TcpSocket.createConnection(options, () => {
-    client.write(command);
-  });
-  client.setTimeout(5000);
-
-  client.on("data", function (data) {
-    client.destroy();
-    const response = bin2String(data);
-    console.log("message was received", response);
-    const latencyOutput = Latency(response.substring(0, 7));
-
-    const compUptime = response.substring(8, 16);
-    if (!command.includes("disconnect")) {
-      GLOBAL.connectionText = "CONNECTED";
-      GLOBAL.loadData = true;
-      if (command.includes("connect")) {
-        Uptime(compUptime);
-      }
-
-      Sleep(300).then((GLOBAL.uptimeToggle = true));
-      fadeIn(GLOBAL.fadeInValue);
-      Sleep(500).then(() => fadeOut(GLOBAL.fadeOutValue));
-    } else if (command.includes("disconnect")) {
-      Sleep(300).then((GLOBAL.uptimeToggle = false));
-      GLOBAL.statusImage = require("../../assets/images/StatusDefault.png");
-      fadeIn(GLOBAL.fadeOutValue);
-      GLOBAL.loadData = false;
-    }
-    GLOBAL.buttonDisabled = false;
-    GLOBAL.toggle = !GLOBAL.toggle;
-    if (response != "disconnect") {
-      if (command == "connect" || command == "latencyRefresh") {
-        //Reconnect for latency check
-        Sleep(20000).then(() => TcpConnect("latencyRefresh"));
-      }
-    }
-  });
-  client.on("error", function (error) {
-    console.log(error);
-    GLOBAL.connectionText = "NOT CONNECTED";
-  });
-  client.on("timeout", () => {
-    if (command == "latencyRefresh") {
-      GLOBAL.connectionText = "NOT CONNECTED";
-      GLOBAL.toggle = true;
-    } else GLOBAL.connectionText = "CONNECTION FAILED";
-    GLOBAL.toggle = true;
-    GLOBAL.buttonDisabled = false;
-    console.log("socket timeout");
-  });
-  client.on("close", function () {
-    console.log("Connection closed!");
-
-    client.destroy();
-  });
-}
 
 function Latency(serverTime) {
   const date = new Date();
@@ -138,7 +65,6 @@ export {
   Latency,
   Sleep,
   bin2String,
-  TcpConnect2,
   ForegroundAppTitle,
   Base64Encode,
   Base64Decode,

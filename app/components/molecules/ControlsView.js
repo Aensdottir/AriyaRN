@@ -95,7 +95,7 @@ export const ControlsView = (props) => {
           alignItems: "center",
         }}
       >
-        <SendImageCard onPress={() => SendImage()} />
+        <SendImageCard func={() => SendImage()} />
       </ScrollView>
     </Flex>
   );

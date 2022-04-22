@@ -11,7 +11,7 @@ export const ServerInfoPanel = (props) => {
       borderBottomRadius={25}
       mt={79}
       h={95}
-      bg={"main.dark"}
+      bg={"main.bg.300"}
     >
       <Text fontSize={20} textAlign={"right"}>
         {data.server.uptime}

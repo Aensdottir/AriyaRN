@@ -41,7 +41,7 @@ export const ControlButton = ({ props, color, type, onPress }) => {
     case "shutdown":
       return (
         <Pressable onPress={onPress}>
-          {({ isHovered, isFocused, isPressed }) => {
+          {({ isPressed }) => {
             return (
               <Box
                 bg={isPressed ? bg.pressed : bg}
@@ -63,7 +63,7 @@ export const ControlButton = ({ props, color, type, onPress }) => {
     case "restart":
       return (
         <Pressable onPress={onPress}>
-          {({ isHovered, isFocused, isPressed }) => {
+          {({ isPressed }) => {
             return (
               <Box
                 bg={isPressed ? bg.pressed : bg}
@@ -85,7 +85,7 @@ export const ControlButton = ({ props, color, type, onPress }) => {
     case "lock":
       return (
         <Pressable onPress={onPress}>
-          {({ isHovered, isFocused, isPressed }) => {
+          {({ isPressed }) => {
             return (
               <Box
                 bg={isPressed ? bg.pressed : bg}

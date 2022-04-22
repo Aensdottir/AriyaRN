@@ -67,6 +67,7 @@ export const borderRadius2 = draggedValue.interpolate({
 export const options = {
   port: 10144,
   host: "78.98.69.227",
+  reuseAddress: true,
 };
 //Authentication Errors
 export const errors = [

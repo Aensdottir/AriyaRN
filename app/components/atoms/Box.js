@@ -20,7 +20,7 @@ const LoginLogoBox = (props) => {
       borderRadius={25}
       bg={{
         linearGradient: {
-          colors: ["main.lighterBg", "#303145"],
+          colors: ["main.bg.50", "#303145"],
           start: [0, 0],
           end: [0, 1],
         },

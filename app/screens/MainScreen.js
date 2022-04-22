@@ -4,11 +4,14 @@ import React, { useState, useRef } from "react";
 import { Animated, Dimensions } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  Box,
   NativeBaseProvider,
   Flex,
   StatusBar,
   Image,
   Button,
+  Text,
+  View,
 } from "native-base";
 //Package Imports
 import TcpSocket from "react-native-tcp-socket";
@@ -17,43 +20,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 //Custom Imports
 import { styles } from "../Styles";
 import {
-  Box,
   FadeInTransition,
   Topbar,
   ConnectionComponent,
+  ControlsBottom,
   SlideUpComponent,
   SlideUpPanel,
   SlidePanel,
 } from "../components";
-import { options, fadeInValue, fadeOutValue } from "../constants";
-import {
-  Sleep,
-  Latency,
-  bin2String,
-  TcpConnect2,
-  ForegroundAppTitle,
-  fadeIn,
-  fadeOut,
-  Base64Encode,
-} from "../utils";
-import {
-  SetForegroundApp,
-  SetServerTime,
-  SetToggle,
-  SetButtonEnabled,
-  SetToggle2,
-  SetConnectionText,
-  SetConnected,
-} from "../utils/redux/actions";
-import LottieView from "lottie-react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth from "@react-native-firebase/auth";
-import { Text } from "react-native-svg";
 import { useServer } from "../utils/providers/ServerProvider";
+import { useDebounce } from "../utils";
 
 const MainScreen = ({ navigation }) => {
-  const { TcpConnect, toggle, setToggle } = useServer();
+  const { TcpConnect, toggle, setToggle, connected, connectionText } =
+    useServer();
+  const { debounce } = useDebounce(); // Prevent button double click
   const [loadData, setLoadData] = useState(true);
 
   const offsetY = useRef(new Animated.Value(0)).current;
@@ -71,32 +55,20 @@ const MainScreen = ({ navigation }) => {
         translucent={true}
         animated={true}
         barStyle={"light-content"}
+        // Color inherited from styles.container
       />
-      <Flex bg={"#0d0d17"} flex={1}>
-        <Image
-          opacity={1}
-          source={require("../assets/images/bgImage.png")}
-          alt="Alternate Text"
-          size="full"
-          position={"absolute"}
-          resizeMethod="resize"
-        />
+
+      <Flex flex={1} bg={"main.bg.100"}>
         <Topbar />
-
-        <ConnectionComponent onPressFunc={() => ToggleTcp()} />
-
-        <Button
-          bg={"#1c1e39"}
-          alignSelf={"center"}
-          top={180}
-          w={300}
-          onPress={() => Logout()}
-        >
-          Logout
-        </Button>
-
-        <SlideUpComponent />
       </Flex>
+
+      <Flex flex={1.1} bg={"main.bg.300"} alignItems={"center"}>
+        <ConnectionComponent onPressFunc={() => debounce(ToggleTcp)} />
+      </Flex>
+
+      <ControlsBottom />
+
+      {/*</SafeAreaView><SlideUpComponent disabled={!connected} />*/}
     </SafeAreaView>
   );
   function ToggleTcp() {

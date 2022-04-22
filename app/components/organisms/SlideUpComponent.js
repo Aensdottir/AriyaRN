@@ -9,6 +9,7 @@ import {
   Image,
   PresenceTransition,
   Pressable,
+  Flex,
 } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
@@ -22,6 +23,8 @@ import {
   chevronOpacity,
 } from "../../constants";
 import { ControlsView } from "../molecules";
+
+import { useDebounce } from "../../utils";
 
 export class SlideUpComponent extends React.Component {
   constructor(props) {
@@ -50,7 +53,7 @@ export class SlideUpComponent extends React.Component {
         >
           <View
             height={panelHeight}
-            bg={"main.dark"}
+            bg={"main.bg.300"}
             justifyContent={"flex-end"}
           >
             <Animated.View
@@ -74,7 +77,7 @@ export class SlideUpComponent extends React.Component {
                   size={50}
                   bottom={8}
                   right={5}
-                  isDisabled={true}
+                  disabled={/*this.props.disabled*/ false}
                 >
                   {({ isHovered, isFocused, isPressed }) => {
                     return (
@@ -89,7 +92,7 @@ export class SlideUpComponent extends React.Component {
                               },
                             ],
                           }}
-                          opacity={1}
+                          opacity={this.props.disabled ? 0.5 : 1}
                           alt="Nav"
                           source={require("../../assets/images/chevron-up.png")}
                         />
@@ -101,7 +104,7 @@ export class SlideUpComponent extends React.Component {
             </Animated.View>
           </View>
 
-          <View flex={1} bg={"main.bg"}>
+          <View flex={1} bg={"main.bg.100"}>
             <ControlsView />
           </View>
         </View>

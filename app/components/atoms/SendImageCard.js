@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Box, Image, Flex, Text, Pressable } from "native-base";
 
-const SendImageCard = (onPress) => {
+const SendImageCard = ({ func }) => {
   return (
     <Box
       bg={"#303845"}
@@ -100,7 +100,7 @@ const SendImageCard = (onPress) => {
         />
       </Box>
       <Pressable
-        onPress={onPress}
+        onPress={func}
         position={"absolute"}
         alignItems={"center"}
         justifyContent={"center"}

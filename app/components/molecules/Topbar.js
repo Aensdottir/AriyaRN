@@ -1,23 +1,37 @@
 // @ts-nocheck
 import { Box as NBBox, View, Text, Image, Flex, Spacer } from "native-base";
+import { QuickAccessButton } from "../atoms";
+import { useServer } from "../../utils/providers/ServerProvider";
 
 export const Topbar = (props) => {
+  const { connectionText } = useServer();
   return (
-    <Flex flexDirection={"row"} margin={5}>
-      <Image
-        size={25}
-        alt="Nav"
-        source={require("../../assets/images/NavigationIcon.png")}
+    <Flex
+      flexDirection={"row"}
+      justify={"center"}
+      alignItems={"center"}
+      margin={7}
+    >
+      <Flex
+        position={"absolute"}
+        justifyContent={"center"}
+        bg={"main.red"}
+        borderRadius={35}
+        w={160}
+        h={40}
+      >
+        <Text fontFamily={"Agency-FB-Bold"} textAlign={"center"} fontSize={22}>
+          {connectionText}
+        </Text>
+      </Flex>
+      <QuickAccessButton
+        type={"TopBar"}
+        icon={require("../../assets/images/MenuIcon.png")}
       />
       <Spacer />
-      <Text top={-12} fontFamily={"TwCenMT_Bold"} fontSize="3xl">
-        ARIYA
-      </Text>
-      <Spacer />
-      <Image
-        size={25}
-        alt="Nav"
-        source={require("../../assets/images/SettingsIcon.png")}
+      <QuickAccessButton
+        type={"TopBar"}
+        icon={require("../../assets/images/UserIcon.png")}
       />
     </Flex>
   );

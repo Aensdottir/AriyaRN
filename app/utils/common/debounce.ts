@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const BOUNCE_RATE = 1000;
+const BOUNCE_RATE = 2000;
 
 export const useDebounce = () => {
   const busy = useRef(false);
