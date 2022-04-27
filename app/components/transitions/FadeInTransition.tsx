@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { PresenceTransition } from "native-base";
 
-export const FadeInTransition = (props) => {
+export const FadeInTransition = (props: unknown) => {
   return (
     <PresenceTransition
       visible={true}

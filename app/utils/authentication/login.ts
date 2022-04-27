@@ -1,11 +1,14 @@
-// @ts-nocheck
 import auth from "@react-native-firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { validateEmail } from "./validateEmail";
 
-import * as RootNavigation from "../navigation/RootNavigation.js";
+import * as RootNavigation from "../navigation/RootNavigation";
 
-const onLoginPress = (email, password, _callback) => {
+const onLoginPress = (
+  email: string,
+  password: string,
+  _callback: (number: number) => void
+) => {
   if (validateEmail(email) != null) {
     console.log("Email VALID");
     auth()
@@ -16,7 +19,7 @@ const onLoginPress = (email, password, _callback) => {
         const user = { userId: email };
         setLoginLocal(user); // storing in local storage for next launch
 
-        RootNavigation.navigate("Main");
+        RootNavigation.navigate("Main", undefined);
       })
       .catch((error) => {
         if (
@@ -35,7 +38,7 @@ const onLoginPress = (email, password, _callback) => {
     _callback(2);
   }
 };
-const setLoginLocal = async (loginData) => {
+const setLoginLocal = async (loginData: { userId: string }) => {
   try {
     await AsyncStorage.setItem("loginData", JSON.stringify(loginData));
   } catch (err) {

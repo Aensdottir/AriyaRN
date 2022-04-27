@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { PresenceTransition } from "native-base";
 
-export const SlideTransition = (props) => {
+export const SlideTransition = (props: unknown) => {
   return (
     <PresenceTransition
       initial={{

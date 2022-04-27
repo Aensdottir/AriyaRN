@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Button } from "native-base";
 
 export const ConnectButton = (props) => {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // React Imports
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -33,7 +32,12 @@ import {
   RegisterNavButton,
 } from "../components";
 
-const LoginScreen = ({ navigation }) => {
+// React-Navigation
+import { RootStackParamList } from "./RootStackParams";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+type Props = NativeStackScreenProps<RootStackParamList, "Login">;
+
+const LoginScreen = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state);
 
@@ -43,11 +47,11 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    changeNavigationBarColor("#303145");
+    changeNavigationBarColor("#303145", true, true);
   }, []);
 
   const login = () => {
-    onLoginPress(email, password, (output) => setErrorIndex(output));
+    onLoginPress(email, password, (output: number) => setErrorIndex(output));
   };
 
   return (
@@ -85,11 +89,14 @@ const LoginScreen = ({ navigation }) => {
               {errors[errorIndex]}
             </Text>
 
-            <EmailInput onChangeText={(text) => setEmail(text)} />
-            <PasswordInput mb={1} onChangeText={(text) => setPassword(text)} />
+            <EmailInput onChangeText={(text: string) => setEmail(text)} />
+            <PasswordInput
+              mb={1}
+              onChangeText={(text: string) => setPassword(text)}
+            />
 
             <ForgotPassword
-              onPress={() => dispatch(SetAlertOpen(!data.login.alertOpen))}
+            //onPress={() => dispatch(SetAlertOpen(!data.login.alertOpen))}
             />
             <LoginButton onPress={() => login()} />
           </View>

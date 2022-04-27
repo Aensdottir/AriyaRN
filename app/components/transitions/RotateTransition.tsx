@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import { PresenceTransition } from "native-base";
 
-export const RotateTransition = (visible) => {
+export const RotateTransition = (visible: boolean) => {
   return (
     <PresenceTransition
       visible={visible}

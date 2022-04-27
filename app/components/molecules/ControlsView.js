@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { Box, Image, View, Flex, Text, Spacer, ScrollView } from "native-base";
 import { ActiveAppTicker, ControlButton, SendImageCard } from "../atoms";

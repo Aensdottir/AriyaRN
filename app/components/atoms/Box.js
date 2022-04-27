@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Box as NBBox, Image } from "native-base";
 
 const Box = (props) => {
@@ -28,6 +27,7 @@ const LoginLogoBox = (props) => {
       size={130}
       mb={6}
       justifyContent={"center"}
+      {...props}
     >
       <Image
         source={require("../../assets/images/AriyaLogo.png")}

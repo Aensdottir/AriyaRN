@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from "react";
 import { Text, View } from "native-base";
 import { useDispatch, useSelector } from "react-redux";

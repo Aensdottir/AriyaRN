@@ -1,6 +1,3 @@
-// @ts-nocheck
-import LottieView from "lottie-react-native";
-
 export const HeaderAnimDisconnected = (props) => {
   return (
     <LottieView

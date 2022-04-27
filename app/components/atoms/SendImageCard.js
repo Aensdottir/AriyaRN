@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Box, Image, Flex, Text, Pressable } from "native-base";
 
 const SendImageCard = ({ func }) => {

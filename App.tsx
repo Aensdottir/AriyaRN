@@ -1,4 +1,3 @@
-// @ts-nocheck
 // React Imports
 import React, { Component, useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -14,7 +13,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Redux
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
 import rootReducer from "./app/utils/redux/reducers/rootReducer";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
@@ -29,15 +27,17 @@ import CommonProvider from "./app/utils/providers/CommonProvider";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
+import { RootStackParamList } from "./app/screens/RootStackParams";
 
 const store = createStore(rootReducer /*applyMiddleware(logger)*/);
-const Stack = createNativeStackNavigator();
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
   useEffect(() => {
-    changeNavigationBarColor("#1b202a");
+    changeNavigationBarColor("#1b202a", true, true);
 
     const loginData = async () => {
       const jsonValue = await AsyncStorage.getItem("loginData");

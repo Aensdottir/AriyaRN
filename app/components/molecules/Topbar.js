@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { Box as NBBox, View, Text, Image, Flex, Spacer } from "native-base";
 import { QuickAccessButton } from "../atoms";
 import { useServer } from "../../utils/providers/ServerProvider";
 
-export const Topbar = (props) => {
+export const Topbar = () => {
   const { connectionText } = useServer();
   return (
     <Flex

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from "react";
 import {
   View,
@@ -27,7 +26,12 @@ import { useDispatch, useSelector } from "react-redux";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-const RegisterScreen = ({ navigation }) => {
+// React-Navigation
+import { RootStackParamList } from "./RootStackParams";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+type Props = NativeStackScreenProps<RootStackParamList, "Register">;
+
+const RegisterScreen = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state);
 
@@ -109,9 +113,9 @@ const RegisterScreen = ({ navigation }) => {
             </Text>
           </View>
           <View alignItems={"center"}>
-            <NameInput onChangeText={(text) => setFullName(text)} />
-            <EmailInput onChangeText={(text) => setEmail(text)} />
-            <PasswordInput onChangeText={(text) => setPassword(text)} />
+            <NameInput onChangeText={(text: string) => setFullName(text)} />
+            <EmailInput onChangeText={(text: string) => setEmail(text)} />
+            <PasswordInput onChangeText={(text: string) => setPassword(text)} />
             <RegisterButton onPress={() => onRegisterPress()} />
           </View>
         </ScrollView>

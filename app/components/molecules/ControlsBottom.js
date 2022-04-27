@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Image, Flex, Spacer } from "native-base";
 import { useServer } from "../../utils/providers/ServerProvider";
 import { QuickAccessButton } from "../atoms";

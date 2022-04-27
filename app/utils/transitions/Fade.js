@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Animated } from "react-native";
 
 function fadeIn(object) {

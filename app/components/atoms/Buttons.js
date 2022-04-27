@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Pressable, Flex, Image, Button, Text } from "native-base";
 
 const styles = {

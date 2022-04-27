@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Box, Image, View, Text, Pressable, Flex } from "native-base";
 
 const buttonTypes = {

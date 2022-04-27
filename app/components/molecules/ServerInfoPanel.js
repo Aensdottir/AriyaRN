@@ -1,8 +1,7 @@
-// @ts-nocheck
 import { Box as NBBox, Text } from "native-base";
 import { useSelector } from "react-redux";
 
-export const ServerInfoPanel = (props) => {
+export const ServerInfoPanel = () => {
   const data = useSelector((state) => state);
   return (
     <NBBox

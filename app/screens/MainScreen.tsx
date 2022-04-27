@@ -1,4 +1,3 @@
-// @ts-nocheck
 //React Imports
 import React, { useState, useRef } from "react";
 import { Animated, Dimensions } from "react-native";
@@ -25,8 +24,6 @@ import {
   ConnectionComponent,
   ControlsBottom,
   SlideUpComponent,
-  SlideUpPanel,
-  SlidePanel,
 } from "../components";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -34,7 +31,12 @@ import auth from "@react-native-firebase/auth";
 import { useServer } from "../utils/providers/ServerProvider";
 import { useDebounce } from "../utils";
 
-const MainScreen = ({ navigation }) => {
+// React-Navigation
+import { RootStackParamList } from "./RootStackParams";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+type Props = NativeStackScreenProps<RootStackParamList, "Main">;
+
+const MainScreen = ({ route, navigation }: Props) => {
   const { TcpConnect, toggle, setToggle, connected, connectionText } =
     useServer();
   const { debounce } = useDebounce(); // Prevent button double click
@@ -57,6 +59,8 @@ const MainScreen = ({ navigation }) => {
         barStyle={"light-content"}
         // Color inherited from styles.container
       />
+
+      <Button onPress={() => Logout()}></Button>
 
       <Flex flex={1} bg={"main.bg.100"}>
         <Topbar />

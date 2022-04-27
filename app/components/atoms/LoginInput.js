@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { Input, Button, Icon, Pressable } from "native-base";
 import { NativeBaseProvider, extendTheme } from "native-base";

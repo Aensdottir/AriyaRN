@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, Component } from "react";
 import { Animated, Dimensions, StyleSheet } from "react-native";
 import { connect } from "react-redux";

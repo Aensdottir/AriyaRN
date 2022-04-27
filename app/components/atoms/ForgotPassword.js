@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Pressable, Text } from "native-base";
 
 export const ForgotPassword = (props) => {

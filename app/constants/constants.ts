@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Animated, Dimensions, StatusBar } from "react-native";
 
 export const fadeInValue = new Animated.Value(0);
@@ -10,7 +9,7 @@ export const { height } = Dimensions.get("window");
 export const panelHeight = 100;
 
 export const draggableRange = {
-  top: height + StatusBar.currentHeight,
+  top: height + (StatusBar.currentHeight || 0),
   bottom: panelHeight - 30,
 };
 const { top, bottom } = draggableRange;
