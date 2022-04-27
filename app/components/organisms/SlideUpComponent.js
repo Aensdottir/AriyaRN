@@ -1,15 +1,6 @@
 import React, { useState, Component } from "react";
-import { Animated, Dimensions, StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import {
-  Box as NBBox,
-  View,
-  Text,
-  Image,
-  PresenceTransition,
-  Pressable,
-  Flex,
-} from "native-base";
+import { Animated } from "react-native";
+import { Box as NBBox, View, Text, Pressable } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import {
@@ -19,7 +10,6 @@ import {
   chevronTranslateY,
   panelHeight,
   chevronRotate,
-  chevronOpacity,
 } from "../../constants";
 import { ControlsView } from "../molecules";
 
@@ -76,7 +66,7 @@ export class SlideUpComponent extends React.Component {
                   size={50}
                   bottom={8}
                   right={5}
-                  disabled={/*this.props.disabled*/ false}
+                  disabled={this.props.disabled}
                 >
                   {({ isHovered, isFocused, isPressed }) => {
                     return (
@@ -111,10 +101,3 @@ export class SlideUpComponent extends React.Component {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  const { server } = state;
-  return { server };
-};
-
-export default connect(mapStateToProps)(SlideUpComponent);

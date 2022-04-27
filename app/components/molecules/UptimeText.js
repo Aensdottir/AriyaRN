@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Text, View } from "native-base";
-import { useDispatch, useSelector } from "react-redux";
 import { useServer } from "../../utils/providers/ServerProvider";
 
 export const UptimeText = (props) => {
   const { serverUptime, connected } = useServer();
+
   const time = serverUptime;
   const [uptime, setUptime] = useState("00:00:00");
   if (time > "00:00:00") {

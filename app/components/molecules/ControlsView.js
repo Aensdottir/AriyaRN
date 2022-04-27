@@ -1,36 +1,12 @@
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { Box, Image, View, Flex, Text, Spacer, ScrollView } from "native-base";
+import { launchImageLibrary } from "react-native-image-picker";
+import { Box, Flex, Text, ScrollView } from "native-base";
 import { ActiveAppTicker, ControlButton, SendImageCard } from "../atoms";
-import { useDispatch, useSelector } from "react-redux";
 import { UptimeText } from "./UptimeText";
-import TcpSocket from "react-native-tcp-socket";
-import TextTicker from "react-native-text-ticker";
 import { useServer } from "../../utils/providers/ServerProvider";
-import { options } from "../../constants";
-import {
-  Base64,
-  Base64Encode,
-  bin2String,
-  ForegroundAppTitle,
-  Sleep,
-} from "../../utils";
-import {
-  SetForegroundApp,
-  SetToggle,
-  SetButtonEnabled,
-  SetToggle2,
-  SetConnectionText,
-} from "../../utils/redux/actions";
 
 export const ControlsView = (props) => {
   const { TcpConnect } = useServer();
-  const data = useSelector((state) => state);
-  const dispatch = useDispatch();
-  const appMainTitle = data.server.appMainTitle;
-  const appSubTitle = data.server.appSubTitle;
-  const activeApp = `    ${appMainTitle} ${
-    appSubTitle == null ? "" : `- ${data.server.appSubTitle}`
-  }`;
+
   return (
     <Flex>
       <Flex justify={"center"} m={4}>

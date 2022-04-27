@@ -1,7 +1,6 @@
 //React Imports
 import React, { useState, useRef } from "react";
 import { Animated, Dimensions } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   NativeBaseProvider,

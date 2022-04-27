@@ -21,8 +21,6 @@ import {
 import { styles } from "../Styles";
 import { useFonts } from "expo-font";
 
-import { useDispatch, useSelector } from "react-redux";
-
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
@@ -32,9 +30,6 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 
 const RegisterScreen = ({ route, navigation }: Props) => {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state);
-
   const [show, setShow] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const cancelRef = React.useRef(null);

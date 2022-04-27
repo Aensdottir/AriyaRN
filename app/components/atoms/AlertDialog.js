@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AlertDialog, View, Button } from "native-base";
-import { useDispatch, useSelector } from "react-redux";
-import { SetAlertOpen } from "../../utils/redux/actions";
+
+// Providers
+import { useCommon } from "../../utils/providers/CommonProvider";
 
 const AlertDialogUnavailable = () => {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state);
+  const { alertOpen, setAlertOpen } = useCommon();
+
+  const onClose = () => setAlertOpen(false);
 
   const cancelRef = React.useRef(null);
-  const onClose = () => dispatch(SetAlertOpen(false));
   return (
     <AlertDialog
       leastDestructiveRef={cancelRef}
-      isOpen={data.login.alertOpen}
+      isOpen={alertOpen}
       onClose={onClose}
     >
       <AlertDialog.Content bg={"#313544"}>

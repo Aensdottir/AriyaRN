@@ -7,7 +7,8 @@ import React, {
 } from "react";
 
 interface CounterContextType {
-  counter: number;
+  alertOpen: boolean;
+  setAlertOpen: (value: boolean) => void;
 }
 
 interface Props {
@@ -19,10 +20,10 @@ const CommonContext = createContext({} as CounterContextType);
 export const useCommon = () => useContext(CommonContext);
 
 const CommonProvider: FunctionComponent<Props> = ({ children }) => {
-  const [counter, setCounter] = useState(10);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   return (
-    <CommonContext.Provider value={{ counter }}>
+    <CommonContext.Provider value={{ alertOpen, setAlertOpen }}>
       {children}
     </CommonContext.Provider>
   );

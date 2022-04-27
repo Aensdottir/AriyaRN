@@ -1,8 +1,9 @@
 import { Box as NBBox, Text } from "native-base";
-import { useSelector } from "react-redux";
+import { useServer } from "../../utils/providers/ServerProvider";
 
 export const ServerInfoPanel = () => {
-  const data = useSelector((state) => state);
+  const { serverUptime } = useServer();
+
   return (
     <NBBox
       pt={57}
@@ -13,7 +14,7 @@ export const ServerInfoPanel = () => {
       bg={"main.bg.300"}
     >
       <Text fontSize={20} textAlign={"right"}>
-        {data.server.uptime}
+        {serverUptime}
       </Text>
     </NBBox>
   );

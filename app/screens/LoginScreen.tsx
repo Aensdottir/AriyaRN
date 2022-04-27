@@ -6,16 +6,9 @@ import {
   StatusBar,
   Text,
   ScrollView,
-  Box,
-  Image,
-  Button,
   Pressable,
-  AlertDialog,
   Flex,
 } from "native-base";
-// Redux
-import { useDispatch, useSelector } from "react-redux";
-import { SetAlertOpen } from "../utils/redux/actions";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 // Custom Imports
@@ -29,7 +22,6 @@ import {
   LoginButton,
   LoginLogoBox,
   PasswordInput,
-  RegisterNavButton,
 } from "../components";
 
 // React-Navigation
@@ -38,9 +30,6 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state);
-
   const [errorIndex, setErrorIndex] = React.useState(0);
 
   const [email, setEmail] = useState("");
