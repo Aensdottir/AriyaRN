@@ -68,10 +68,3 @@ export const options = {
   host: "78.98.69.227",
   reuseAddress: true,
 };
-//Authentication Errors
-export const errors = [
-  "", // No Error
-  "Invalid e-mail address or password.",
-  "Invalid e-mail address format.",
-  "Login attempt failed, please try again later.",
-];

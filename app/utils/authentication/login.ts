@@ -9,7 +9,7 @@ import { validateEmail } from "./validateEmail";
 const onLoginPress = (
   email: string,
   password: string,
-  _callback: (number: number) => void
+  _callback: (string: string) => void
 ) => {
   if (validateEmail(email) != null) {
     console.log("Email VALID");
@@ -30,14 +30,14 @@ const onLoginPress = (
           error.code === "auth/user-not-found"
         ) {
           console.log(error);
-          _callback(1);
+          _callback("Invalid e-mail address or password.");
         }
         console.error(error);
-        _callback(3);
+        _callback("Login attempt failed, please try again later.");
       });
   } else {
     console.log("Email INVALID");
-    _callback(2);
+    _callback("Invalid e-mail address format.");
   }
 };
 const setLoginLocal = async (loginData: { userId: string }) => {

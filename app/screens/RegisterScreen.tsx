@@ -4,11 +4,7 @@ import {
   Text,
   ScrollView,
   StatusBar,
-  Box,
-  Image,
-  Button,
   Pressable,
-  AlertDialog,
   Flex,
 } from "native-base";
 // Packages
@@ -21,6 +17,7 @@ import {
   EmailInput,
   PasswordInput,
   RegisterButton,
+  LoginRedirectText,
 } from "../components";
 import { styles } from "../Styles";
 // React-Navigation
@@ -110,39 +107,11 @@ const RegisterScreen = ({ route, navigation }: Props) => {
             <NameInput onChangeText={(text: string) => setFullName(text)} />
             <EmailInput onChangeText={(text: string) => setEmail(text)} />
             <PasswordInput onChangeText={(text: string) => setPassword(text)} />
+
             <RegisterButton onPress={() => onRegisterPress()} />
           </View>
         </ScrollView>
-        <View
-          position={"absolute"}
-          bottom={8}
-          flexDirection={"row"}
-          alignSelf={"center"}
-        >
-          <Text fontFamily={"Kanit-Regular"} color={"muted.300"}>
-            Already have an account?
-          </Text>
-          <Pressable
-            px={25}
-            alignItems={"center"}
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-          >
-            {({ isPressed }) => {
-              return (
-                <Text
-                  underline={true}
-                  position={"absolute"}
-                  fontFamily={"Kanit-Regular"}
-                  color={isPressed ? "muted.400" : "#fff"}
-                >
-                  Login
-                </Text>
-              );
-            }}
-          </Pressable>
-        </View>
+        <LoginRedirectText navigation={navigation} type={"Login"} />
       </View>
     </SafeAreaView>
   );

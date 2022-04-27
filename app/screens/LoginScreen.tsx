@@ -12,16 +12,19 @@ import {
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 // Custom Imports
 import { styles } from "../Styles";
-import { errors } from "../constants";
 import { onLoginPress } from "../utils";
 import {
   AlertDialogUnavailable,
   EmailInput,
   ForgotPassword,
   LoginButton,
-  LoginLogoBox,
+  LoginRedirectText,
+  LoginScreenLogo,
   PasswordInput,
 } from "../components";
+
+// Providers
+import { useCommon } from "../utils/providers/CommonProvider";
 
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
@@ -29,7 +32,8 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const [errorIndex, setErrorIndex] = React.useState(0);
+  const { setAlertOpen } = useCommon();
+  const [loginError, setLoginError] = React.useState("");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +43,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
   }, []);
 
   const login = () => {
-    onLoginPress(email, password, (output: number) => setErrorIndex(output));
+    onLoginPress(email, password, (output: string) => setLoginError(output));
   };
 
   return (
@@ -71,54 +75,21 @@ const LoginScreen = ({ route, navigation }: Props) => {
           }}
         >
           <View alignItems={"center"}>
-            <LoginLogoBox />
+            <LoginScreenLogo />
 
             <Text fontWeight={"bold"} color={"danger.500"}>
-              {errors[errorIndex]}
+              {loginError}
             </Text>
 
             <EmailInput onChangeText={(text: string) => setEmail(text)} />
-            <PasswordInput
-              mb={1}
-              onChangeText={(text: string) => setPassword(text)}
-            />
+            <PasswordInput onChangeText={(text: string) => setPassword(text)} />
 
-            <ForgotPassword
-            //onPress={() => dispatch(SetAlertOpen(!data.login.alertOpen))}
-            />
+            <ForgotPassword onPress={() => setAlertOpen(true)} />
+
             <LoginButton onPress={() => login()} />
           </View>
         </ScrollView>
-        <View
-          position={"absolute"}
-          bottom={8}
-          flexDirection={"row"}
-          alignSelf={"center"}
-        >
-          <Text fontFamily={"Kanit-Regular"} color={"muted.300"}>
-            Don't have an account?
-          </Text>
-          <Pressable
-            px={30}
-            alignItems={"center"}
-            onPress={() => {
-              navigation.navigate("Register");
-            }}
-          >
-            {({ isPressed }) => {
-              return (
-                <Text
-                  underline={true}
-                  position={"absolute"}
-                  fontFamily={"Kanit-Regular"}
-                  color={isPressed ? "muted.400" : "#fff"}
-                >
-                  Sign Up
-                </Text>
-              );
-            }}
-          </Pressable>
-        </View>
+        <LoginRedirectText navigation={navigation} type={"Register"} />
       </View>
 
       <AlertDialogUnavailable />
