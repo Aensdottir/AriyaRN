@@ -1,7 +1,9 @@
 import { Image, Flex, Spacer } from "native-base";
-import { useServer } from "../../utils/providers/ServerProvider";
+// Custom Imports
 import { QuickAccessButton } from "../atoms";
 import { useDebounce } from "../../utils";
+// Providers
+import { useServer } from "../../utils/providers/ServerProvider";
 
 export const ControlsBottom = (props) => {
   const { TcpConnect } = useServer();

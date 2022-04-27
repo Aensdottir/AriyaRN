@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Input, Button, Icon, Pressable } from "native-base";
-import { NativeBaseProvider, extendTheme } from "native-base";
+import React from "react";
+import { Input, Icon, Pressable } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const style = {

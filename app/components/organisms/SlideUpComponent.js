@@ -1,6 +1,6 @@
-import React, { useState, Component } from "react";
+import React from "react";
 import { Animated } from "react-native";
-import { Box as NBBox, View, Text, Pressable } from "native-base";
+import { View, Text, Pressable } from "native-base";
 import SlidingUpPanel from "rn-sliding-up-panel";
 
 import {

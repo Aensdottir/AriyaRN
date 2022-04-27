@@ -1,8 +1,8 @@
-import { Box as NBBox, Image } from "native-base";
+import { Box, Image } from "native-base";
 
-const Box = (props) => {
+const Template = (props) => {
   return (
-    <NBBox
+    <Box
       borderRadius="md"
       borderWidth={2}
       borderColor={"#cccccc"}
@@ -39,4 +39,4 @@ const LoginLogoBox = (props) => {
   );
 };
 
-export { Box, LoginLogoBox };
+export { LoginLogoBox };

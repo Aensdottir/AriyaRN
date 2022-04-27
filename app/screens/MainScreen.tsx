@@ -1,4 +1,3 @@
-//React Imports
 import React, { useState, useRef } from "react";
 import { Animated, Dimensions } from "react-native";
 import {
@@ -11,11 +10,11 @@ import {
   Text,
   View,
 } from "native-base";
-//Package Imports
-import TcpSocket from "react-native-tcp-socket";
-import { useFonts } from "expo-font";
+// Packages
 import { SafeAreaView } from "react-native-safe-area-context";
-//Custom Imports
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from "@react-native-firebase/auth";
+// Custom Imports
 import { styles } from "../Styles";
 import {
   FadeInTransition,
@@ -24,12 +23,9 @@ import {
   ControlsBottom,
   SlideUpComponent,
 } from "../components";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import auth from "@react-native-firebase/auth";
-import { useServer } from "../utils/providers/ServerProvider";
 import { useDebounce } from "../utils";
-
+// Providers
+import { useServer } from "../utils/providers/ServerProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";

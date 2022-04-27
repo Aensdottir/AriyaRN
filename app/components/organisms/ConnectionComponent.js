@@ -1,16 +1,7 @@
 import React, { useRef } from "react";
 
-import {
-  Box as NBBox,
-  View,
-  Text,
-  Image,
-  Flex,
-  Spacer,
-  Pressable,
-} from "native-base";
+import { Image, Flex, Pressable } from "native-base";
 import { Animated } from "react-native";
-import LottieView from "lottie-react-native";
 
 export const ConnectionComponent = ({ onPressFunc }) => {
   const offsetY = useRef(new Animated.Value(10)).current;

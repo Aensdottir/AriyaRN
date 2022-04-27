@@ -1,7 +1,10 @@
-import { launchImageLibrary } from "react-native-image-picker";
 import { Box, Flex, Text, ScrollView } from "native-base";
+// Packages
+import { launchImageLibrary } from "react-native-image-picker";
+// Custom Imports
 import { ActiveAppTicker, ControlButton, SendImageCard } from "../atoms";
 import { UptimeText } from "./UptimeText";
+// Providers
 import { useServer } from "../../utils/providers/ServerProvider";
 
 export const ControlsView = (props) => {

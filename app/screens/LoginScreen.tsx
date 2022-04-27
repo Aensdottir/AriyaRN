@@ -1,4 +1,3 @@
-// React Imports
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {

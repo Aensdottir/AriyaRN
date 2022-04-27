@@ -5,17 +5,10 @@ import React, {
   useContext,
   useState,
 } from "react";
-
+// Packages
 import TcpSocket from "react-native-tcp-socket";
-import {
-  Base64Encode,
-  bin2String,
-  ForegroundAppTitle,
-  Sleep,
-  fadeIn,
-  fadeOut,
-} from "..";
-import { options, fadeInValue, fadeOutValue } from "../../constants";
+// Custom Imports
+import { options } from "../../constants";
 
 interface CounterContextType {
   TcpConnect: (command: string) => void;

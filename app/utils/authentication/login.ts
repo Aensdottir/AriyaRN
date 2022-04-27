@@ -1,8 +1,10 @@
+// Packages
 import auth from "@react-native-firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { validateEmail } from "./validateEmail";
-
 import * as RootNavigation from "../navigation/RootNavigation";
+
+// Custom Imports
+import { validateEmail } from "./validateEmail";
 
 const onLoginPress = (
   email: string,

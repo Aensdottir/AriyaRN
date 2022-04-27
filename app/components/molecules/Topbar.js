@@ -1,4 +1,4 @@
-import { Box as NBBox, View, Text, Image, Flex, Spacer } from "native-base";
+import { Text, Flex, Spacer } from "native-base";
 import { QuickAccessButton } from "../atoms";
 import { useServer } from "../../utils/providers/ServerProvider";
 

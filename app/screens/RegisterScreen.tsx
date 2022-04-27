@@ -11,7 +11,11 @@ import {
   AlertDialog,
   Flex,
 } from "native-base";
+// Packages
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
+// Custom Imports
 import {
   NameInput,
   EmailInput,
@@ -19,11 +23,6 @@ import {
   RegisterButton,
 } from "../components";
 import { styles } from "../Styles";
-import { useFonts } from "expo-font";
-
-import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
-
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";

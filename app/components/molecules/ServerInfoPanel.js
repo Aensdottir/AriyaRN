@@ -1,11 +1,11 @@
-import { Box as NBBox, Text } from "native-base";
+import { Box, Text } from "native-base";
 import { useServer } from "../../utils/providers/ServerProvider";
 
 export const ServerInfoPanel = () => {
   const { serverUptime } = useServer();
 
   return (
-    <NBBox
+    <Box
       pt={57}
       px={5}
       borderBottomRadius={25}
@@ -16,6 +16,6 @@ export const ServerInfoPanel = () => {
       <Text fontSize={20} textAlign={"right"}>
         {serverUptime}
       </Text>
-    </NBBox>
+    </Box>
   );
 };
