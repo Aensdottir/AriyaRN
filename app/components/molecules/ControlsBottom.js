@@ -13,7 +13,7 @@ export const ControlsBottom = (props) => {
       flexDirection={"row"}
       justify={"center"}
       alignItems={"center"}
-      margin={7}
+      margin={10}
     >
       <QuickAccessButton
         type={"ControlsBottom"}

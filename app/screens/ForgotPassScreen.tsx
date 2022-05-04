@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Flex,
+  Button,
 } from "native-base";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
@@ -27,26 +28,12 @@ import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-type Props = NativeStackScreenProps<RootStackParamList, "Login">;
+type Props = NativeStackScreenProps<RootStackParamList, "ForgotPass">;
 
 const LoginScreen = ({ route, navigation }: Props) => {
-  const {
-    signInError,
-    resetError,
-    signInWithEmailAndPassword,
-    sendResetPasswordEmail,
-  } = useUser();
-
-  const { setAlertOpen } = useCommon();
+  const { sendResetPasswordEmail, forgotPassText } = useUser();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    changeNavigationBarColor("#303145", true, true);
-    resetError();
-  }, []);
-
   return (
     <SafeAreaView style={[styles.loginContainer]}>
       <StatusBar
@@ -75,27 +62,52 @@ const LoginScreen = ({ route, navigation }: Props) => {
             flexGrow: 0.8,
           }}
         >
-          <View alignItems={"center"}>
-            <LoginScreenLogo />
-
-            <Text fontWeight={"bold"} color={"danger.500"}>
-              {signInError}
+          <View justifyContent={"center"} alignItems={"center"}>
+            <Text
+              fontFamily={"Kanit-Regular"}
+              fontSize={40}
+              textAlign={"center"}
+            >
+              Forgot
+            </Text>
+            <Text
+              top={-20}
+              fontFamily={"Kanit-Regular"}
+              fontSize={40}
+              textAlign={"center"}
+            >
+              Password?
             </Text>
 
+            <Text
+              top={-20}
+              fontSize={15}
+              textAlign={"center"}
+              color={"gray.300"}
+            >
+              {"Enter your email address below\nto reset your password."}
+            </Text>
+          </View>
+          <View alignItems={"center"} top={-10}>
+            <Text fontSize={15} textAlign={"center"} color={"main.red"}>
+              {forgotPassText}
+            </Text>
             <EmailInput onChangeText={(text: string) => setEmail(text)} />
-            <PasswordInput onChangeText={(text: string) => setPassword(text)} />
 
-            <ForgotPassword onPress={() => navigation.navigate("ForgotPass")} />
-
-            <LoginButton
-              onPress={() => signInWithEmailAndPassword({ email, password })}
-            />
+            <Button
+              bg={"main.red"}
+              top={30}
+              borderRadius={"full"}
+              h={50}
+              w={300}
+              onPress={() => sendResetPasswordEmail(email)}
+            >
+              <Text color={"white"}>Reset Password</Text>
+            </Button>
           </View>
         </ScrollView>
-        <LoginRedirectText navigation={navigation} type={"Register"} />
+        <LoginRedirectText navigation={navigation} type={"ForgotPass"} />
       </View>
-
-      <AlertDialogUnavailable />
     </SafeAreaView>
   );
 };

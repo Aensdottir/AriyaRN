@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -20,56 +20,24 @@ import {
   LoginRedirectText,
 } from "../components";
 import { styles } from "../Styles";
+// Providers
+import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 
 const RegisterScreen = ({ route, navigation }: Props) => {
-  const [show, setShow] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const cancelRef = React.useRef(null);
+  const { signUpError, resetError, createUserWithEmailAndPassword } = useUser();
 
-  const onClose = () => setIsOpen(false);
-
-  const handleClick = () => setShow(!show);
-
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const usersCollection = firestore().collection("Users");
+  useEffect(() => {
+    resetError();
+  }, []);
 
-  function onRegisterPress() {
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((response) => {
-        console.log("User account created");
-        const uid = response.user.uid;
-
-        firestore()
-          .collection("Users")
-          .doc(uid)
-          .set({
-            id: uid,
-            name: fullName,
-            email: email,
-          })
-          .then(() => {
-            console.log("User data added!");
-          });
-      })
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          console.log("That email address is already in use!");
-        }
-
-        if (error.code === "auth/invalid-email") {
-          console.log("That email address is invalid!");
-        }
-        console.error(error);
-      });
-  }
   return (
     <SafeAreaView style={[styles.loginContainer]}>
       <StatusBar
@@ -104,11 +72,19 @@ const RegisterScreen = ({ route, navigation }: Props) => {
             </Text>
           </View>
           <View alignItems={"center"}>
-            <NameInput onChangeText={(text: string) => setFullName(text)} />
+            <Text fontWeight={"bold"} color={"danger.500"}>
+              {signUpError}
+            </Text>
+
+            <NameInput onChangeText={(text: string) => setName(text)} />
             <EmailInput onChangeText={(text: string) => setEmail(text)} />
             <PasswordInput onChangeText={(text: string) => setPassword(text)} />
 
-            <RegisterButton onPress={() => onRegisterPress()} />
+            <RegisterButton
+              onPress={() =>
+                createUserWithEmailAndPassword({ email, password, name })
+              }
+            />
           </View>
         </ScrollView>
         <LoginRedirectText navigation={navigation} type={"Login"} />

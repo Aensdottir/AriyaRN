@@ -4,6 +4,25 @@ import { RootStackParamList } from "../../screens/RootStackParams";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export const LoginRedirectText = ({ navigation, type }) => {
+  // DEFAULTS
+  let text = "Already have an account?";
+  let redirect = "  Login";
+  let route = "Login";
+
+  switch (type) {
+    case "Login":
+      text = "Already have an account?";
+      break;
+    case "ForgotPass":
+      text = "Remember your password?";
+      break;
+    case "Register":
+      text = "Don't have an account?";
+      redirect = "  Sign Up";
+      route = "Register";
+      break;
+  }
+
   return (
     <View
       position={"absolute"}
@@ -12,15 +31,11 @@ export const LoginRedirectText = ({ navigation, type }) => {
       alignSelf={"center"}
     >
       <Text fontFamily={"Kanit-Regular"} color={"muted.300"}>
-        {type == "Register"
-          ? "Don't have an account?"
-          : "Already have an account?"}
+        {text}
       </Text>
       <Pressable
         alignItems={"center"}
-        onPress={() => {
-          navigation.navigate(type);
-        }}
+        onPress={() => navigation.navigate(route)}
       >
         {({ isPressed }) => {
           return (
@@ -28,7 +43,7 @@ export const LoginRedirectText = ({ navigation, type }) => {
               fontFamily={"Kanit-Regular"}
               color={isPressed ? "muted.400" : "#fff"}
             >
-              {type == "Register" ? "  Sign Up" : "  Login"}
+              {redirect}
             </Text>
           );
         }}

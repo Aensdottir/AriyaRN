@@ -16,13 +16,6 @@ const LoginButton = (props) => {
     </Button>
   );
 };
-const RegisterNavButton = (props) => {
-  return (
-    <Button bg={"white"} {...styles.loginScreen} {...props}>
-      <Text color={"red.500"}>Sign Up</Text>
-    </Button>
-  );
-};
 const RegisterButton = (props) => {
   return (
     <Button bg={"main.red"} {...styles.loginScreen} {...props}>
@@ -56,8 +49,8 @@ const QuickAccessButton = ({ type, onPressFunc, icon }) => {
         {({ isPressed }) => {
           return (
             <Flex
-              size={70}
-              bg={isPressed ? "main.bg.100" : "main.bg.50"}
+              size={60}
+              bg={isPressed ? "main.bg.100" : "main.bg.300"}
               justifyContent={"center"}
               borderRadius={20}
             >
@@ -70,4 +63,4 @@ const QuickAccessButton = ({ type, onPressFunc, icon }) => {
   }
 };
 
-export { LoginButton, RegisterNavButton, RegisterButton, QuickAccessButton };
+export { LoginButton, RegisterButton, QuickAccessButton };
