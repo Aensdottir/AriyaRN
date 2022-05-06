@@ -2,7 +2,7 @@ import { Text, Flex, Spacer } from "native-base";
 import { QuickAccessButton } from "../atoms";
 import { useServer } from "../../utils/providers/ServerProvider";
 
-export const Topbar = () => {
+export const Topbar = ({ navigation }) => {
   const { connectionText } = useServer();
   return (
     <Flex
@@ -31,6 +31,7 @@ export const Topbar = () => {
       <QuickAccessButton
         type={"TopBar"}
         icon={require("../../assets/images/UserIcon.png")}
+        onPressFunc={() => navigation.navigate("User")}
       />
     </Flex>
   );

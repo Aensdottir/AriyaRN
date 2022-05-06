@@ -94,8 +94,6 @@ const LoginScreen = ({ route, navigation }: Props) => {
         </ScrollView>
         <LoginRedirectText navigation={navigation} type={"Register"} />
       </View>
-
-      <AlertDialogUnavailable />
     </SafeAreaView>
   );
 };

@@ -8,7 +8,9 @@ import React, {
 // Packages
 import TcpSocket from "react-native-tcp-socket";
 // Custom Imports
-import { options } from "../../constants";
+import { fadeInValue, fadeOutValue, options } from "../../constants";
+import { Base64Encode, bin2String, Sleep } from "../server";
+import { fadeIn, fadeOut } from "../transitions";
 
 interface CounterContextType {
   TcpConnect: (command: string) => void;
@@ -46,43 +48,7 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
   const TcpConnect = (command: string) => {
     console.log("Start");
 
-    const client = TcpSocket.createConnection(options, () => {
-      console.log("Connect");
-      let i = 0;
-      const MAX_ITER = 1000;
-      write();
-      async function write() {
-        console.log("Write");
-        let ok = true;
-        while (i < MAX_ITER && ok) {
-          i++;
-          const buff = " ->" + command + "<- ";
-          ok = client.write(buff);
-          // await new Promise((resolve) => setTimeout(resolve, 50));
-          //console.log("Bytes sent", ok, buff, client.bytesWritten);
-        }
-        if (i >= MAX_ITER) {
-          client.destroy();
-        } else if (!ok) {
-          // Had to stop early!
-          // Write some more once it drains.
-          client.once("drain", write);
-        }
-      }
-    });
-
-    client.on("data", function (data) {
-      console.log("message was received", data);
-    });
-
-    client.on("error", function (error) {
-      console.log(error);
-    });
-
-    client.on("close", function () {
-      console.log("Connection closed!");
-    });
-    /*if (command == "connect") {
+    if (command == "connect") {
       setConnectionText("CONNECTING");
     } else if (command == "disconnect") {
       setConnectionText("DISCONNECTING");
@@ -90,49 +56,11 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
     // Connect
     console.log("Connect");
     const client = TcpSocket.createConnection(options, () => {
-      //let data = Base64Encode(command);
-      /*for (let i = 0; i < 100; i++) {
-        let data = command.slice(2048 * i, 2048 * (i + 1));
-        client.write(data);
-        console.log("A");
-      }*/
-
-    /* let i = 1000000;
-      write();
-      function write() {
-        console.log("Start");
-        let ok = true;
-        do {
-          i--;
-          if (i === 0) {
-            console.log("LAST");
-            // Last time!
-            client.write(command);
-          } else {
-            console.log("NORMAL");
-            // See if we should continue, or wait.
-            // Don't pass the callback, because we're not done yet.
-            ok = client.write(command);
-          }
-        } while (i > 0 && ok);
-        if (i > 0) {
-          console.log("DRAIN");
-          // Had to stop early!
-          // Write some more once it drains.
-          client.once("drain", () => write());
-        }
-      }*/
-
-    /*client.write(Base64Encode("AAA"));
-      client.once("drain", () => TcpConnect(command));
-      console.log("a");
-      client.write(Base64Encode("BBB"));
-      console.log("b");
-      client.write(Base64Encode("CCC") + "$");
-      console.log("c");
-    });*/
+      let data = Base64Encode(command);
+      client.write(data + "$");
+    });
     // On data received
-    /*client.on("data", function (data) {
+    client.on("data", (data: string | Buffer) => {
       client.destroy();
       const response = bin2String(data).split(",");
       const serverTime = response[0];
@@ -166,12 +94,12 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
         setToggle2(true);
         fadeOut(fadeInValue);
         fadeIn(fadeOutValue);
-      }*/
-    // LATENCY
-    /*if (command == "connect" || command == "latencyRefresh") {
+      }
+      // LATENCY
+      if (command == "connect" || command == "latencyRefresh") {
         Sleep(20000).then(() => TcpConnect("latencyRefresh"));
-      }*/
-    /*});
+      }
+    });
     client.on("error", function (error) {
       console.log(error);
       setConnectionText("NOT CONNECTED");
@@ -191,7 +119,7 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
     client.on("close", function () {
       console.log("Connection closed!");
       client.destroy();
-    });*/
+    });
   };
 
   return (
@@ -216,3 +144,39 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
 };
 
 export default ServerProvider;
+
+/*console.log("Connect");
+      let i = 0;
+      const MAX_ITER = 1;
+      write();
+      async function write() {
+        console.log("Write");
+        let ok = true;
+        while (i < MAX_ITER && ok) {
+          i++;
+          const buff = " ->" + command + "<- ";
+          ok = client.write(buff);
+          // await new Promise((resolve) => setTimeout(resolve, 50));
+          //console.log("Bytes sent", ok, buff, client.bytesWritten);
+        }
+        if (i >= MAX_ITER) {
+          client.destroy();
+        } else if (!ok) {
+          // Had to stop early!
+          // Write some more once it drains.
+          client.once("drain", write);
+        }
+      }
+    });
+
+    client.on("data", function (data) {
+      console.log("message was received", data);
+    });
+
+    client.on("error", function (error) {
+      console.log(error);
+    });
+
+    client.on("close", function () {
+      console.log("Connection closed!");
+    });*/

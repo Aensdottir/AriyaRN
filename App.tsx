@@ -8,6 +8,8 @@ import MainScreen from "./app/screens/MainScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import ForgotPassScreen from "./app/screens/ForgotPassScreen";
+import UserScreen from "./app/screens/UserScreen";
+
 import { navigationRef } from "./app/utils/navigation/RootNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -15,11 +17,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 import auth from "@react-native-firebase/auth";
 // Custom Imports
-import { validateEmail } from "./app/utils";
 import { ariyaTheme, mainConfig } from "./app/Styles";
 import fonts from "./app/assets/fonts/fonts";
 
-import UserProvider from "./app/utils/providers/UserProvider";
+// Providers
+import UserProvider, { useUser } from "./app/utils/providers/UserProvider";
 import CommonProvider from "./app/utils/providers/CommonProvider";
 import ServerProvider from "./app/utils/providers/ServerProvider";
 
@@ -30,26 +32,21 @@ import { RootStackParamList } from "./app/screens/RootStackParams";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
-  const [isLoggedIn, setLoggedIn] = React.useState(false);
+  const { isFirebaseInitializing } = useUser();
 
+  const [user, setUser] = useState();
+  function onAuthStateChanged(user: any) {
+    setUser(user);
+  }
   useEffect(() => {
     changeNavigationBarColor("#1b202a", true, true);
-
-    const loginData = async () => {
-      const jsonValue = await AsyncStorage.getItem("loginData");
-      const user = jsonValue != null ? JSON.parse(jsonValue) : null;
-      console.log(user);
-      if (user != null) {
-        auth().onAuthStateChanged((user) => {
-          if (user) {
-            setLoggedIn(true);
-          }
-        });
-      }
-    };
-    loginData();
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
   }, []);
+
   useFonts(fonts);
+
+  if (isFirebaseInitializing) return null;
   return (
     <UserProvider>
       <CommonProvider>
@@ -62,7 +59,7 @@ const App = () => {
                     headerShown: false,
                     animation: "fade_from_bottom",
                   }}
-                  initialRouteName={isLoggedIn ? "Main" : "Login"}
+                  initialRouteName={user ? "Main" : "Login"}
                 >
                   <Stack.Screen name="Login" component={LoginScreen} />
                   <Stack.Screen
@@ -77,6 +74,13 @@ const App = () => {
                     component={ForgotPassScreen}
                     options={{
                       animation: "slide_from_left",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="User"
+                    component={UserScreen}
+                    options={{
+                      animation: "slide_from_right",
                     }}
                   />
                   <Stack.Screen name="Main" component={MainScreen} />

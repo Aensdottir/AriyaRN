@@ -50,7 +50,7 @@ function ForegroundAppTitle(title: string) {
 function Sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-function bin2String(array: number[]) {
+function bin2String(array: any) {
   const base64encoded = String.fromCharCode.apply(String, array);
   const response = Buffer.from(base64encoded, "base64").toString();
   return response;
