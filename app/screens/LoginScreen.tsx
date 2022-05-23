@@ -37,14 +37,14 @@ const LoginScreen = ({ route, navigation }: Props) => {
     sendResetPasswordEmail,
   } = useUser();
 
-  const { setAlertOpen } = useCommon();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
     changeNavigationBarColor("#303145", true, true);
     resetError();
+    setEmail("");
+    setPassword("");
   }, []);
 
   return (

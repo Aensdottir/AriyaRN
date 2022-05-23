@@ -1,27 +1,57 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, StatusBar, Text, Flex, Icon, Pressable } from "native-base";
+import {
+  View,
+  StatusBar,
+  Text,
+  Flex,
+  Icon,
+  Pressable,
+  Input,
+  Box,
+  Modal,
+  FormControl,
+  Button,
+} from "native-base";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  Entypo,
+} from "@expo/vector-icons";
 // Custom Imports
-import { styles } from "../Styles";
+import { styles } from "../../Styles";
 // Providers
-import { useUser } from "../utils/providers/UserProvider";
+import { useUser } from "../../utils/providers/UserProvider";
 // React-Navigation
-import { RootStackParamList } from "./RootStackParams";
+import { RootStackParamList } from "../RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Alert, Platform } from "react-native";
-import { UserProfileView, VariableSettingButton } from "../components";
+import {
+  EditUserProfileView,
+  ProfilePicture,
+  UserProfileView,
+  VariableSettingButton,
+} from "../../components";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const UserScreen = ({ route, navigation }: Props) => {
-  const { userData, isEditingProfile, setIsEditingProfile, signOut } =
-    useUser();
+const AccountSettings = ({ route, navigation }: Props) => {
+  const {
+    userData,
+    isEditingProfile,
+    setIsEditingProfile,
+    signOut,
+    selectProfileImage,
+    changeName,
+  } = useUser();
 
   useEffect(() => {
     changeNavigationBarColor("#202531", true, true);
   }, []);
+
+  const [newName, setNewName] = useState(userData?.name);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <SafeAreaView style={[styles.loginContainer]}>
@@ -68,44 +98,45 @@ const UserScreen = ({ route, navigation }: Props) => {
             }}
           </Pressable>
           <Text fontSize={28} fontFamily={"Kanit-Regular"}>
-            Settings
+            Account Settings
           </Text>
         </View>
-        <Flex padding={6}>
-          <View mb={7}>
-            <UserProfileView />
-          </View>
-
+        <Flex padding={6} pt={0}>
+          <EditUserProfileView />
           <Flex
             py={2}
             w={"full"}
+            borderTopRadius={20}
             borderRadius={20}
             bg={"main.bg.300"}
             alignItems={"center"}
           >
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"General"}
+              primaryText={"Change Password"}
               secondaryText={null}
-              onPress={() => navigation.navigate("GeneralSettings")}
+              onPress={() => navigation.navigate("ChangePassword")}
             />
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"Account"}
+              primaryText={"Change Email"}
               secondaryText={null}
-              onPress={() => navigation.navigate("AccountSettings")}
+              onPress={() => navigation.navigate("ChangeEmail")}
             />
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"Security"}
+              primaryText={"Login History"}
               secondaryText={null}
-              onPress={() => navigation.navigate("AccountSettings")}
             />
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"Sign out"}
+              primaryText={"Usage History"}
               secondaryText={null}
-              onPress={() => signOut()}
+            />
+            <VariableSettingButton
+              type={"arrow"}
+              primaryText={"Account Deletion"}
+              secondaryText={null}
             />
           </Flex>
         </Flex>
@@ -114,7 +145,7 @@ const UserScreen = ({ route, navigation }: Props) => {
   );
 };
 
-export default UserScreen;
+export default AccountSettings;
 /*
           <Flex
             py={2}

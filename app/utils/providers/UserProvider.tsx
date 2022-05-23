@@ -36,9 +36,13 @@ export type UserData = {
 interface UserContextType {
   isFirebaseInitializing: boolean;
   userData: UserData | null;
+  isEditingProfile: boolean;
+  setIsEditingProfile: (value: boolean) => void;
   signInError: string;
   signUpError: string;
-  forgotPassText: string;
+  forgotPassError: string;
+  changePassError: string;
+  changeEmailError: string;
   signOut: () => void;
   resetError: () => void;
   signInWithEmailAndPassword: ({ email, password }: SignInInput) => void;
@@ -48,6 +52,9 @@ interface UserContextType {
     name,
   }: SignUpInput) => void;
   sendResetPasswordEmail: (email: string) => void;
+  changePassword: (currentPassword: string, newPassword: string) => void;
+  changeEmail: (currentPassword: string, newEmail: string) => void;
+  changeName: (newName: string) => void;
   selectProfileImage: () => void;
 }
 
@@ -65,16 +72,18 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [signInError, setSignInError] = React.useState("");
   const [signUpError, setSignUpError] = React.useState("");
-  const [forgotPassText, setForgotPassText] = React.useState("");
+  const [forgotPassError, setForgotPassError] = React.useState("");
+  const [changePassError, setChangePassError] = React.useState("");
+  const [changeEmailError, setChangeEmailError] = React.useState("");
   const [profileImage, setProfileImage] = React.useState("");
-
+  const [isEditingProfile, setIsEditingProfile] = React.useState(false);
   const signInWithEmailAndPassword = useCallback(
     async ({ email, password }: SignInInput) => {
-      if (validateEmail(email) == null) {
+      if (validateEmail(email.trim()) == null) {
         setSignInError("Invalid e-mail address format.");
       } else {
         auth()
-          .signInWithEmailAndPassword(email, password)
+          .signInWithEmailAndPassword(email.trim(), password)
           .then((response) => {
             console.log(response);
             RootNavigation.navigate("Main", undefined);
@@ -133,19 +142,105 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
       .sendPasswordResetEmail(email.trim())
       .then(() => {
         console.log("Password reset email sent successfully");
-        setForgotPassText("Password reset email sent successfully.");
+        setForgotPassError("Password reset email sent successfully.");
       })
       .catch((error) => {
         if (error.code === "auth/user-not-found") {
-          setForgotPassText("There is no user with this email address!");
+          setForgotPassError("There is no user with this email address!");
         }
         if (error.code === "auth/invalid-email") {
-          setForgotPassText("This email address is invalid!");
+          setForgotPassError("This email address is invalid!");
         }
         console.log(error);
       });
   }, []);
 
+  const changePassword = useCallback(
+    async (currentPassword: string, newPassword: string) => {
+      const provider = auth.EmailAuthProvider;
+      const authCredential =
+        userData && provider.credential(userData.email, currentPassword);
+
+      let user = auth().currentUser;
+
+      if (authCredential)
+        user
+          ?.reauthenticateWithCredential(authCredential)
+          .then(() => {
+            user
+              ?.updatePassword(newPassword)
+              .then(() => {
+                console.log("Password updated!");
+              })
+              .catch((error) => {
+                console.log(error);
+                setChangePassError(error);
+              });
+          })
+          .catch((error: any) => {
+            console.log(error);
+            setChangePassError(error);
+          });
+    },
+    []
+  );
+
+  const changeEmail = useCallback(
+    async (currentPassword: string, newEmail: string) => {
+      if (validateEmail(newEmail)) {
+        try {
+          const provider = auth.EmailAuthProvider;
+          const authCredential =
+            userData && provider.credential(userData.email, currentPassword);
+
+          let user = auth().currentUser;
+          console.log(1);
+          if (authCredential) {
+            console.log(2);
+            user
+              ?.reauthenticateWithCredential(authCredential)
+              .then(() => {
+                user
+                  ?.updateEmail(newEmail)
+                  .then(() => {
+                    console.log("Email updated!");
+                  })
+                  .catch((error) => {
+                    console.log("ERROR>", error);
+                    setChangeEmailError(error);
+                  });
+              })
+              .catch((error) => {
+                console.log("ERROR>2", error);
+                setChangeEmailError(error);
+              });
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        setChangeEmailError("Invalid Email address.");
+        console.log("invalid");
+      }
+    },
+    []
+  );
+
+  const changeName = useCallback(async (newName: string) => {
+    try {
+      await firestore().collection("Users").doc(userData?.id).set({
+        email: userData?.email,
+        id: userData?.id,
+        name: newName,
+      });
+
+      // Update
+      userData && // Typescript bug
+        setUserData({ ...userData, name: newName });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   const signOut = useCallback(async () => {
     try {
       auth().signOut();
@@ -163,9 +258,14 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         .get();
       const data = documentSnapshot.data();
 
-      const profileImageUrl = await storage()
-        .ref(firebaseUser.uid)
-        .getDownloadURL();
+      let profileImageUrl: string = "";
+      try {
+        profileImageUrl = await storage()
+          .ref(firebaseUser.uid)
+          .getDownloadURL();
+      } catch (error) {
+        console.log("Image fetch error:", error);
+      }
 
       setUserData(() => ({
         email: data?.email ?? null,
@@ -174,7 +274,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         profileImageUrl: profileImageUrl ?? null,
       }));
     } catch (error) {
-      console.log(error);
+      console.log("Refetch error:", error);
       await signOut();
     }
   }, []);
@@ -209,19 +309,14 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
           ? uri.replace("file://", "")
           : uri.replace("file:///", "file://");
       const task = storage().ref(userData?.id).putFile(uploadUri.toString());
-      try {
-        await task;
-        console.log("id", userData?.id);
-        const profileImageUrl = await storage()
-          .ref(userData?.id)
-          .getDownloadURL();
-
-        // Update
-        userData &&
-          setUserData({ ...userData, profileImageUrl: profileImageUrl });
-      } catch (e) {
-        console.error("Fetch error:", e);
-      }
+      await task;
+      console.log("id", userData?.id);
+      const profileImageUrl = await storage()
+        .ref(userData?.id)
+        .getDownloadURL();
+      // Update
+      userData && // Typescript bug
+        setUserData({ ...userData, profileImageUrl: profileImageUrl });
     } catch (error) {
       console.error(error);
     }
@@ -230,7 +325,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
   const resetError = () => {
     setSignInError("");
     setSignUpError("");
-    setForgotPassText("");
+    setForgotPassError("");
   };
 
   const validateEmail = (email: string) => {
@@ -247,10 +342,8 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         void (async () => {
           await refetchAndSetUserData(firebaseUser);
           setIsFirebaseInitializing(false);
-          console.log("Logged in");
         })();
       } else {
-        console.log("Not logged in");
         setUserData(null);
         setIsFirebaseInitializing(false);
       }
@@ -263,14 +356,21 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
       value={{
         isFirebaseInitializing,
         userData,
+        isEditingProfile,
+        setIsEditingProfile,
         signOut,
         signInError,
         signUpError,
-        forgotPassText,
+        forgotPassError,
         resetError,
+        changeEmailError,
+        changePassError,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
         sendResetPasswordEmail,
+        changePassword,
+        changeEmail,
+        changeName,
         selectProfileImage,
       }}
     >

@@ -32,7 +32,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "Main">;
 
 const MainScreen = ({ route, navigation }: Props) => {
   const { TcpConnect, toggle, setToggle } = useServer();
-  const { signOut, userData } = useUser();
+  const { userData } = useUser();
   const { debounce } = useDebounce(); // Prevent button double click
 
   useEffect(() => {
@@ -48,7 +48,6 @@ const MainScreen = ({ route, navigation }: Props) => {
         barStyle={"light-content"}
         // Color inherited from styles.container
       />
-      <Button onPress={() => signOut()}></Button>
 
       <Flex flex={1} bg={"main.bg.50"}>
         <Flex

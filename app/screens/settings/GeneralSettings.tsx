@@ -5,17 +5,17 @@ import { View, StatusBar, Text, Flex, Icon, Pressable } from "native-base";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 import { MaterialIcons, Entypo } from "@expo/vector-icons";
 // Custom Imports
-import { styles } from "../Styles";
+import { styles } from "../../Styles";
 // Providers
-import { useUser } from "../utils/providers/UserProvider";
+import { useUser } from "../../utils/providers/UserProvider";
 // React-Navigation
-import { RootStackParamList } from "./RootStackParams";
+import { RootStackParamList } from "../RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Alert, Platform } from "react-native";
-import { UserProfileView, VariableSettingButton } from "../components";
+import { UserProfileView, VariableSettingButton } from "../../components";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
-const UserScreen = ({ route, navigation }: Props) => {
+const GeneralSettings = ({ route, navigation }: Props) => {
   const { userData, isEditingProfile, setIsEditingProfile, signOut } =
     useUser();
 
@@ -68,14 +68,10 @@ const UserScreen = ({ route, navigation }: Props) => {
             }}
           </Pressable>
           <Text fontSize={28} fontFamily={"Kanit-Regular"}>
-            Settings
+            General Settings
           </Text>
         </View>
         <Flex padding={6}>
-          <View mb={7}>
-            <UserProfileView />
-          </View>
-
           <Flex
             py={2}
             w={"full"}
@@ -85,27 +81,23 @@ const UserScreen = ({ route, navigation }: Props) => {
           >
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"General"}
+              primaryText={"Theme"}
               secondaryText={null}
-              onPress={() => navigation.navigate("GeneralSettings")}
             />
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"Account"}
+              primaryText={""}
               secondaryText={null}
-              onPress={() => navigation.navigate("AccountSettings")}
             />
             <VariableSettingButton
               type={"arrow"}
-              primaryText={"Security"}
+              primaryText={""}
               secondaryText={null}
-              onPress={() => navigation.navigate("AccountSettings")}
             />
             <VariableSettingButton
-              type={"arrow"}
-              primaryText={"Sign out"}
-              secondaryText={null}
-              onPress={() => signOut()}
+              type={""}
+              primaryText={"Version"}
+              secondaryText={"1.0.0"}
             />
           </Flex>
         </Flex>
@@ -114,7 +106,7 @@ const UserScreen = ({ route, navigation }: Props) => {
   );
 };
 
-export default UserScreen;
+export default GeneralSettings;
 /*
           <Flex
             py={2}

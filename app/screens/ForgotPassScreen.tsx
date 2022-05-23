@@ -30,8 +30,8 @@ import { RootStackParamList } from "./RootStackParams";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "ForgotPass">;
 
-const LoginScreen = ({ route, navigation }: Props) => {
-  const { sendResetPasswordEmail, forgotPassText } = useUser();
+const ForgotPassScreen = ({ route, navigation }: Props) => {
+  const { sendResetPasswordEmail, forgotPassError } = useUser();
 
   const [email, setEmail] = useState("");
   return (
@@ -90,7 +90,7 @@ const LoginScreen = ({ route, navigation }: Props) => {
           </View>
           <View alignItems={"center"} top={-10}>
             <Text fontSize={15} textAlign={"center"} color={"main.red"}>
-              {forgotPassText}
+              {forgotPassError}
             </Text>
             <EmailInput onChangeText={(text: string) => setEmail(text)} />
 
@@ -112,4 +112,4 @@ const LoginScreen = ({ route, navigation }: Props) => {
   );
 };
 
-export default LoginScreen;
+export default ForgotPassScreen;

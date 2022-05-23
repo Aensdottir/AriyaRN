@@ -9,3 +9,6 @@ export * from "./SendImageCard";
 export * from "./LoginInput";
 export * from "./LoginScreenLogo";
 export * from "./LoginRedirectText";
+export * from "./ProfilePicture";
+export * from "./VariableSettingButton";
+export * from "./UserProfileView";

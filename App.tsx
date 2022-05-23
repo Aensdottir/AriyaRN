@@ -9,6 +9,10 @@ import LoginScreen from "./app/screens/LoginScreen";
 import RegisterScreen from "./app/screens/RegisterScreen";
 import ForgotPassScreen from "./app/screens/ForgotPassScreen";
 import UserScreen from "./app/screens/UserScreen";
+import GeneralSettings from "./app/screens/settings/GeneralSettings";
+import AccountSettings from "./app/screens/settings/AccountSettings";
+import ChangePassword from "./app/screens/settings/ChangePassword";
+import ChangeEmail from "./app/screens/settings/ChangeEmail";
 
 import { navigationRef } from "./app/utils/navigation/RootNavigation";
 import { NavigationContainer } from "@react-navigation/native";
@@ -44,9 +48,9 @@ const App = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  useFonts(fonts);
+  let [fontsLoaded] = useFonts(fonts);
 
-  if (isFirebaseInitializing) return null;
+  if (isFirebaseInitializing && !fontsLoaded) return null;
   return (
     <UserProvider>
       <CommonProvider>
@@ -79,6 +83,34 @@ const App = () => {
                   <Stack.Screen
                     name="User"
                     component={UserScreen}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="GeneralSettings"
+                    component={GeneralSettings}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="AccountSettings"
+                    component={AccountSettings}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChangePassword"
+                    component={ChangePassword}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ChangeEmail"
+                    component={ChangeEmail}
                     options={{
                       animation: "slide_from_right",
                     }}
