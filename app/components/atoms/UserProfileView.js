@@ -48,14 +48,14 @@ export const EditUserProfileView = () => {
     <View mt={5} alignItems={"center"} justifyContent={"center"}>
       <View>
         <View overflow={"hidden"} borderRadius={"full"}>
-          <ProfilePicture size={130} borderWidth={2} borderColor={"white"} />
+          <ProfilePicture size={130} borderWidth={2} borderColor={"main.red"} />
           <Box
             borderRadius={"full"}
             position={"absolute"}
             bottom={0}
             right={0}
             borderWidth={2}
-            borderColor={"white"}
+            borderColor={"main.red"}
             bg={"main.bg.300"}
             size={37}
           />
@@ -136,7 +136,7 @@ export const EditUserProfileView = () => {
                 _pressed={{ bg: "main.bg.400" }}
                 onPress={() => {
                   setShowModal(false);
-                  newName && changeName(newName);
+                  changeName(newName);
                 }}
               >
                 <Text

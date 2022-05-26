@@ -127,6 +127,7 @@ const AccountSettings = ({ route, navigation }: Props) => {
               type={"arrow"}
               primaryText={"Login History"}
               secondaryText={null}
+              onPress={() => navigation.navigate("LoginHistory")}
             />
             <VariableSettingButton
               type={"arrow"}
@@ -137,6 +138,7 @@ const AccountSettings = ({ route, navigation }: Props) => {
               type={"arrow"}
               primaryText={"Account Deletion"}
               secondaryText={null}
+              onPress={() => navigation.navigate("AccountDeletion")}
             />
           </Flex>
         </Flex>

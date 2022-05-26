@@ -13,6 +13,8 @@ import GeneralSettings from "./app/screens/settings/GeneralSettings";
 import AccountSettings from "./app/screens/settings/AccountSettings";
 import ChangePassword from "./app/screens/settings/ChangePassword";
 import ChangeEmail from "./app/screens/settings/ChangeEmail";
+import LoginHistory from "./app/screens/settings/LoginHistory";
+import AccountDeletion from "./app/screens/settings/AccountDeletion";
 
 import { navigationRef } from "./app/utils/navigation/RootNavigation";
 import { NavigationContainer } from "@react-navigation/native";
@@ -111,6 +113,20 @@ const App = () => {
                   <Stack.Screen
                     name="ChangeEmail"
                     component={ChangeEmail}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="LoginHistory"
+                    component={LoginHistory}
+                    options={{
+                      animation: "slide_from_right",
+                    }}
+                  />
+                  <Stack.Screen
+                    name="AccountDeletion"
+                    component={AccountDeletion}
                     options={{
                       animation: "slide_from_right",
                     }}

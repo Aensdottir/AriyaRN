@@ -51,6 +51,7 @@ interface UserContextType {
     password,
     name,
   }: SignUpInput) => void;
+  deleteUser: (password: string, confirmPassword: string) => void;
   sendResetPasswordEmail: (email: string) => void;
   changePassword: (currentPassword: string, newPassword: string) => void;
   changeEmail: (currentPassword: string, newEmail: string) => void;
@@ -77,6 +78,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
   const [changeEmailError, setChangeEmailError] = React.useState("");
   const [profileImage, setProfileImage] = React.useState("");
   const [isEditingProfile, setIsEditingProfile] = React.useState(false);
+
   const signInWithEmailAndPassword = useCallback(
     async ({ email, password }: SignInInput) => {
       if (validateEmail(email.trim()) == null) {
@@ -86,6 +88,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
           .signInWithEmailAndPassword(email.trim(), password)
           .then((response) => {
             console.log(response);
+            addLoginEntry(true);
             RootNavigation.navigate("Main", undefined);
           })
           .catch((error) => {
@@ -124,6 +127,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
           })
           .then(() => {
             console.log("User data added!");
+            RootNavigation.navigate("LoginScreen");
           });
       })
       .catch((error) => {
@@ -136,6 +140,40 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         console.log(error);
       });
   };
+  const deleteUser = useCallback(
+    async (password: string, confirmPassword: string) => {
+      if (password === confirmPassword) {
+        try {
+          const provider = auth.EmailAuthProvider;
+          const authCredential =
+            userData && provider.credential(userData.email, password);
+
+          let user = auth().currentUser;
+          if (authCredential) {
+            user
+              ?.reauthenticateWithCredential(authCredential)
+              .then(() => {
+                user
+                  ?.delete()
+                  .then(() => {
+                    console.log("Account deleted");
+                    RootNavigation.navigate("LoginScreen");
+                  })
+                  .catch((error) => {
+                    console.log("ACCOUNT DELETION ERROR", error);
+                  });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      } else console.log("Password Mismatch");
+    },
+    []
+  );
 
   const sendResetPasswordEmail = useCallback(async (email: string) => {
     auth()
@@ -194,9 +232,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
             userData && provider.credential(userData.email, currentPassword);
 
           let user = auth().currentUser;
-          console.log(1);
           if (authCredential) {
-            console.log(2);
             user
               ?.reauthenticateWithCredential(authCredential)
               .then(() => {
@@ -228,19 +264,19 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
 
   const changeName = useCallback(async (newName: string) => {
     try {
+      // Update
+      userData && // Typescript bug
+        setUserData({ ...userData, name: newName });
       await firestore().collection("Users").doc(userData?.id).set({
         email: userData?.email,
         id: userData?.id,
         name: newName,
       });
-
-      // Update
-      userData && // Typescript bug
-        setUserData({ ...userData, name: newName });
     } catch (error) {
       console.log(error);
     }
   }, []);
+
   const signOut = useCallback(async () => {
     try {
       auth().signOut();
@@ -252,12 +288,17 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
 
   const refetchAndSetUserData = useCallback(async (firebaseUser) => {
     try {
+      // Fetch user data
       const documentSnapshot = await firestore()
         .collection("Users")
         .doc(firebaseUser.uid)
         .get();
       const data = documentSnapshot.data();
 
+      // Add user login entry to firebase
+      addLoginEntry(false);
+
+      // Fetch user profile picture
       let profileImageUrl: string = "";
       try {
         profileImageUrl = await storage()
@@ -267,6 +308,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         console.log("Image fetch error:", error);
       }
 
+      // Set local user data
       setUserData(() => ({
         email: data?.email ?? null,
         id: data?.id ?? null,
@@ -276,6 +318,39 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
     } catch (error) {
       console.log("Refetch error:", error);
       await signOut();
+    }
+  }, []);
+
+  const addLoginEntry = useCallback(async (isNewLogin: boolean) => {
+    try {
+      const firebaseUser = auth().currentUser;
+      const date = new Date();
+      const loginDateTime =
+        date.toLocaleDateString() + "/" + date.toLocaleTimeString("en-GB");
+      console.log(loginDateTime);
+
+      // Add user login entries from firebase
+      await firestore()
+        .collection("Users")
+        .doc(firebaseUser?.uid)
+        .collection("loginEntries")
+        .doc(date.getTime().toString())
+        .set({
+          time: loginDateTime,
+          type: isNewLogin ? "newLogin" : "prevLogin",
+        });
+
+      // Load user login entries from firebase
+      /*const loginEntriesSnapshot = await firestore()
+        .collection("Users")
+        .doc(firebaseUser?.uid)
+        .collection("loginEntries")
+        .get();
+      loginEntriesSnapshot.forEach((doc) => {
+        console.log(doc.data());
+      });*/
+    } catch (error) {
+      console.log(error);
     }
   }, []);
 
@@ -367,6 +442,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         changePassError,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
+        deleteUser,
         sendResetPasswordEmail,
         changePassword,
         changeEmail,

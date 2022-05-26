@@ -8,4 +8,6 @@ export type RootStackParamList = {
   AccountSettings: undefined;
   ChangePassword: undefined;
   ChangeEmail: undefined;
+  LoginHistory: undefined;
+  AccountDeletion: undefined;
 };
