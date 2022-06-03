@@ -30,6 +30,7 @@ export type UserData = {
   email: string;
   id: string;
   name: string;
+  deviceIpAddress: string;
   profileImageUrl: string;
 };
 
@@ -127,7 +128,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
           })
           .then(() => {
             console.log("User data added!");
-            RootNavigation.navigate("LoginScreen");
+            RootNavigation.navigate("Login");
           });
       })
       .catch((error) => {
@@ -157,7 +158,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
                   ?.delete()
                   .then(() => {
                     console.log("Account deleted");
-                    RootNavigation.navigate("LoginScreen");
+                    RootNavigation.navigate("Login");
                   })
                   .catch((error) => {
                     console.log("ACCOUNT DELETION ERROR", error);
@@ -265,8 +266,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
   const changeName = useCallback(async (newName: string) => {
     try {
       // Update
-      userData && // Typescript bug
-        setUserData({ ...userData, name: newName });
+      userData && setUserData({ ...userData, name: newName });
       await firestore().collection("Users").doc(userData?.id).set({
         email: userData?.email,
         id: userData?.id,
@@ -313,6 +313,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         email: data?.email ?? null,
         id: data?.id ?? null,
         name: data?.name ?? null,
+        deviceIpAddress: "78.98.51.11",
         profileImageUrl: profileImageUrl ?? null,
       }));
     } catch (error) {
@@ -390,7 +391,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
         .ref(userData?.id)
         .getDownloadURL();
       // Update
-      userData && // Typescript bug
+      userData &&
         setUserData({ ...userData, profileImageUrl: profileImageUrl });
     } catch (error) {
       console.error(error);
@@ -425,7 +426,7 @@ const UserProvider: FunctionComponent<Props> = ({ children }) => {
     });
     return subscribe;
   }, []);
-
+  //a
   return (
     <UserContext.Provider
       value={{

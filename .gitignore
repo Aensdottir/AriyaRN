@@ -55,4 +55,5 @@ web-build/
 dist/
 
 # Custom
-app/assets/non-compile-assets/
+app/assets/non-compile-assets/  
+android/app/google-services.json

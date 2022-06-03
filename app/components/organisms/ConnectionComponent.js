@@ -17,10 +17,8 @@ export const ConnectionComponent = ({ onPressFunc }) => {
 
   return (
     <Flex
-      position={"absolute"}
       justifyContent={"center"}
       alignItems={"center"}
-      top={-105}
       size={210}
       borderRadius={"full"}
       bg={"main.bg.300"}
@@ -29,14 +27,6 @@ export const ConnectionComponent = ({ onPressFunc }) => {
         {({ isPressed }) => {
           return (
             <Flex alignItems={"center"}>
-              <Image
-                position={"absolute"}
-                top={60}
-                w={250}
-                resizeMode={"contain"}
-                source={require("../../assets/images/CornerSmooth.png")}
-                alt="."
-              />
               <Flex
                 bg={"red.500"}
                 size={175}

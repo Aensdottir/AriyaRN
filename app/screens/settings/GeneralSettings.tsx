@@ -19,10 +19,6 @@ const GeneralSettings = ({ route, navigation }: Props) => {
   const { userData, isEditingProfile, setIsEditingProfile, signOut } =
     useUser();
 
-  useEffect(() => {
-    changeNavigationBarColor("#202531", true, true);
-  }, []);
-
   return (
     <SafeAreaView style={[styles.loginContainer]}>
       <StatusBar

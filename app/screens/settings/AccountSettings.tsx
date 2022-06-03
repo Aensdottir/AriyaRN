@@ -46,10 +46,6 @@ const AccountSettings = ({ route, navigation }: Props) => {
     changeName,
   } = useUser();
 
-  useEffect(() => {
-    changeNavigationBarColor("#202531", true, true);
-  }, []);
-
   const [newName, setNewName] = useState(userData?.name);
   const [showModal, setShowModal] = useState(false);
 

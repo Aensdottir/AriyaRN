@@ -61,10 +61,3 @@ export const borderRadius2 = draggedValue.interpolate({
   outputRange: [60, 0],
   extrapolate: "clamp",
 });
-
-//Server
-export const options = {
-  port: 10144,
-  host: "78.98.69.227",
-  reuseAddress: true,
-};

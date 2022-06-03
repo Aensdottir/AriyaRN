@@ -20,7 +20,7 @@ const UserScreen = ({ route, navigation }: Props) => {
     useUser();
 
   useEffect(() => {
-    changeNavigationBarColor("#202531", true, true);
+    changeNavigationBarColor("#303145", true, true);
   }, []);
 
   return (
