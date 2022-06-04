@@ -1,44 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Image as RNImage } from "react-native";
-import {
-  Flex,
-  StatusBar,
-  Button,
-  Image,
-  Box,
-  useScreenReaderEnabled,
-  Pressable,
-  Icon,
-  Text,
-} from "native-base";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Button, Flex, Icon, Pressable, StatusBar, Text } from "native-base";
+import React, { useEffect } from "react";
+import FadeInOut from "react-native-fade-in-out";
+import changeNavigationBarColor from "react-native-navigation-bar-color";
 // Packages
 import { SafeAreaView } from "react-native-safe-area-context";
-import changeNavigationBarColor from "react-native-navigation-bar-color";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import auth from "@react-native-firebase/auth";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo,
-} from "@expo/vector-icons";
-import FadeInOut from "react-native-fade-in-out";
 // Custom Imports
 import { styles } from "../Styles";
-import {
-  Topbar,
-  ConnectionComponent,
-  ControlsBottom,
-  SlideUpComponent,
-  FadeInTransition,
-} from "../components";
-import { useDebounce } from "../utils";
 // Providers
 import { useServer } from "../utils/providers/ServerProvider";
 import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { TextEncoderStream } from "stream/web";
 type Props = NativeStackScreenProps<RootStackParamList, "Main">;
 
 const MainScreen = ({ route, navigation }: Props) => {
@@ -54,10 +28,7 @@ const MainScreen = ({ route, navigation }: Props) => {
     focusedApp,
     connectionText,
   } = useServer();
-  const { userData, isFirebaseInitializing } = useUser();
-  const { debounce } = useDebounce(); // Prevent button double click
-
-  const [visible, setVisible] = useState(false);
+  const { userData } = useUser();
 
   useEffect(() => {
     changeNavigationBarColor("#303145", true, true);
@@ -286,74 +257,3 @@ const MainScreen = ({ route, navigation }: Props) => {
 };
 
 export default MainScreen;
-
-/*<Flex>{"Is connected? " + isConnected}</Flex>
-            <Flex>{"add lock state"}</Flex>
-            <Flex>{"lockState " + isDeviceLocked}</Flex>
-            <Flex>{"uptime " + deviceUptime}</Flex>
-            <Flex>{"focusedApp " + focusedApp}</Flex>
-            <ConnectionComponent onPressFunc={() => startConnection()} />
-            <Button
-              isDisabled={!isConnected || isCommunicating}
-              onPress={() => writeToServer("Write")}
-            >
-              Write to server
-            </Button>
-            <Button
-              isDisabled={!isConnected || isCommunicating}
-              onPress={() => writeToServer("lock")}
-            >
-              Lock
-            </Button>
-            <Button
-              isDisabled={!isConnected || isCommunicating}
-              onPress={() => refetchServerData()}
-            >
-              Refetch server data
-            </Button>
-            <Button
-              isDisabled={!isConnected || isCommunicating}
-              onPress={() => endConnection()}
-            >
-              DISCONNECT
-            </Button>*/
-
-/*              <FadeInOut visible={visible} duration={visible ? 2500 : 1000}>
-                <Button
-                  borderRadius={"full"}
-                  borderColor={"main.red"}
-                  h={50}
-                  variant={"outline"}
-                  mb={5}
-                >
-                  <Text color={"white"} fontFamily={"Montserrat-Medium"}>
-                    Lock
-                  </Text>
-                </Button>
-              </FadeInOut>
-              <FadeInOut visible={visible} duration={1750}>
-                <Button
-                  borderRadius={"full"}
-                  borderColor={"main.red"}
-                  h={50}
-                  variant={"outline"}
-                  mb={5}
-                >
-                  <Text color={"white"} fontFamily={"Montserrat-Medium"}>
-                    Restart
-                  </Text>
-                </Button>
-              </FadeInOut>
-              <FadeInOut visible={visible} duration={visible ? 1000 : 2500}>
-                <Button
-                  borderRadius={"full"}
-                  borderColor={"main.red"}
-                  h={50}
-                  variant={"outline"}
-                  mb={5}
-                >
-                  <Text color={"white"} fontFamily={"Montserrat-Medium"}>
-                    Shutdown
-                  </Text>
-                </Button>
-              </FadeInOut>*/

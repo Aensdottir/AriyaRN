@@ -1,5 +1,5 @@
-import { View, Text, Spacer, Icon, Switch, Pressable } from "native-base";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { Icon, Pressable, Spacer, Switch, Text, View } from "native-base";
 
 export const VariableSettingButton = ({
   type,

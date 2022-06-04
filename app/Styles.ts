@@ -1,6 +1,6 @@
 "use strict";
 import { extendTheme } from "native-base";
-import { StyleSheet, Dimensions } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 const ariyaTheme = extendTheme({
   colors: {

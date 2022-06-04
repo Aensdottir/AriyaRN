@@ -1,4 +1,4 @@
-import { Box, Image, View, Flex, Text, Spacer } from "native-base";
+import { Box } from "native-base";
 import TextTicker from "react-native-text-ticker";
 import { useServer } from "../../utils/providers/ServerProvider";
 

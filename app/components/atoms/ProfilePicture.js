@@ -1,4 +1,4 @@
-import { View, Image, Pressable, Flex, Box } from "native-base";
+import { Flex, Image, Pressable, View } from "native-base";
 // Providers
 import { useUser } from "../../utils/providers/UserProvider";
 

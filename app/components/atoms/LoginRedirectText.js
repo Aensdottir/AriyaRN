@@ -1,7 +1,4 @@
-import { View, Text, Pressable } from "native-base";
-// React-Navigation
-import { RootStackParamList } from "../../screens/RootStackParams";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Pressable, Text, View } from "native-base";
 
 export const LoginRedirectText = ({ navigation, type }) => {
   // DEFAULTS

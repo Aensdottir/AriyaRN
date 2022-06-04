@@ -8,10 +8,7 @@ import React, {
 } from "react";
 // Packages
 import TcpSocket from "react-native-tcp-socket";
-// Custom Imports
-import { fadeInValue, fadeOutValue } from "../../constants";
-import { Base64Encode, bin2String, Sleep } from "../common";
-import { fadeIn, fadeOut } from "../transitions";
+import { Base64Encode, bin2String } from "../common";
 import { useUser } from "./UserProvider";
 
 interface ServerContextType {
@@ -208,78 +205,3 @@ const ServerProvider: FunctionComponent<Props> = ({ children }) => {
 };
 
 export default ServerProvider;
-/*const TcpConnect = (command: string) => {
-  console.log("Start");
-
-  if (command == "connect") {
-    setConnectionText("CONNECTING");
-  } else if (command == "disconnect") {
-    setConnectionText("DISCONNECTING");
-  }
-  // Connect
-  console.log("Connect");
-  client = createConnection(options, () => {
-    let data = Base64Encode(command);
-    client.write("ONE" + "$");
-    //Sleep(120000).then(() => client.write("TWO" + "$"));
-  });
-  // On data received
-  client.on("data", (data: string | Buffer) => {
-    const response = bin2String(data).split(",");
-    const serverTime = response[0];
-    const compUptime = response[1];
-    //const foregroundApp = ForegroundAppTitle(response[2]);
-
-    setServerTime(serverTime); // For latency
-
-    console.log("message was received", response);
-    console.log("compUptime", compUptime);
-    //setAppMainTitle(foregroundApp[0]);
-    //setAppSubTitle(foregroundApp[1]);
-    setToggle(!toggle);
-    setToggle2(false);
-    setButtonEnabled(true);
-
-    // CONNECT
-    if (command == "connect") {
-      setConnected(true);
-      setConnectionText("CONNECTED");
-      setServerUptime(compUptime);
-
-      fadeIn(fadeInValue);
-      Sleep(500).then(() => fadeOut(fadeOutValue));
-    }
-    // DISCONNECT
-    else if (command == "disconnect") {
-      setConnected(false);
-      setConnectionText("NOT CONNECTED");
-      setServerTime("00:00:00");
-      setToggle2(true);
-      fadeOut(fadeInValue);
-      fadeIn(fadeOutValue);
-    }
-    // LATENCY
-    if (command == "connect" || command == "latencyRefresh") {
-      Sleep(20000).then(() => TcpConnect("latencyRefresh"));
-    }
-  });
-  client.on("error", function (error) {
-    console.log(error);
-    setConnectionText("NOT CONNECTED");
-    setConnected(false);
-  });
-  client.on("timeout", () => {
-    console.log("socket timeout");
-    if (command == "latencyRefresh") {
-      setConnectionText("NOT CONNECTED");
-    } else {
-      setConnectionText("CONNECTION FAILED");
-      setConnected(false);
-      setButtonEnabled(true);
-    }
-    setToggle(true);
-  });
-  client.on("close", function () {
-    console.log("Connection closed!");
-  });
-};*/

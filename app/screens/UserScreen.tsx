@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View, StatusBar, Text, Flex, Icon, Pressable } from "native-base";
+import { Entypo } from "@expo/vector-icons";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Flex, Icon, Pressable, StatusBar, Text, View } from "native-base";
+import React, { useEffect } from "react";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { UserProfileView, VariableSettingButton } from "../components";
 // Custom Imports
 import { styles } from "../Styles";
 // Providers
 import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Alert, Platform } from "react-native";
-import { UserProfileView, VariableSettingButton } from "../components";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const UserScreen = ({ route, navigation }: Props) => {
@@ -115,34 +114,3 @@ const UserScreen = ({ route, navigation }: Props) => {
 };
 
 export default UserScreen;
-/*
-          <Flex
-            py={2}
-            h={"100%"}
-            w={"full"}
-            borderTopRadius={20}
-            bg={"main.bg.300"}
-            alignItems={"center"}
-          >
-            <VariableSettingButton
-              type={"arrow"}
-              primaryText={"Personal information"}
-              secondaryText={null}
-            />
-            <VariableSettingButton
-              type={"switch"}
-              primaryText={"App Theme"}
-              secondaryText={"Dark"}
-            />
-            <VariableSettingButton
-              type={"arrow"}
-              primaryText={"Device IP Address"}
-              secondaryText={"78.98.69.227"}
-            />
-            <VariableSettingButton
-              type={"arrow"}
-              primaryText={"Log out"}
-              secondaryText={null}
-              onPress={() => signOut()}
-            />
-          </Flex>*/

@@ -1,20 +1,20 @@
-import React, {
-  createContext,
-  FunctionComponent,
-  ReactNode,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from "react";
-import { Image, Platform } from "react-native";
-// Packages
-import * as RootNavigation from "../navigation/RootNavigation";
-import { launchImageLibrary } from "react-native-image-picker";
 // Firebase
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import React, {
+  createContext,
+  FunctionComponent,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { Platform } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
+// Packages
+import * as RootNavigation from "../navigation/RootNavigation";
 
 interface SignInInput {
   email: string;

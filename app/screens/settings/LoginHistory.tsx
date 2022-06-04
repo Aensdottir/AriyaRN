@@ -1,29 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Entypo } from "@expo/vector-icons";
+import firestore from "@react-native-firebase/firestore";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
-  View,
-  StatusBar,
-  Text,
   Flex,
   Icon,
   Pressable,
   ScrollView,
+  StatusBar,
+  Text,
+  View,
 } from "native-base";
+import React, { useEffect, useState } from "react";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
-import { MaterialIcons, Entypo } from "@expo/vector-icons";
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import { SafeAreaView } from "react-native-safe-area-context";
 // Custom Imports
 import { styles } from "../../Styles";
 // Providers
 import { useUser } from "../../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "../RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Alert, Button, Platform } from "react-native";
-import { UserProfileView, VariableSettingButton } from "../../components";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginHistory = ({ route, navigation }: Props) => {

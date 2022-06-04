@@ -1,30 +1,20 @@
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Flex, ScrollView, StatusBar, Text, View } from "native-base";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  StatusBar,
-  Pressable,
-  Flex,
-} from "native-base";
-// Packages
-import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
 // Custom Imports
 import {
-  NameInput,
   EmailInput,
+  LoginRedirectText,
+  NameInput,
   PasswordInput,
   RegisterButton,
-  LoginRedirectText,
 } from "../components";
 import { styles } from "../Styles";
 // Providers
 import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Register">;
 
 const RegisterScreen = ({ route, navigation }: Props) => {

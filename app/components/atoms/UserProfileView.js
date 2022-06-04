@@ -1,24 +1,20 @@
-import React, { useState } from "react";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {
-  View,
-  Text,
-  Icon,
-  Pressable,
-  Input,
   Box,
-  Modal,
-  FormControl,
   Button,
+  FormControl,
+  Icon,
+  Input,
+  Modal,
+  Pressable,
+  Text,
+  View,
 } from "native-base";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo,
-} from "@expo/vector-icons";
-// Custom Imports
-import { ProfilePicture } from "./ProfilePicture";
+import React, { useState } from "react";
 // Providers
 import { useUser } from "../../utils/providers/UserProvider";
+// Custom Imports
+import { ProfilePicture } from "./ProfilePicture";
 
 export const UserProfileView = () => {
   const { userData } = useUser();

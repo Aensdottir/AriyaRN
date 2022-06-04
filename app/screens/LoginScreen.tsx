@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  View,
-  StatusBar,
-  Text,
-  ScrollView,
-  Pressable,
-  Flex,
-} from "native-base";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Flex, ScrollView, StatusBar, Text, View } from "native-base";
+import React, { useEffect, useState } from "react";
 // Packages
 import changeNavigationBarColor from "react-native-navigation-bar-color";
-// Custom Imports
-import { styles } from "../Styles";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
-  AlertDialogUnavailable,
   EmailInput,
   ForgotPassword,
   LoginButton,
@@ -21,12 +12,11 @@ import {
   LoginScreenLogo,
   PasswordInput,
 } from "../components";
-// Providers
-import { useCommon } from "../utils/providers/CommonProvider";
+// Custom Imports
+import { styles } from "../Styles";
 import { useUser } from "../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "./RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
 
 const LoginScreen = ({ route, navigation }: Props) => {

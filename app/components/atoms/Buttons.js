@@ -1,4 +1,4 @@
-import { Pressable, Flex, Image, Button, Text } from "native-base";
+import { Button, Text } from "native-base";
 
 const styles = {
   loginScreen: {
@@ -24,43 +24,4 @@ const RegisterButton = (props) => {
   );
 };
 
-const QuickAccessButton = ({ type, onPressFunc, icon }) => {
-  if (type == "TopBar") {
-    return (
-      <Pressable onPress={onPressFunc}>
-        {({ isPressed }) => {
-          return (
-            <Flex
-              size={60}
-              bg={isPressed ? "main.bg.400" : "main.bg.300"}
-              justifyContent={"center"}
-              borderRadius={20}
-            >
-              <Image resizeMode="contain" alt="Nav" source={icon} />
-            </Flex>
-          );
-        }}
-      </Pressable>
-    );
-  }
-  if (type == "ControlsBottom") {
-    return (
-      <Pressable onPress={onPressFunc}>
-        {({ isPressed }) => {
-          return (
-            <Flex
-              size={60}
-              bg={isPressed ? "main.bg.100" : "main.bg.300"}
-              justifyContent={"center"}
-              borderRadius={20}
-            >
-              <Image resizeMode="contain" alt="Nav" source={icon} />
-            </Flex>
-          );
-        }}
-      </Pressable>
-    );
-  }
-};
-
-export { LoginButton, RegisterButton, QuickAccessButton };
+export { LoginButton, RegisterButton };

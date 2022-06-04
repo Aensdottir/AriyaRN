@@ -1,4 +1,4 @@
-import { Box, Image } from "native-base";
+import { Box } from "native-base";
 
 const Template = (props) => {
   return (

@@ -1,40 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { MaterialIcons } from "@expo/vector-icons";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
-  View,
-  StatusBar,
-  Text,
-  ScrollView,
-  Pressable,
-  Flex,
   Button,
+  Flex,
   Icon,
   Input,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  Text,
+  View,
 } from "native-base";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo,
-} from "@expo/vector-icons";
-// Packages
-import changeNavigationBarColor from "react-native-navigation-bar-color";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 // Custom Imports
 import { styles } from "../../Styles";
-import {
-  AlertDialogUnavailable,
-  EmailInput,
-  ForgotPassword,
-  LoginButton,
-  LoginRedirectText,
-  LoginScreenLogo,
-  PasswordInput,
-} from "../../components";
-// Providers
-import { useCommon } from "../../utils/providers/CommonProvider";
 import { useUser } from "../../utils/providers/UserProvider";
 // React-Navigation
 import { RootStackParamList } from "../RootStackParams";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 type Props = NativeStackScreenProps<RootStackParamList, "ForgotPass">;
 
 const ChangePassword = ({ route, navigation }: Props) => {
